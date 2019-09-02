@@ -36,6 +36,13 @@ module TSOS {
             while (_KernelInputQueue.getSize() > 0) {
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
+
+                var offset;
+                var startX;
+                var startY;
+                var endX;
+                var endY;
+
                 // Check to see if it's "special" (enter or ctrl-c) or "normal" (anything else that the keyboard device driver gave us).
                 
                 // Enter key
@@ -47,11 +54,31 @@ module TSOS {
                     // ... and reset our buffer.
                     this.bufferHistory.push(this.buffer)
                     this.buffer = "";
+
+                    // ...reset history index too
+                    this.bufferIndex = 0;
                 }
 
-                // Up Arrow
-                else if (chr === String.fromCharCode(38)){
-                    this.bufferIndex += 1;
+                // Up/down Arrow
+                else if (chr === String.fromCharCode(38) || chr === String.fromCharCode(40)){
+                    // Clear text currently on line...
+                    offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, '>');
+                    startX = offset;
+                    startY = this.currentYPosition - _DrawingContext.fontAscent(this.currentFont, this.currentFontSize);
+                    endX = _Canvas.width;
+                    endY = _Canvas.height;
+                    _DrawingContext.clearRect(startX, startY, endX, endY);
+                    this.currentXPosition = offset;
+
+                    // Check whether to iterate up or down...
+                    // ...check if that should even be possible
+                    if(chr === String.fromCharCode(38) && this.bufferIndex < this.bufferHistory.length - 2){
+                        this.bufferIndex += 1;
+                    } else if(chr === String.fromCharCode(40) && this.bufferIndex > 0){
+                        this.bufferIndex -= 1;
+                    }
+
+                    //...then draw the command
                     var Ndx = this.bufferHistory.length - this.bufferIndex;
                     if(Ndx <= this.bufferHistory.length && Ndx >= 0){
                         this.putText(this.bufferHistory[Ndx])
@@ -59,15 +86,24 @@ module TSOS {
                     }
                 } 
 
-                //Down Arrow
+                /*Down Arrow
                 else if(chr === String.fromCharCode(40)){
+                    // Clear text currently on line...
+                    var startX = 0;
+                    var startY = this.currentYPosition - _DrawingContext.fontAscent(this.currentFont, this.currentFontSize);
+                    var endX = _Canvas.width;
+                    var endY = _Canvas.height;
+                    _DrawingContext.clearRect(startX, startY, endX, endY);
+                    this.currentXPosition = 0;
+
+                    //...then draw the last command
                     this.bufferIndex -= 1;
                     var Ndx = this.bufferHistory.length - this.bufferIndex;
                     if(Ndx <= this.bufferHistory.length && Ndx >= 0){
                         this.putText(this.bufferHistory[Ndx])
                         this.buffer = this.bufferHistory[Ndx];
                     }
-                }
+                }*/
 
                 // Tab Key
                 else if(chr === String.fromCharCode(9)){
@@ -79,11 +115,11 @@ module TSOS {
                 } else if(chr === String.fromCharCode(8)){
                     //Backspace erases the last character...
                     //erase from screen
-                    var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
-                    var startX = this.currentXPosition - offset;
-                    var startY = this.currentYPosition - _DrawingContext.fontAscent(this.currentFont, this.currentFontSize);
-                    var endX = _Canvas.width;
-                    var endY = _Canvas.height;
+                    offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
+                    startX = this.currentXPosition - offset;
+                    startY = this.currentYPosition - _DrawingContext.fontAscent(this.currentFont, this.currentFontSize);
+                    endX = _Canvas.width;
+                    endY = _Canvas.height;
                     _DrawingContext.clearRect(startX, startY, endX, endY);
                     this.currentXPosition -= offset;
                     this.buffer = this.buffer.substring(0, this.buffer.length-1);
