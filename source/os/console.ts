@@ -76,7 +76,7 @@ module TSOS {
                         this.bufferIndex += 1;
                     } else if(chr === String.fromCharCode(40) && this.bufferIndex > 0){
                         this.bufferIndex -= 1;
-                    }
+                    } 
 
                     //...then draw the command
                     var Ndx = this.bufferHistory.length - this.bufferIndex;
@@ -86,24 +86,7 @@ module TSOS {
                     }
                 } 
 
-                /*Down Arrow
-                else if(chr === String.fromCharCode(40)){
-                    // Clear text currently on line...
-                    var startX = 0;
-                    var startY = this.currentYPosition - _DrawingContext.fontAscent(this.currentFont, this.currentFontSize);
-                    var endX = _Canvas.width;
-                    var endY = _Canvas.height;
-                    _DrawingContext.clearRect(startX, startY, endX, endY);
-                    this.currentXPosition = 0;
-
-                    //...then draw the last command
-                    this.bufferIndex -= 1;
-                    var Ndx = this.bufferHistory.length - this.bufferIndex;
-                    if(Ndx <= this.bufferHistory.length && Ndx >= 0){
-                        this.putText(this.bufferHistory[Ndx])
-                        this.buffer = this.bufferHistory[Ndx];
-                    }
-                }*/
+                
 
                 // Tab Key
                 else if(chr === String.fromCharCode(9)){
@@ -173,15 +156,17 @@ module TSOS {
                         _FontHeightMargin))){
                 //get image data, then put back everything from below the first line.
                 var imageData = _DrawingContext.getImageData(0, 
-                        (1.5 * (_DrawingContext.fontAscent(this.currentFont, this.currentFontSize))), 
+                        (_DefaultFontSize + 
+                                     _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                                     _FontHeightMargin), 
                         _Canvas.width,
                         _Canvas.height);
 
                 _DrawingContext.putImageData(imageData, 0, 0)
 
-                this.currentYPosition -= (1.5 *
-                                     _DrawingContext.fontAscent(this.currentFont, this.currentFontSize)
-                                     );  
+                this.currentYPosition -= _DefaultFontSize + 
+                                     _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                                     _FontHeightMargin;
 
             }
         }
