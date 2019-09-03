@@ -76,19 +76,25 @@ module TSOS {
           // date
           sc = new ShellCommand(this.shellDate,
                                 "date",
-                                "Displays current date and time");
+                                "- Displays current date and time");
           this.commandList[this.commandList.length] = sc;
 
           // wherami
           sc = new ShellCommand(this.shellWhereAmI,
                                 "whereami",
-                                "Displays user's current location");
+                                "- Displays user's current location");
           this.commandList[this.commandList.length] = sc;
 
           // greetings <string>
           sc = new ShellCommand(this.shellGreetings,
                                 "greetings",
                                 "<string> - Displays a greeting from the system");
+          this.commandList[this.commandList.length] = sc;
+
+          //Blue Screen of Death
+          sc = new ShellCommand(this.shellBsod,
+                                "bsod",
+                                "- Displays a blue screen, informs user to restart system.");
           this.commandList[this.commandList.length] = sc;
 
           // ps  - list the running processes and their IDs
@@ -356,6 +362,14 @@ module TSOS {
           else{
               _StdOut.putText("Hello, maybe next time try putting your name!");
           }
+      }
+
+      public shellBsod(args: string[]){
+          _StdOut.blueScreen();
+          _StdOut.putText("Error # (insert error here) has crashed the system.")
+          _StdOut.advanceLine();
+          _StdOut.putText("Please restart the console to use it further...");
+          this.shellPrompt(['...']);
       }
 
   }

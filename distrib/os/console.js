@@ -7,7 +7,7 @@
 var TSOS;
 (function (TSOS) {
     var Console = /** @class */ (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, bufferHistory, bufferIndex) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, bufferHistory, bufferIndex, bsod) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
@@ -15,6 +15,7 @@ var TSOS;
             if (buffer === void 0) { buffer = ""; }
             if (bufferHistory === void 0) { bufferHistory = []; }
             if (bufferIndex === void 0) { bufferIndex = 0; }
+            if (bsod === void 0) { bsod = false; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
@@ -22,6 +23,7 @@ var TSOS;
             this.buffer = buffer;
             this.bufferHistory = bufferHistory;
             this.bufferIndex = bufferIndex;
+            this.bsod = bsod;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -34,8 +36,15 @@ var TSOS;
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
         };
+        Console.prototype.blueScreen = function () {
+            _DrawingContext.fillStyle = '#add8e6';
+            _DrawingContext.fillRect(0, 0, _Canvas.width, _Canvas.height);
+            this.resetXY();
+            // ...bsod to true stops handling of input...
+            this.bsod = true;
+        };
         Console.prototype.handleInput = function () {
-            while (_KernelInputQueue.getSize() > 0) {
+            while (_KernelInputQueue.getSize() > 0 && this.bsod == false) {
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
                 var offset;

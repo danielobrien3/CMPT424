@@ -15,7 +15,8 @@ module TSOS {
                     public currentYPosition = _DefaultFontSize,
                     public buffer = "",
                     public bufferHistory = [],
-                    public bufferIndex = 0) {
+                    public bufferIndex = 0,
+                    public bsod = false) {
         }
 
         public init(): void {
@@ -32,8 +33,17 @@ module TSOS {
             this.currentYPosition = this.currentFontSize;
         }
 
+        public blueScreen(): void {
+            _DrawingContext.fillStyle = '#add8e6';
+            _DrawingContext.fillRect(0,0, _Canvas.width, _Canvas.height);
+            this.resetXY();
+
+            // ...bsod to true stops handling of input...
+            this.bsod = true;
+        }
+
         public handleInput(): void {
-            while (_KernelInputQueue.getSize() > 0) {
+            while (_KernelInputQueue.getSize() > 0 && this.bsod == false) {
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
 

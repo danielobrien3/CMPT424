@@ -46,13 +46,16 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
             // date
-            sc = new TSOS.ShellCommand(this.shellDate, "date", "Displays current date and time");
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "- Displays current date and time");
             this.commandList[this.commandList.length] = sc;
             // wherami
-            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "Displays user's current location");
+            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "- Displays user's current location");
             this.commandList[this.commandList.length] = sc;
             // greetings <string>
             sc = new TSOS.ShellCommand(this.shellGreetings, "greetings", "<string> - Displays a greeting from the system");
+            this.commandList[this.commandList.length] = sc;
+            //Blue Screen of Death
+            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "- Displays a blue screen, informs user to restart system.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -305,6 +308,13 @@ var TSOS;
             else {
                 _StdOut.putText("Hello, maybe next time try putting your name!");
             }
+        };
+        Shell.prototype.shellBsod = function (args) {
+            _StdOut.blueScreen();
+            _StdOut.putText("Error # (insert error here) has crashed the system.");
+            _StdOut.advanceLine();
+            _StdOut.putText("Please restart the console to use it further...");
+            this.shellPrompt(['...']);
         };
         return Shell;
     }());
