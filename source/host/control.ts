@@ -70,6 +70,43 @@ module TSOS {
         }
 
 
+        // Updates status of task bar. Also updates current Date Time in task bar. 
+        public static graphicTaskBarUpdate(status){
+            var date: string = Date();
+
+            var taskBar = <HTMLInputElement> document.getElementById("graphicTaskBar");
+            taskBar.value = date + "\n" + "Status: " + status;
+        }
+
+
+        // Validates user input from User Program Input
+        // ...must be hex digits and spaces to be accepted
+        public static validateUserProgramInput(){
+            var userInputElement = <HTMLInputElement> document.getElementById("taProgramInput");
+            var userInput = userInputElement.value;
+
+            var valid = true;
+            var index = 0;
+            var char = 0;
+
+            while(valid == true && index < userInput.length){
+                char = userInput.charCodeAt(index);
+                index++;
+                if((char >= 97 && char <= 102) ||
+                    (char >= 65 && char <= 70) ||
+                    (char >= 48 && char <= 57) ||
+                    (char == 32))
+                {
+                    valid = true;
+                } else{
+                    valid = false;
+                }
+            }
+            return valid;
+        }
+
+
+
         //
         // Host Events
         //
@@ -83,6 +120,9 @@ module TSOS {
 
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
+
+            // Display date and default status
+            (<HTMLInputElement> document.getElementById("graphicTaskBar")).value = Date() + "\n" + "Status: Just getting Started";
 
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.

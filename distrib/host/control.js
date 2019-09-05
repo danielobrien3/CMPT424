@@ -58,6 +58,35 @@ var TSOS;
             taLog.value = str + taLog.value;
             // TODO in the future: Optionally update a log database or some streaming service.
         };
+        // Updates status of task bar. Also updates current Date Time in task bar. 
+        Control.graphicTaskBarUpdate = function (status) {
+            var date = Date();
+            var taskBar = document.getElementById("graphicTaskBar");
+            taskBar.value = date + "\n" + "Status: " + status;
+        };
+        // Validates user input from User Program Input
+        // ...must be hex digits and spaces to be accepted
+        Control.validateUserProgramInput = function () {
+            var userInputElement = document.getElementById("taProgramInput");
+            var userInput = userInputElement.value;
+            var valid = true;
+            var index = 0;
+            var char = 0;
+            while (valid == true && index < userInput.length) {
+                char = userInput.charCodeAt(index);
+                index++;
+                if ((char >= 97 && char <= 102) ||
+                    (char >= 65 && char <= 70) ||
+                    (char >= 48 && char <= 57) ||
+                    (char == 32)) {
+                    valid = true;
+                }
+                else {
+                    valid = false;
+                }
+            }
+            return valid;
+        };
         //
         // Host Events
         //
@@ -69,6 +98,8 @@ var TSOS;
             document.getElementById("btnReset").disabled = false;
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
+            // Display date and default status
+            document.getElementById("graphicTaskBar").value = Date() + "\n" + "Status: Just getting Started";
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.

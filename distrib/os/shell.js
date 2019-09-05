@@ -45,6 +45,9 @@ var TSOS;
             // prompt <string>
             sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
+            // status <string>
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Sets the current status. Also updates the date.");
+            this.commandList[this.commandList.length] = sc;
             // date
             sc = new TSOS.ShellCommand(this.shellDate, "date", "- Displays current date and time");
             this.commandList[this.commandList.length] = sc;
@@ -56,6 +59,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             //Blue Screen of Death
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "- Displays a blue screen, informs user to restart system.");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellValidateUserInput, "validate", "- Validates code found in User Program Input window");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -295,6 +300,19 @@ var TSOS;
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
         };
+        Shell.prototype.shellStatus = function (args) {
+            if (args.length > 0) {
+                var status = "";
+                for (var i = 0; i < args.length; i++) {
+                    status += args[i];
+                    status += " ";
+                }
+                TSOS.Control.graphicTaskBarUpdate(status);
+            }
+            else {
+                _StdOut.putText("Usage: status <string>  Please supply a string.");
+            }
+        };
         Shell.prototype.shellDate = function (args) {
             _StdOut.putText(Date());
         };
@@ -315,6 +333,15 @@ var TSOS;
             _StdOut.advanceLine();
             _StdOut.putText("Please restart the console to use it further...");
             this.shellPrompt(['...']);
+        };
+        Shell.prototype.shellValidateUserInput = function (args) {
+            var valid = TSOS.Control.validateUserProgramInput();
+            if (valid) {
+                _StdOut.putText("Your code is valid");
+            }
+            else {
+                _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.");
+            }
         };
         return Shell;
     }());
