@@ -138,12 +138,34 @@ module TSOS {
                 do the same thing, thereby encouraging confusion and decreasing readability, I
                 decided to write one function and use the term "text" to connote string or char.
             */
+
             if (text !== "") {
-                // Draw the text at the current X and Y coordinates.
-                _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, text);
-                // Move the current X position.
-                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
-                this.currentXPosition = this.currentXPosition + offset;
+                // Check if line-wrap is necessary by...
+                // ... splitting the text by space, looping through the array...
+
+                var textSplit = text.split(" ");
+                for(var i = 0; i < textSplit.length; i++){
+                    var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textSplit[i]);
+                    // ... and checking if the text will push past the canvas width.
+                    if (this.currentXPosition + offset > _Canvas.width){
+                        // line wrap
+                        this.advanceLine();
+                        // add indent
+                        this.currentXPosition += _DrawingContext.measureText(this.currentFont, this.currentFontSize, "  ");
+                    }
+
+                    // Then we draw the text at the current X and Y coordinates...
+                    _DrawingContext.drawText(this.currentFont, this.currentFontSize, this.currentXPosition, this.currentYPosition, textSplit[i]);
+                    // ... add a space to make up for splitting the text...
+                    // ... but only if its longer than a single character...
+                    if(text.length > 1){
+                        this.currentXPosition = this.currentXPosition + _DrawingContext.measureText(this.currentFont, this.currentFontSize, " ");
+                    }
+                    // ... and shift the current X position.
+                    this.currentXPosition = this.currentXPosition + offset;
+                }
+                
+                
             }
          }
 
