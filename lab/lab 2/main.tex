@@ -1,0 +1,21 @@
+\documentclass[12pt]{article}
+ 
+\begin{document}
+ 
+
+\title{Lab 2}
+\author{Daniel O'Brien\\ 
+Operating Systems}
+
+\maketitle
+\section{How is your console like the ancient TTY subsystem in Unix}
+A continuación se presenta la representación gráfica de dos curvas, simultáneamente, cuyas ecuaciones están dadas por:
+
+The console we are creating is similar to the TTY subsystem by its general structure and purpose. The console is responsible for handling the input given by a user. Although this input is digital, it is similar to the TTY subsystem’s handling of Telex data.  The TTY subsystem is also similar in that it had to handle line disciplines. This includes users being able to backspace, not being able to use the CLI while processes are being run in the foreground, as well as a general editing buffer. It is also similar in how it displays information to the user. The TTY subsystem has a frame buffer that contains characters and their graphical attributes. This is then used by the software and rendered out to a VGA display. The console in the operating system we are developing is very similar in that each character has graphical attributes that are used to draw to the display. A big difference here is that VGA is analog while our operating system prints to a digital display. However, this just comes as a result of the technological advancements that have been made since the TTY was made. 
+
+
+\section{LaTeX?}
+
+The console we are creating is not very similar to LaTeX, as LaTeX provides far more customization with how to edit each line of content. This is because LaTeX is an abstraction layer that sits on top of TeX. TeX has its own macros, and LaTeX is a set of macros that sit on top of and utilize the original macros. However, it is similar when you look at it from a fundamental perspective. At the end of the day, LaTeX must take input from a user and convert it into information that a program can use to create image data. This is exactly how the console we are building works. Our console takes characters from keyboard input, or system output, and uses the character’s attributes to print them on the screen. 
+
+\end{document}
