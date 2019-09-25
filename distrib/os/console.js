@@ -36,11 +36,12 @@ var TSOS;
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
         };
+        //Changes canvas color to blue. 
         Console.prototype.blueScreen = function () {
             _DrawingContext.fillStyle = '#add8e6';
             _DrawingContext.fillRect(0, 0, _Canvas.width, _Canvas.height);
             this.resetXY();
-            // ...bsod to true stops handling of input...
+            // Stops the handling of any more input...
             this.bsod = true;
         };
         Console.prototype.handleInput = function () {
@@ -75,8 +76,8 @@ var TSOS;
                     endY = _Canvas.height;
                     _DrawingContext.clearRect(startX, startY, endX, endY);
                     this.currentXPosition = offset;
-                    // Check whether to iterate up or down...
-                    // ...check if that should even be possible
+                    // Check whether to iterate up or down in buffer history...
+                    // ...and check if the index is still in bounds
                     if (chr === String.fromCharCode(38) && this.bufferIndex < this.bufferHistory.length - 2) {
                         this.bufferIndex += 1;
                     }
@@ -93,13 +94,14 @@ var TSOS;
                 // Tab Key
                 else if (chr === String.fromCharCode(9)) {
                     // Tab key marks an attempt at autocompletion
-                    // perform in shell
+                    // performed in shell
                     this.buffer += _OsShell.handleInput(this.buffer, true);
                     // Backspace
                 }
                 else if (chr === String.fromCharCode(8)) {
-                    //Backspace erases the last character...
-                    //erase from screen
+                    //Backspace erases the last character by clearing the screen in that area...
+                    //... Use buffer to get offset size for backspace...
+                    //... delete char and update currentXposition
                     offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, this.buffer.charAt(this.buffer.length - 1));
                     startX = this.currentXPosition - offset;
                     startY = this.currentYPosition - _DrawingContext.fontAscent(this.currentFont, this.currentFontSize);
@@ -107,6 +109,7 @@ var TSOS;
                     endY = _Canvas.height;
                     _DrawingContext.clearRect(startX, startY, endX, endY);
                     this.currentXPosition -= offset;
+                    //... and update buffer to remove deleted character
                     this.buffer = this.buffer.substring(0, this.buffer.length - 1);
                 }
                 // Normal Character
