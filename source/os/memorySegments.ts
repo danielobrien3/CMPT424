@@ -25,13 +25,6 @@ module TSOS {
             this.empty = true;
             this.size = 0;
         }
-
-        public write(location){
-            // Write handles writing a single byte into a single location in the segment.
-            // Finding physical location 
-            _Memory.load(this.base + location);
-        }
-
         
     }
 }

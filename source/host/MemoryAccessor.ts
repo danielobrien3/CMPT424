@@ -41,8 +41,29 @@ module TSOS {
             return _Memory.read(segment);
         }
 
-        public empty(base){
-            // Handles e
+        public empty(segment){
+            // Handles triggering memory.empty function for desired segment
+            _Memory.empty(segment);
+        }
+
+        public write(segment, logicalLocation, byte){
+            // Handles triggering memory.write function for desired segment, location, and byte
+            // Find physical location here. 
+            // TODO: Implement way to adjust size of resulting segment.
+            // Physical location is found by simply adding logical location to the segment base. 
+            var physicalLocation = segment.base + physicalLocation;
+
+             
+            if(physicalLocation < segment.limit){
+                // Makes sure that logical address is within program segment...
+                // and check if the added byte increased the program size with assureSegmentSize.
+                // assureSegmentSize adjusts size if necessary.
+                _Memory.writeToLocation(segment, location, byte);
+                _MemoryManager.assureSegmentSize(location);
+            } else {
+                _Kernel.krnTrapError("Cannot write byte to location: " + physicalLocation + " because it is over the segment limit: " + segment.limit);
+            }
+            
         }
     
     }

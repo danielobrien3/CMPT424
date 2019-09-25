@@ -54,6 +54,12 @@ module TSOS {
             }
         }
 
+        public assureSegmentSize(segment, physicalLocation){
+            // Handles the possibility of a newly written byte increasing program size.
+            if(physicalLocation >= segment.base + segment.size){
+                segment.size = physicalLocation;
+            }
+        }
         
     }
 }
