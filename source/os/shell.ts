@@ -103,9 +103,9 @@ module TSOS {
                                 "- Displays a blue screen, informs user to restart system.");
           this.commandList[this.commandList.length] = sc;
 
-          sc = new ShellCommand(this.shellValidateUserInput,
-                                "validate",
-                                "- Validates code found in User Program Input window");
+          sc = new ShellCommand(this.shellLoadUserInput,
+                                "load",
+                                "- Validates and loads code found in User Program Input window");
           this.commandList[this.commandList.length] = sc;
 
           // ps  - list the running processes and their IDs
@@ -397,13 +397,25 @@ module TSOS {
           this.shellPrompt(['...']);
       }
 
-      public shellValidateUserInput(args: string[]){
+      public shellLoadUserInput(args: string[]){
           var valid = Control.validateUserProgramInput();
 
           if (valid){
-            _StdOut.putText("Your code is valid");
-          } else {
-            _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.")
+            // Load the program. _MemoryAcessor.load handles all loading requirements...
+            //... including finding an available segment, creating new PCB, etc. 
+            var program = Control.loadUserInput();
+            var pcb = _MemoryAccessor.load(program);
+
+            // If the program runs into an error being loaded my the memory accessor, it will return null...
+            // ... therefore we should only print if it is not null. 
+            if(pcb != null){
+              _StdOut.putText("PID: " + pcb.pid);
+              Control.displayPcb(pcb);
+            }
+            
+          } 
+          else {
+            _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.");
           }
       }
 

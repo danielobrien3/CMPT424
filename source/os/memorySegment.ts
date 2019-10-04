@@ -11,7 +11,9 @@ module TSOS {
 
     export class MemorySegment {
 
-        constructor() {}
+        constructor(public empty: boolean = false,
+                    public base: number = 0,
+                    public limit: number = 0) {}
 
         public init(base){
             this.empty = true;

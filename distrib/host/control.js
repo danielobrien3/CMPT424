@@ -87,6 +87,23 @@ var TSOS;
             }
             return valid;
         };
+        Control.loadUserInput = function () {
+            // Handles loading user input. Returns input as an array of bytes. 
+            var userInputElement = document.getElementById("taProgramInput");
+            return userInputElement.value.split(" ");
+        };
+        Control.displayPcb = function (pcb) {
+            // Handles creating a new table row to display newly loaded process. 
+            var pcbTable = document.getElementById("pcbTable");
+            var newRow = pcbTable.insertRow(0);
+            newRow.insertCell(0).innerHTML(pcb.pc);
+            newRow.insertCell(1).innerHTML(pcb.instrReg);
+            newRow.insertCell(2).innerHTML(pcb.accumulator);
+            newRow.insertCell(3).innerHTML(pcb.state);
+            newRow.insertCell(4).innerHTML(pcb.xReg);
+            newRow.insertCell(5).innerHTML(pcb.yReg);
+            newRow.insertCell(6).innerHTML(pcb.zFlag);
+        };
         //
         // Host Events
         //
@@ -103,6 +120,10 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
+            // Create and Initialize Memory and Memory Accessor
+            _Memory = new TSOS.Memory();
+            _Memory.init();
+            _MemoryAccessor = new TSOS.MemoryAccessor();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.

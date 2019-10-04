@@ -22,22 +22,46 @@ var TSOS;
             else {
                 // getFreeSegment returns null if there are no free segments... 
                 // ...therefore if currentSegment is null, we cannot continue loading the program. 
-                if (program.length > currentSegment.size) {
+                if (program.length > currentSegment.limit) {
                     _Kernel.krnTrapError("Program is too large to be loaded into memory.");
                 }
                 else {
+                    // Program is loaded into memory and a corresponding PCB is created. 
                     _Memory.load(currentSegment.base, program);
+                    var pcb = _MemoryManager.newPcb(currentSegment.base, currentSegment.base + program.size);
+                    _PidCount++;
                     currentSegment.setEmpty(false);
                     currentSegment.setSize(program.length);
+                    return pcb;
                 }
             }
         };
-        MemoryAccessor.prototype.read = function (segment) {
-            // Handles triggering memory.read function for desired segment. 
-            return _Memory.read(segment.base, segment.size);
+        MemoryAccessor.prototype.read = function (pcb) {
+            // Handles triggering memory read function for desired pcb. 
+            return _Memory.read(pcb);
         };
-        MemoryAccessor.prototype.empty = function (base) {
-            // Handles e
+        MemoryAccessor.prototype.empty = function (pcb) {
+            // Handles triggering memory.empty function for desired segment
+            // Empties the pcb from memory using information from the pcb, then resets the pcb
+            _Memory.empty(pcb.segment);
+            pcb.empty();
+        };
+        MemoryAccessor.prototype.write = function (pcb, logicalLocation, newByte) {
+            // Handles triggering memory.write function for desired segment, location, and byte
+            // Find physical location here. 
+            // TODO: Implement way to adjust size of resulting segment.
+            // Physical location is found by simply adding logical location to the segment base. 
+            var physicalLocation = pcb.memStart + logicalLocation;
+            if (physicalLocation < pcb.currentSegment.limit) {
+                // Makes sure that logical address is within program segment...
+                // and check if the added byte increased the program size with assureSegmentSize.
+                // If the logical location is greater than the segment size, the segment size will be updated. 
+                _Memory.writeToLocation(physicalLocation, newByte);
+                _MemoryManager.assureProcessSize(pcb.currentSegment, logicalLocation);
+            }
+            else {
+                _Kernel.krnTrapError("Cannot write byte to location: " + physicalLocation + " because it is over the segment limit: " + process.currentSegment.limit);
+            }
         };
         return MemoryAccessor;
     }());

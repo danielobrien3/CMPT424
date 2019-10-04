@@ -60,7 +60,7 @@ var TSOS;
             //Blue Screen of Death
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "- Displays a blue screen, informs user to restart system.");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellValidateUserInput, "validate", "- Validates code found in User Program Input window");
+            sc = new TSOS.ShellCommand(this.shellLoadUserInput, "load", "- Validates and loads code found in User Program Input window");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -334,10 +334,19 @@ var TSOS;
             _StdOut.putText("Please restart the console to use it further...");
             this.shellPrompt(['...']);
         };
-        Shell.prototype.shellValidateUserInput = function (args) {
+        Shell.prototype.shellLoadUserInput = function (args) {
             var valid = TSOS.Control.validateUserProgramInput();
             if (valid) {
-                _StdOut.putText("Your code is valid");
+                // Load the program. _MemoryAcessor.load handles all loading requirements...
+                //... including finding an available segment, creating new PCB, etc. 
+                var program = TSOS.Control.loadUserInput();
+                var pcb = _MemoryAccessor.load(program);
+                // If the program runs into an error being loaded my the memory accessor, it will return null...
+                // ... therefore we should only print if it is not null. 
+                if (pcb != null) {
+                    _StdOut.putText("PID: " + pcb.pid);
+                    TSOS.Control.displayPcb(pcb);
+                }
             }
             else {
                 _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.");

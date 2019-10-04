@@ -11,16 +11,18 @@ module TSOS {
 
     export class MemoryManager {
 
-        constructor(public segments = new Array()){}
+        constructor(public segments: any = new Array(),
+                    public processControlBlocks: any = new Array()){}
 
         public init(){
-            this.segments[0] = new TSOS.memorySegment;
-            this.segments[1] = new TSOS.memorySegment;
-            this.segments[2] = new TSOS.memorySegment;
+            this.segments[0] = new TSOS.MemorySegment;
+            this.segments[1] = new TSOS.MemorySegment;
+            this.segments[2] = new TSOS.MemorySegment;
 
             this.segments[0].init(0, 255);
             this.segments[1].init(256, 511);
             this.segments[2].init(512, 767);
+            this.processControlBlocks = new Array();
         }
 
         public getFreeSegment(){
@@ -36,29 +38,23 @@ module TSOS {
             return null;
         }
 
-        // TODO: Put this in memory accessor.
-        public emptySegment(base){
-            // emptySegment function handles emptying segment starting at the base provided.
-            // Since this will only be used to empty segment (duh), we will set empty flag to true.
-            var segment = this.getSegment(base);
-            _Memory.empty(segment.base, segment.size);
-            segment.setEmpty(true);
-        }
 
         public getSegment(base){
             // Handles getting and returning a specific segment based (no pun intended) on its base. 
             for(var i = 0; i<this.segments.length; i++){
-                if(segments[i].getBase() == base){
+                if(this.segments[i].getBase() == base){
                     return this.segments[i];
                 }
             }
         }
 
-        public assureSegmentSize(segment, physicalLocation){
-            // Handles the possibility of a newly written byte increasing program size.
-            if(physicalLocation >= segment.base + segment.size){
-                segment.size = physicalLocation;
-            }
+
+        public newPcb(startLoc, endLoc){
+            // Handles creating new new PCB and stores it in PCB array. 
+            this.processControlBlocks.push(new ProcessControlBlock(startLoc, endLoc, _PidCount));
+            // Increments PidCount here to ensure that it is incremented every time a new process is created.
+            _PidCount++;
+            return this.processControlBlocks[this.processControlBlocks.size];
         }
         
     }
