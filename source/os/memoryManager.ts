@@ -29,8 +29,8 @@ module TSOS {
             // getFreeSegment function handles finding free segment.
             // Returns first free segment found.
             // Since this will not necessarily be used for filling a segment, we will keep empty flag set true.
-            for(var i=0; i<this.segments.length; i++){
-                if(this.segments[i].isEmpty == true){
+            for(var i=0; i<this.segments.size; i++){
+                if(this.segments[i].empty == true){
                     return this.segments[i];
                 }
             }

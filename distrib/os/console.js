@@ -36,10 +36,11 @@ var TSOS;
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
         };
-        //Changes canvas color to blue. 
+        //Changes canvas color to blue.
+        // TODO: Make sure error gets displayed properly. 
         Console.prototype.blueScreen = function () {
             _DrawingContext.fillStyle = '#add8e6';
-            _DrawingContext.fillRect(0, 0, _Canvas.width, _Canvas.height);
+            //_DrawingContext.fillRect(0,0, _Canvas.width, _Canvas.height);
             this.resetXY();
             // Stops the handling of any more input...
             this.bsod = true;

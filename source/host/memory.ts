@@ -12,10 +12,10 @@ module TSOS {
 
     export class Memory {
 
-        constructor(public memory: any = new Array()) {}
+        constructor(public mem: Array<Byte> = [new Byte()]){}
 
         public init(): void {
-            this.memory = new Array();
+            this.mem = new Array();
         }
 
         public load(segment, program){
@@ -27,21 +27,21 @@ module TSOS {
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
             for(var i = segment.base; i<program.length; i++){
-                this.memory[i] = new Byte(program[loadCounter]);
+                this.mem[i] = new Byte(program[loadCounter]);
                 loadCounter++;
             }
         }
         
         public writeToLocation(physicalLocation, newByte){
-            // Write function handles writing single bytes into memory
+            // Write function handles writing single bytes into mem
             // Verbose name because apparently 'write' is a javascript keyword?
-            this.memory[physicalLocation] = newByte;
+            this.mem[physicalLocation] = newByte;
         }
 
         public read(pcb){
-            // Read function handles reading and returning stored memory. 
+            // Read function handles reading and returning stored mem. 
             // Increment pcb count here
-            var tempResult = this.memory[pcb.pc];
+            var tempResult = this.mem[pcb.pc];
             pcb.pc++;
         }
 
@@ -49,14 +49,16 @@ module TSOS {
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
             for(var i = pcb.segment.base; i < pcb.segment.base + pcb.segment.size; i++){
-                this.memory[i] = new Byte("00");
+                this.mem[i] = new Byte("00");
             }
             pcb.setEmpty();
 
         }
     }
 
-    // Byte class is 
+}
+
+module TSOS {
     export class Byte {
 
         constructor(public value: string = "00"){}
@@ -80,5 +82,4 @@ module TSOS {
         }
 
     }
-
 }

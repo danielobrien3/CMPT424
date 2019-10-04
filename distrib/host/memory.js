@@ -10,12 +10,12 @@
 var TSOS;
 (function (TSOS) {
     var Memory = /** @class */ (function () {
-        function Memory(memory) {
-            if (memory === void 0) { memory = new Array(); }
-            this.memory = memory;
+        function Memory(mem) {
+            if (mem === void 0) { mem = [new TSOS.Byte()]; }
+            this.mem = mem;
         }
         Memory.prototype.init = function () {
-            this.memory = new Array();
+            this.mem = new Array();
         };
         Memory.prototype.load = function (segment, program) {
             // Load function for loading program into memory...
@@ -25,33 +25,34 @@ var TSOS;
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
             for (var i = segment.base; i < program.length; i++) {
-                this.memory[i] = new Byte(program[loadCounter]);
+                this.mem[i] = new TSOS.Byte(program[loadCounter]);
                 loadCounter++;
             }
         };
         Memory.prototype.writeToLocation = function (physicalLocation, newByte) {
-            // Write function handles writing single bytes into memory
+            // Write function handles writing single bytes into mem
             // Verbose name because apparently 'write' is a javascript keyword?
-            this.memory[physicalLocation] = newByte;
+            this.mem[physicalLocation] = newByte;
         };
         Memory.prototype.read = function (pcb) {
-            // Read function handles reading and returning stored memory. 
+            // Read function handles reading and returning stored mem. 
             // Increment pcb count here
-            var tempResult = this.memory[pcb.pc];
+            var tempResult = this.mem[pcb.pc];
             pcb.pc++;
         };
         Memory.prototype.empty = function (pcb) {
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
             for (var i = pcb.segment.base; i < pcb.segment.base + pcb.segment.size; i++) {
-                this.memory[i] = new Byte("00");
+                this.mem[i] = new TSOS.Byte("00");
             }
             pcb.setEmpty();
         };
         return Memory;
     }());
     TSOS.Memory = Memory;
-    // Byte class is 
+})(TSOS || (TSOS = {}));
+(function (TSOS) {
     var Byte = /** @class */ (function () {
         function Byte(value) {
             if (value === void 0) { value = "00"; }

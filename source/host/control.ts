@@ -153,13 +153,15 @@ module TSOS {
             // Display date and default status
             (<HTMLInputElement> document.getElementById("graphicTaskBar")).value = Date() + "\n" + "Status: Just getting Started";
 
-            // ... Create and initialize the CPU (because it's part of the hardware)  ...
-            _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
-            _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
             // Create and Initialize Memory and Memory Accessor
             _Memory = new Memory();
             _Memory.init();
+            
+            // ... Create and initialize the CPU (because it's part of the hardware)  ...
+            _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
+            _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
+
 
             _MemoryAccessor = new MemoryAccessor();
 

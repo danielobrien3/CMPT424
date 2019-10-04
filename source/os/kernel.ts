@@ -25,6 +25,10 @@ module TSOS {
             _Console = new Console();             // The command line interface / console I/O device.
             _Console.init();
 
+            // Initialize memory manager
+            _MemoryManager = new MemoryManager();
+            _MemoryManager.init();
+
             // Initialize standard input and output to the _Console.
             _StdIn  = _Console;
             _StdOut = _Console;
@@ -168,8 +172,8 @@ module TSOS {
         }
 
         public krnTrapError(msg) {
-            Control.hostLog("OS ERROR - TRAP: " + msg);
             _OsShell.shellBsod([]);
+            Control.hostLog("OS ERROR - TRAP: " + msg);
             // TODO: Display error on console, perhaps in some sort of colored screen. (Maybe blue?)
             this.krnShutdown();
         }
