@@ -11,15 +11,15 @@ module TSOS {
 
     export class ProcessControlBlock {
 
-        constructor(public pid: number = _PidCount,
-            public instrReg: any = new Byte,
-            public memStart: number = 0,
-            public memEnd: number = 0,
+        constructor(public pid: number = 0,
+            public instrReg: any = new Byte("00"),
+            public memStart: any = new Byte("00"),
+            public memEnd: any = new Byte("00"),
             public pc: number = 0,
-            public accumulator: number = 0,
-            public xReg: number = 0,
-            public yReg: number = 0,
-            public zFlag: number = 0,
+            public accumulator: any = new Byte("00"),
+            public xReg: any = new Byte("00"),
+            public yReg: any = new Byte("00"),
+            public zFlag: any = new Byte("00"),
             public isExecuting: boolean = false,
             public state: string = "empty",
             public currentSegment: any = new MemorySegment){}

@@ -43,8 +43,7 @@ var TSOS;
         MemoryAccessor.prototype.empty = function (pcb) {
             // Handles triggering memory.empty function for desired segment
             // Empties the pcb from memory using information from the pcb, then resets the pcb
-            _Memory.empty(pcb.segment);
-            pcb.empty();
+            _Memory.empty(pcb);
         };
         MemoryAccessor.prototype.write = function (pcb, logicalLocation, newByte) {
             // Handles triggering memory.write function for desired segment, location, and byte
@@ -57,10 +56,10 @@ var TSOS;
                 // and check if the added byte increased the program size with assureSegmentSize.
                 // If the logical location is greater than the segment size, the segment size will be updated. 
                 _Memory.writeToLocation(physicalLocation, newByte);
-                _MemoryManager.assureProcessSize(pcb.currentSegment, logicalLocation);
+                pcb.assureProcessSize(logicalLocation);
             }
             else {
-                _Kernel.krnTrapError("Cannot write byte to location: " + physicalLocation + " because it is over the segment limit: " + process.currentSegment.limit);
+                _Kernel.krnTrapError("Cannot write byte to location: " + physicalLocation + " because it is over the segment limit: " + pcb.currentSegment.limit);
             }
         };
         return MemoryAccessor;

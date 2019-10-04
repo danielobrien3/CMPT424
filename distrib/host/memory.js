@@ -40,12 +40,13 @@ var TSOS;
             var tempResult = this.memory[pcb.pc];
             pcb.pc++;
         };
-        Memory.prototype.empty = function (segment) {
+        Memory.prototype.empty = function (pcb) {
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
-            for (var i = segment.base; i < segment.base + segment.size; i++) {
+            for (var i = pcb.segment.base; i < pcb.segment.base + pcb.segment.size; i++) {
                 this.memory[i] = new Byte("00");
             }
+            pcb.setEmpty();
         };
         return Memory;
     }());

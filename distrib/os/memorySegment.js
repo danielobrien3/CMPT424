@@ -21,12 +21,10 @@ var TSOS;
             this.empty = true;
             this.base = base;
             this.limit = 255;
-            this.size = 0;
         };
         MemorySegment.prototype.setEmpty = function (emptyFlag) {
             // setEmpty handles segment empty flag and segment size being updated.
             this.empty = true;
-            this.size = 0;
         };
         return MemorySegment;
     }());
