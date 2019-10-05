@@ -347,6 +347,7 @@ var TSOS;
                 console.log("loaded 2");
                 // If the program runs into an error being loaded my the memory accessor, it will return null...
                 // ... therefore we should only print if it is not null. 
+                console.log(pcb);
                 if (pcb != null) {
                     _StdOut.putText("PID: " + pcb.pid);
                     TSOS.Control.displayPcb(pcb);
@@ -358,7 +359,7 @@ var TSOS;
         };
         Shell.prototype.shellRunProcess = function (args) {
             if (args.length > 0) {
-                TSOS.Cpu.execute(_MemoryManager.findProcessById(args[0]));
+                _CPU.execute(_MemoryManager.findProcessById(args[0]));
             }
         };
         return Shell;

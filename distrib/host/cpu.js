@@ -15,9 +15,9 @@ var TSOS;
     var Cpu = /** @class */ (function () {
         function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting) {
             if (PC === void 0) { PC = 0; }
-            if (Acc === void 0) { Acc = 0; }
-            if (Xreg === void 0) { Xreg = 0; }
-            if (Yreg === void 0) { Yreg = 0; }
+            if (Acc === void 0) { Acc = new TSOS.Byte("00"); }
+            if (Xreg === void 0) { Xreg = new TSOS.Byte("00"); }
+            if (Yreg === void 0) { Yreg = new TSOS.Byte("00"); }
             if (Zflag === void 0) { Zflag = 0; }
             if (isExecuting === void 0) { isExecuting = false; }
             this.PC = PC;
@@ -29,9 +29,9 @@ var TSOS;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
-            this.Acc = 0;
-            this.Xreg = 0;
-            this.Yreg = 0;
+            this.Acc = new TSOS.Byte("00");
+            this.Xreg = new TSOS.Byte("00");
+            this.Yreg = new TSOS.Byte("00");
             this.Zflag = 0;
             this.isExecuting = false;
         };
@@ -53,8 +53,9 @@ var TSOS;
                 case "8D": {
                     // Gets location value by storing both bytes in a string, and then converting the string to base 10.
                     // This is the LOGICAL location, not physical. That is handled by the memoryAccessor.
+                    // TODO: Write a function in byte that takes another byte and returns value in decimal. 
                     var tempLocation = _MemoryAccessor.read(pcb).value + _MemoryAccessor.read(pcb).value;
-                    var location = parseInt(temp, 16);
+                    var location = parseInt(tempLocation, 16);
                     _MemoryAccessor.write(pcb, location, this.Acc);
                 }
             }

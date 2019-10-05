@@ -59,6 +59,9 @@ var TSOS;
             if (value === void 0) { value = "00"; }
             this.value = value;
         }
+        //TODO: Write a function that adds a second byte value to this byte value...
+        //... and returns the sum parsed into decimal. 
+        // |This will be used for converting provided memory values to decimal|
         Byte.prototype.setValue = function (newValue) {
             this.value = newValue;
         };

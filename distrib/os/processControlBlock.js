@@ -18,9 +18,9 @@ var TSOS;
             if (accumulator === void 0) { accumulator = new TSOS.Byte("00"); }
             if (xReg === void 0) { xReg = new TSOS.Byte("00"); }
             if (yReg === void 0) { yReg = new TSOS.Byte("00"); }
-            if (zFlag === void 0) { zFlag = new TSOS.Byte("00"); }
+            if (zFlag === void 0) { zFlag = 0; }
             if (isExecuting === void 0) { isExecuting = false; }
-            if (state === void 0) { state = "empty"; }
+            if (state === void 0) { state = "new"; }
             if (currentSegment === void 0) { currentSegment = new TSOS.MemorySegment; }
             this.pid = pid;
             this.instrReg = instrReg;
@@ -48,16 +48,8 @@ var TSOS;
                 this.memEnd = this.memStart + logicalLocation;
             }
         };
-        ProcessControlBlock.prototype.empty = function () {
-            // Handles emptying the process.
-            // This includes em
-            this.memEnd = 0;
-            this.pc = 0;
-            this.accumulator = 0;
-            this.xReg = 0;
-            this.yReg - 0;
-            this.zFlag = 0;
-            this.state = "empty";
+        ProcessControlBlock.prototype.setCompleted = function () {
+            this.state = "completed";
         };
         return ProcessControlBlock;
     }());

@@ -37,6 +37,7 @@ table, td, th {
 
 th, td{
   padding: 4px;
+  background-color: white;
 }
 
 #display {

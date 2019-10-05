@@ -66,6 +66,10 @@ module TSOS {
 
         constructor(public value: string = "00"){}
 
+        //TODO: Write a function that adds a second byte value to this byte value...
+        //... and returns the sum parsed into decimal. 
+        // |This will be used for converting provided memory values to decimal|
+
         public setValue(newValue){
             this.value = newValue;
         }

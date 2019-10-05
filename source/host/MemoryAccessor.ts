@@ -32,7 +32,6 @@ module TSOS {
                     // Program is loaded into memory and a corresponding PCB is created. 
                     _Memory.load(currentSegment, program);
                     var pcb = _MemoryManager.newPcb(currentSegment, program.length);
-                    _PidCount++;
                     currentSegment.setEmpty(false);
                     return pcb;
                 }

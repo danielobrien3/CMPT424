@@ -27,7 +27,7 @@ var TSOS;
         MemoryManager.prototype.findProcessById = function (id) {
             // Finds process by id (duh). Pretty simple stuff. 
             for (var i = 0; i < this.processControlBlocks.length; i++) {
-                if (this.processControlBlocks[i] == pid) {
+                if (this.processControlBlocks[i] == id) {
                     return this.processControlBlocks[i];
                 }
             }
@@ -59,8 +59,7 @@ var TSOS;
             this.processControlBlocks.push(tempPcb);
             // Increments PidCount here to ensure that it is incremented every time a new process is created.
             _PidCount++;
-            TSOS.Control.displayPcb(tempPcb);
-            return this.processControlBlocks[this.processControlBlocks.size];
+            return this.processControlBlocks[this.processControlBlocks.length - 1];
         };
         return MemoryManager;
     }());

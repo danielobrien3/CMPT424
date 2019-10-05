@@ -95,23 +95,25 @@ var TSOS;
         Control.displayPcb = function (pcb) {
             // Handles creating a new table row to display newly loaded process. 
             var pcbTable = document.getElementById("pcbTable");
-            var newRow = pcbTable.insertRow(0);
-            var pc = newRow.insertCell(0);
-            var ir = newRow.insertCell(1);
-            var acc = newRow.insertCell(2);
-            var state = newRow.insertCell(3);
-            var xReg = newRow.insertCell(4);
-            var yReg = newRow.insertCell(5);
-            var zFlag = newRow.insertCell(6);
+            var newRow = pcbTable.insertRow(1);
+            var pid = newRow.insertCell(0);
+            var pc = newRow.insertCell(1);
+            var ir = newRow.insertCell(2);
+            var acc = newRow.insertCell(3);
+            var state = newRow.insertCell(4);
+            var xReg = newRow.insertCell(5);
+            var yReg = newRow.insertCell(6);
+            var zFlag = newRow.insertCell(7);
             // Everything except for pc and state are stored as bytes.
             // Their values are "hex" strings so that's what we'll use. 
+            pid.innerHTML = pcb.pid;
             pc.innerHTML = pcb.pc.toString();
             ir.innerHTML = pcb.instrReg.value;
             acc.innerHTML = pcb.accumulator.value;
             state.innerHTML = pcb.state;
             xReg.innerHTML = pcb.xReg.value;
             yReg.innerHTML = pcb.yReg.value;
-            zFlag.innerHTML = pcb.zFlag.value;
+            zFlag.innerHTML = pcb.zFlag;
         };
         //
         // Host Events

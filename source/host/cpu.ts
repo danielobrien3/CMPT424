@@ -24,9 +24,9 @@ module TSOS {
 
         public init(): void {
             this.PC = 0;
-            this.Acc = 0;
-            this.Xreg = 0;
-            this.Yreg = 0;
+            this.Acc = new Byte("00");
+            this.Xreg = new Byte("00");
+            this.Yreg = new Byte("00");
             this.Zflag = 0;
             this.isExecuting = false;
         }
@@ -52,12 +52,17 @@ module TSOS {
                 case "8D":{
                     // Gets location value by storing both bytes in a string, and then converting the string to base 10.
                     // This is the LOGICAL location, not physical. That is handled by the memoryAccessor.
+                    // TODO: Write a function in byte that takes another byte and returns value in decimal. 
                     var tempLocation = _MemoryAccessor.read(pcb).value + _MemoryAccessor.read(pcb).value;
                     var location = parseInt(tempLocation, 16);
                     _MemoryAccessor.write(pcb, location, this.Acc);
                 }
             }
 
+        }
+
+        public halt(){
+            this.isExecuting = false;
         }
 
         public LDA(byte){

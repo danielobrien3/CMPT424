@@ -19,9 +19,9 @@ module TSOS {
             public accumulator: any = new Byte("00"),
             public xReg: any = new Byte("00"),
             public yReg: any = new Byte("00"),
-            public zFlag: any = new Byte("00"),
+            public zFlag: number = 0,
             public isExecuting: boolean = false,
-            public state: string = "empty",
+            public state: string = "new",
             public currentSegment: any = new MemorySegment){}
 
         public init(pid, memStart, memEnd, currentSegment){
@@ -39,16 +39,8 @@ module TSOS {
             }
         }
 
-        public empty(){
-            // Handles emptying the process.
-            // This includes em
-            this.memEnd = 0;
-            this.pc = 0;
-            this.accumulator = 0;
-            this.xReg = 0; 
-            this.yReg - 0;
-            this.zFlag = 0;
-            this.state = "empty";
+        public setCompleted(){
+            this.state = "completed";
         }
 
     }

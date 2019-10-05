@@ -415,6 +415,7 @@ module TSOS {
 
             // If the program runs into an error being loaded my the memory accessor, it will return null...
             // ... therefore we should only print if it is not null. 
+            console.log(pcb);
             if(pcb != null){
               _StdOut.putText("PID: " + pcb.pid);
               Control.displayPcb(pcb);
@@ -428,7 +429,7 @@ module TSOS {
 
       public shellRunProcess(args: string[]){
         if(args.length>0){
-          Cpu.execute(_MemoryManager.findProcessById(args[0]));
+          _CPU.execute(_MemoryManager.findProcessById(args[0]));
         }
       }
 
