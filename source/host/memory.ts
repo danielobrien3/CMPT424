@@ -42,9 +42,10 @@ module TSOS {
 
         public read(pcb){
             // Read function handles reading and returning stored mem. 
-            // Increment pcb count here
-            var tempResult = this.mem[pcb.pc];
+            // The byte is stored in a temp variable so program counter can increment here
+            var tempByte = this.mem[pcb.pc];
             pcb.pc++;
+            return tempByte;
         }
 
         public empty(pcb){

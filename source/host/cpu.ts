@@ -35,6 +35,35 @@ module TSOS {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+
+
         }
+
+        public execute(pcb){
+            // Check to make sure "is executing" is false
+            this.isExecuting = true;
+            var byte = new Byte(_MemoryAccessor.read(pcb).value);
+            switch(byte.value){
+                // Load accumulator
+                case "A9":{
+                    this.LDA(_MemoryAccessor.read(pcb));
+                }
+                // Store accumulator in memory
+                case "8D":{
+                    // Gets location value by storing both bytes in a string, and then converting the string to base 10.
+                    // This is the LOGICAL location, not physical. That is handled by the memoryAccessor.
+                    var tempLocation = _MemoryAccessor.read(pcb).value + _MemoryAccessor.read(pcb).value;
+                    var location = parseInt(tempLocation, 16);
+                    _MemoryAccessor.write(pcb, location, this.Acc);
+                }
+            }
+
+        }
+
+        public LDA(byte){
+            this.Acc = byte.value;
+        }
+
+
     }
 }

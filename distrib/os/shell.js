@@ -62,6 +62,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellLoadUserInput, "load", "- Validates and loads code found in User Program Input window");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRunProcess, "run", "<pid> - Runs process by process id (pid).");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -352,6 +354,11 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.");
+            }
+        };
+        Shell.prototype.shellRunProcess = function (args) {
+            if (args.length > 0) {
+                TSOS.Cpu.execute(_MemoryManager.findProcessById(args[0]));
             }
         };
         return Shell;

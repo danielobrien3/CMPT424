@@ -108,6 +108,11 @@ module TSOS {
                                 "- Validates and loads code found in User Program Input window");
           this.commandList[this.commandList.length] = sc;
 
+          sc = new ShellCommand(this.shellRunProcess,
+                                "run",
+                                "<pid> - Runs process by process id (pid).");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -419,6 +424,12 @@ module TSOS {
           else {
             _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.");
           }
+      }
+
+      public shellRunProcess(args: string[]){
+        if(args.length>0){
+          Cpu.execute(_MemoryManager.findProcessById(args[0]));
+        }
       }
 
   }

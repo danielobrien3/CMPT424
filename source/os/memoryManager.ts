@@ -25,6 +25,15 @@ module TSOS {
             this.processControlBlocks = new Array();
         }
 
+        public findProcessById(id){
+            // Finds process by id (duh). Pretty simple stuff. 
+            for(var i = 0; i < this.processControlBlocks.length; i++){
+               if(this.processControlBlocks[i] == pid){
+                   return this.processControlBlocks[i];
+               }
+           }
+        }
+
         public getFreeSegment(){
             // getFreeSegment function handles finding free segment.
             // Returns first free segment found.
@@ -57,6 +66,7 @@ module TSOS {
             this.processControlBlocks.push(tempPcb);
             // Increments PidCount here to ensure that it is incremented every time a new process is created.
             _PidCount++;
+            Control.displayPcb(tempPcb);
             return this.processControlBlocks[this.processControlBlocks.size];
         }
         

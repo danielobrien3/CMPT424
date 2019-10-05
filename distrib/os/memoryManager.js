@@ -24,11 +24,18 @@ var TSOS;
             this.segments[2].init(512);
             this.processControlBlocks = new Array();
         };
+        MemoryManager.prototype.findProcessById = function (id) {
+            // Finds process by id (duh). Pretty simple stuff. 
+            for (var i = 0; i < this.processControlBlocks.length; i++) {
+                if (this.processControlBlocks[i] == pid) {
+                    return this.processControlBlocks[i];
+                }
+            }
+        };
         MemoryManager.prototype.getFreeSegment = function () {
             // getFreeSegment function handles finding free segment.
             // Returns first free segment found.
             // Since this will not necessarily be used for filling a segment, we will keep empty flag set true.
-            console.log(this.segments.length);
             for (var i = 0; i < this.segments.length; i++) {
                 if (this.segments[i].empty == true) {
                     return this.segments[i];
@@ -52,6 +59,7 @@ var TSOS;
             this.processControlBlocks.push(tempPcb);
             // Increments PidCount here to ensure that it is incremented every time a new process is created.
             _PidCount++;
+            TSOS.Control.displayPcb(tempPcb);
             return this.processControlBlocks[this.processControlBlocks.size];
         };
         return MemoryManager;

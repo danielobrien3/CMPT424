@@ -25,7 +25,6 @@ var TSOS;
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
             for (var i = segment.base; i < program.length; i++) {
-                console.log(program[loadCounter]);
                 this.mem.push(new TSOS.Byte(program[loadCounter]));
                 loadCounter++;
             }
@@ -37,9 +36,10 @@ var TSOS;
         };
         Memory.prototype.read = function (pcb) {
             // Read function handles reading and returning stored mem. 
-            // Increment pcb count here
-            var tempResult = this.mem[pcb.pc];
+            // The byte is stored in a temp variable so program counter can increment here
+            var tempByte = this.mem[pcb.pc];
             pcb.pc++;
+            return tempByte;
         };
         Memory.prototype.empty = function (pcb) {
             // Function that handles emptying a segment 
