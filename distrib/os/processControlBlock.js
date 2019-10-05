@@ -9,13 +9,13 @@
 var TSOS;
 (function (TSOS) {
     var ProcessControlBlock = /** @class */ (function () {
-        function ProcessControlBlock(pid, instrReg, memStart, memEnd, pc, accumulator, xReg, yReg, zFlag, isExecuting, state, currentSegment) {
+        function ProcessControlBlock(pid, instrReg, memStart, memEnd, pc, Acc, xReg, yReg, zFlag, isExecuting, state, currentSegment) {
             if (pid === void 0) { pid = 0; }
             if (instrReg === void 0) { instrReg = new TSOS.Byte("00"); }
             if (memStart === void 0) { memStart = new TSOS.Byte("00"); }
             if (memEnd === void 0) { memEnd = new TSOS.Byte("00"); }
             if (pc === void 0) { pc = 0; }
-            if (accumulator === void 0) { accumulator = new TSOS.Byte("00"); }
+            if (Acc === void 0) { Acc = new TSOS.Byte("00"); }
             if (xReg === void 0) { xReg = new TSOS.Byte("00"); }
             if (yReg === void 0) { yReg = new TSOS.Byte("00"); }
             if (zFlag === void 0) { zFlag = 0; }
@@ -27,7 +27,7 @@ var TSOS;
             this.memStart = memStart;
             this.memEnd = memEnd;
             this.pc = pc;
-            this.accumulator = accumulator;
+            this.Acc = Acc;
             this.xReg = xReg;
             this.yReg = yReg;
             this.zFlag = zFlag;

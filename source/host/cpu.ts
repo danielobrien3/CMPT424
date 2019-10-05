@@ -20,7 +20,8 @@ module TSOS {
                     public Xreg: object = new Byte("00"),
                     public Yreg: object = new Byte("00"),
                     public Zflag: number = 0,
-                    public isExecuting: boolean = false) {}
+                    public isExecuting: boolean = false,
+                    public currentProcess: number = 0) {}
 
         public init(): void {
             this.PC = 0;
@@ -29,12 +30,15 @@ module TSOS {
             this.Yreg = new Byte("00");
             this.Zflag = 0;
             this.isExecuting = false;
+            this.currentProcess = 0;
+
         }
 
         public cycle(): void {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            this.execute(_MemoryManager.findProcessById(this.currentProcess));
 
 
         }
@@ -42,23 +46,27 @@ module TSOS {
         public execute(pcb){
             // Check to make sure "is executing" is false
             this.isExecuting = true;
+            this.currentProcess = pcb.pid;
             var byte = new Byte(_MemoryAccessor.read(pcb).value);
             switch(byte.value){
                 // Load accumulator
                 case "A9":{
                     this.LDA(_MemoryAccessor.read(pcb));
+                    pcb.Acc = this.Acc;
                 }
                 // Store accumulator in memory
                 case "8D":{
-                    // Gets location value by storing both bytes in a string, and then converting the string to base 10.
+                    // Gets location value by using Byte function "calculateLocation". Byte declaration can be found in memory.ts file.
                     // This is the LOGICAL location, not physical. That is handled by the memoryAccessor.
-                    // TODO: Write a function in byte that takes another byte and returns value in decimal. 
-                    var tempLocation = _MemoryAccessor.read(pcb).value + _MemoryAccessor.read(pcb).value;
-                    var location = parseInt(tempLocation, 16);
-                    _MemoryAccessor.write(pcb, location, this.Acc);
+                    var logicalLocation = _MemoryAccessor.read(pcb).calculateLocation(_MemoryAccessor.read(pcb))
+                    _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
+                }
+                case "00":{
+                    this.halt;
                 }
             }
-
+            this.PC = pcb.pc;
+            Control.updatePcbDisplay(pcb);
         }
 
         public halt(){
@@ -66,7 +74,8 @@ module TSOS {
         }
 
         public LDA(byte){
-            this.Acc = byte.value;
+            this.Acc = byte;
+
         }
 
 

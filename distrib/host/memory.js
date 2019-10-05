@@ -16,6 +16,9 @@ var TSOS;
         }
         Memory.prototype.init = function () {
             this.mem = new Array();
+            for (var i = 0; i < 767; i++) {
+                this.mem.push(new TSOS.Byte("00"));
+            }
         };
         Memory.prototype.load = function (segment, program) {
             // Load function for loading program into memory...
@@ -25,7 +28,7 @@ var TSOS;
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
             for (var i = segment.base; i < program.length; i++) {
-                this.mem.push(new TSOS.Byte(program[loadCounter]));
+                this.mem[i] = new TSOS.Byte(program[loadCounter]);
                 loadCounter++;
             }
         };
@@ -76,6 +79,12 @@ var TSOS;
             var temp = parseInt(this.value, 16);
             temp++;
             return temp.toString(16);
+        };
+        Byte.prototype.calculateLocation = function (byte) {
+            // Takes two bytes, adds them together, and converts to base 10. 
+            // This is for getting a memory location value as they are provided in the opcode expressions. 
+            var location = byte.value + this.value;
+            return parseInt(location, 16);
         };
         return Byte;
     }());

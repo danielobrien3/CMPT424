@@ -16,6 +16,9 @@ module TSOS {
 
         public init(): void {
             this.mem = new Array();
+            for(var i=0; i< 767; i++){
+                this.mem.push(new Byte("00"));
+            }
         }
 
         public load(segment, program){
@@ -28,7 +31,7 @@ module TSOS {
 
             var loadCounter = 0;
             for(var i = segment.base; i<program.length; i++){
-                this.mem.push(new Byte(program[loadCounter]));
+                this.mem[i] = new Byte(program[loadCounter]);
                 loadCounter++;
             }
 
@@ -86,6 +89,13 @@ module TSOS {
             var temp = parseInt(this.value, 16);
             temp++;
             return temp.toString(16);
+        }
+
+        public calculateLocation(byte){
+            // Takes two bytes, adds them together, and converts to base 10. 
+            // This is for getting a memory location value as they are provided in the opcode expressions. 
+            var location = byte.value + this.value;
+            return parseInt(location, 16);
         }
 
     }

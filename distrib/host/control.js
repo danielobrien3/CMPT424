@@ -109,11 +109,25 @@ var TSOS;
             pid.innerHTML = pcb.pid;
             pc.innerHTML = pcb.pc.toString();
             ir.innerHTML = pcb.instrReg.value;
-            acc.innerHTML = pcb.accumulator.value;
+            acc.innerHTML = pcb.Acc.value;
             state.innerHTML = pcb.state;
             xReg.innerHTML = pcb.xReg.value;
             yReg.innerHTML = pcb.yReg.value;
             zFlag.innerHTML = pcb.zFlag;
+        };
+        Control.updatePcbDisplay = function (pcb) {
+            var pcbTable = document.getElementById("pcbTable");
+            for (var r = 0; r < pcbTable.rows.length; r++) {
+                if (pcbTable.rows[r].cells[0].innerHTML == pcb.pid) {
+                    pcbTable.rows[r].cells[1] = pcb.pc.toString();
+                    pcbTable.rows[r].cells[2] = pcb.instrReg.value;
+                    pcbTable.rows[r].cells[3] = pcb.Acc.value;
+                    pcbTable.rows[r].cells[4] = pcb.state;
+                    pcbTable.rows[r].cells[5] = pcb.xReg.value;
+                    pcbTable.rows[r].cells[6] = pcb.yReg.value;
+                    pcbTable.rows[r].cells[7] = pcb.zFlag;
+                }
+            }
         };
         //
         // Host Events

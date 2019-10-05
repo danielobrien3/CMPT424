@@ -16,7 +16,7 @@ module TSOS {
             public memStart: any = new Byte("00"),
             public memEnd: any = new Byte("00"),
             public pc: number = 0,
-            public accumulator: any = new Byte("00"),
+            public Acc: any = new Byte("00"),
             public xReg: any = new Byte("00"),
             public yReg: any = new Byte("00"),
             public zFlag: number = 0,
