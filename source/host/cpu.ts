@@ -54,6 +54,7 @@ module TSOS {
                 case "A9":{
                     this.LDA(_MemoryAccessor.read(pcb));
                     pcb.Acc = this.Acc;
+                    break;
                 }
                 // Store accumulator in memory
                 case "8D":{
@@ -61,9 +62,11 @@ module TSOS {
                     // This is the LOGICAL location, not physical. That is handled by the memoryAccessor.
                     var logicalLocation = _MemoryAccessor.read(pcb).calculateLocation(_MemoryAccessor.read(pcb))
                     _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
+                    break;
                 }
                 case "00":{
                     this.halt(pcb);
+                    break;
                 }
             }
             this.PC = pcb.pc;

@@ -38,7 +38,6 @@ var TSOS;
             // Handles triggering memory read function for desired pcb. 
             var res = _Memory.read(pcb);
             pcb.pc++;
-            //console.log("program counter incremented. Now: " + pcb.pc);
             return res;
         };
         MemoryAccessor.prototype.empty = function (pcb) {
