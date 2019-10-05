@@ -42,7 +42,11 @@ var TSOS;
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
-            this.execute(_MemoryManager.findProcessById(this.currentProcess));
+            var pcb = _MemoryManager.findProcessById(this.currentProcess);
+            this.execute(pcb);
+            TSOS.Control.updateCpuDisplay(pcb);
+            TSOS.Control.updatePcbDisplay(pcb);
+            this.PC = pcb.pc;
         };
         Cpu.prototype.execute = function (pcb) {
             // Check to make sure "is executing" is false
@@ -70,8 +74,6 @@ var TSOS;
                     break;
                 }
             }
-            this.PC = pcb.pc;
-            TSOS.Control.updatePcbDisplay(pcb);
         };
         Cpu.prototype.halt = function (pcb) {
             this.isExecuting = false;

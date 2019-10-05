@@ -116,16 +116,38 @@ var TSOS;
             zFlag.innerHTML = pcb.zFlag;
         };
         Control.updatePcbDisplay = function (pcb) {
-            var pcbTable = document.getElementById("pcbTable");
-            for (var r = 0; r < pcbTable.rows.length; r++) {
-                if ((pcb.pid == parseInt(pcbTable.rows[r].cells[0].innerHTML))) {
-                    pcbTable.rows[r].cells[1].innerHTML = pcb.pc.toString();
-                    pcbTable.rows[r].cells[2].innerHTML = pcb.instrReg.value;
-                    pcbTable.rows[r].cells[3].innerHTML = pcb.Acc.value;
-                    pcbTable.rows[r].cells[4].innerHTML = pcb.state;
-                    pcbTable.rows[r].cells[5].innerHTML = pcb.xReg.value;
-                    pcbTable.rows[r].cells[6].innerHTML = pcb.yReg.value;
-                    pcbTable.rows[r].cells[7].innerHTML = pcb.zFlag;
+            var table = document.getElementById("pcbTable");
+            for (var r = 0; r < table.rows.length; r++) {
+                if ((pcb.pid == parseInt(table.rows[r].cells[0].innerHTML))) {
+                    table.rows[r].cells[1].innerHTML = pcb.pc.toString();
+                    table.rows[r].cells[2].innerHTML = pcb.instrReg.value;
+                    table.rows[r].cells[3].innerHTML = pcb.Acc.value;
+                    table.rows[r].cells[4].innerHTML = pcb.state;
+                    table.rows[r].cells[5].innerHTML = pcb.xReg.value;
+                    table.rows[r].cells[6].innerHTML = pcb.yReg.value;
+                    table.rows[r].cells[7].innerHTML = pcb.zFlag;
+                }
+            }
+        };
+        Control.updateCpuDisplay = function (cpu) {
+            var table = document.getElementById("cpuTable");
+            table.rows[1].cells[0].innerHTML = cpu.PC;
+            table.rows[1].cells[1].innerHTML = cpu.Acc;
+            table.rows[1].cells[2].innerHTML = cpu.Xreg;
+            table.rows[1].cells[3].innerHTML = cpu.Yreg;
+            table.rows[1].cells[4].innerHTML = cpu.Zflag;
+            table.rows[1].cells[5].innerHTML = cpu.isExecuting;
+        };
+        //TODO: Create generateSegmentDisplay(base) function and give each segment its own gui tab.
+        Control.generateMemoryDisplay = function () {
+            var table = document.getElementById("memTable");
+            for (var i = 0; i < 96; i++) {
+                var row = table.insertRow(i);
+                var cell0 = row.insertCell(0);
+                cell0.innerHTML = "0x" + (8 * i).toString(16);
+                for (var j = 1; j < 9; j++) {
+                    var cellJ = row.insertCell(j);
+                    cellJ.innerHTML = (8 * i + j).toString(16);
                 }
             }
         };

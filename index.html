@@ -118,7 +118,9 @@
       </label>
    </div>
 
-   <div id="pcbDisplay" style="margin-right:320px;">
+
+
+    <div id="pcbDisplay" style="margin-left:4px; float:left;">
       <label>
         Process Control Block
         <br>
@@ -129,19 +131,25 @@
             <th>IR</th>
             <th>Acc</th>
             <th>State</th>
-            <th>X</th>
-            <th>Y</th>
-            <th>Z</th>
+            <th>xReg</th>
+            <th>yReg</th>
+            <th>zFlag</th>
           </tr>
          </table>
       </label>
     </div>
 
-    <div id="cpuDisplay" style="margin-right:320px;">
+    <div id="memDisplay" style="margin-left:336px;">
+        <table id="memTable">
+          <caption>Memory</caption>
+        </table>
+    </div>
+
+    <div id="cpuDisplay" style="margin-left: 4px; margin-top:8px;">
       <label>
         CPU
         <br>
-        <table id="pcbTable">
+        <table id="cpuTable">
           <tr>
             <th>pc</th>
             <th>acc</th>
@@ -160,8 +168,6 @@
          </table>
       </label>
     </div>
-
-
 </div>
 
 <p class="footerText" style="clear:both;">

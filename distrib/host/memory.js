@@ -19,6 +19,7 @@ var TSOS;
             for (var i = 0; i < 767; i++) {
                 this.mem.push(new TSOS.Byte("00"));
             }
+            TSOS.Control.generateMemoryDisplay();
         };
         Memory.prototype.load = function (segment, program) {
             // Load function for loading program into memory...

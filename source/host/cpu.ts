@@ -38,9 +38,11 @@ module TSOS {
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
-            this.execute(_MemoryManager.findProcessById(this.currentProcess));
-
-
+            var pcb = _MemoryManager.findProcessById(this.currentProcess)
+            this.execute(pcb);
+            Control.updateCpuDisplay(pcb);
+            Control.updatePcbDisplay(pcb);
+            this.PC = pcb.pc;
         }
 
         public execute(pcb){
@@ -69,8 +71,6 @@ module TSOS {
                     break;
                 }
             }
-            this.PC = pcb.pc;
-            Control.updatePcbDisplay(pcb);
         }
 
         public halt(pcb){

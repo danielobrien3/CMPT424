@@ -19,6 +19,7 @@ module TSOS {
             for(var i=0; i< 767; i++){
                 this.mem.push(new Byte("00"));
             }
+            Control.generateMemoryDisplay();
         }
 
         public load(segment, program){
