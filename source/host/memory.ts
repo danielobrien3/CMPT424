@@ -32,7 +32,7 @@ module TSOS {
 
             var loadCounter = 0;
             for(var i = segment.base; i<program.length; i++){
-                this.mem[i] = new Byte(program[loadCounter]);
+                this.mem[i] = new Byte(program[loadCounter].toUpperCase());
                 loadCounter++;
             }
 

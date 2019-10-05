@@ -29,7 +29,7 @@ var TSOS;
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
             for (var i = segment.base; i < program.length; i++) {
-                this.mem[i] = new TSOS.Byte(program[loadCounter]);
+                this.mem[i] = new TSOS.Byte(program[loadCounter].toUpperCase());
                 loadCounter++;
             }
         };

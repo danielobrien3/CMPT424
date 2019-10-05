@@ -144,10 +144,14 @@ var TSOS;
             for (var i = 0; i < 96; i++) {
                 var row = table.insertRow(i);
                 var cell0 = row.insertCell(0);
-                cell0.innerHTML = "0x" + (8 * i).toString(16);
+                cell0.innerHTML = "0x" + (8 * i).toString(16).toUpperCase();
                 for (var j = 1; j < 9; j++) {
                     var cellJ = row.insertCell(j);
-                    cellJ.innerHTML = (8 * i + j).toString(16);
+                    var cellJvalue = (8 * i + j).toString(16).toUpperCase();
+                    if (cellJvalue.length < 2) {
+                        cellJvalue = "0" + cellJvalue;
+                    }
+                    cellJ.innerHTML = cellJvalue;
                 }
             }
         };
