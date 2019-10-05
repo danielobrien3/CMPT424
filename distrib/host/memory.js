@@ -41,7 +41,6 @@ var TSOS;
             // Read function handles reading and returning stored mem. 
             // The byte is stored in a temp variable so program counter can increment here
             var tempByte = this.mem[pcb.pc];
-            pcb.pc++;
             return tempByte;
         };
         Memory.prototype.empty = function (pcb) {

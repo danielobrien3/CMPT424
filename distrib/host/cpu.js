@@ -47,6 +47,7 @@ var TSOS;
         Cpu.prototype.execute = function (pcb) {
             // Check to make sure "is executing" is false
             this.isExecuting = true;
+            pcb.state = "running";
             this.currentProcess = pcb.pid;
             var byte = new TSOS.Byte(_MemoryAccessor.read(pcb).value);
             switch (byte.value) {
@@ -63,13 +64,13 @@ var TSOS;
                     _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
                 }
                 case "00": {
-                    this.halt;
+                    this.halt(pcb);
                 }
             }
             this.PC = pcb.pc;
             TSOS.Control.updatePcbDisplay(pcb);
         };
-        Cpu.prototype.halt = function () {
+        Cpu.prototype.halt = function (pcb) {
             this.isExecuting = false;
         };
         Cpu.prototype.LDA = function (byte) {

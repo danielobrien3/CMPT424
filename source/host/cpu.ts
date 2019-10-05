@@ -46,6 +46,7 @@ module TSOS {
         public execute(pcb){
             // Check to make sure "is executing" is false
             this.isExecuting = true;
+            pcb.state = "running";
             this.currentProcess = pcb.pid;
             var byte = new Byte(_MemoryAccessor.read(pcb).value);
             switch(byte.value){
@@ -62,14 +63,14 @@ module TSOS {
                     _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
                 }
                 case "00":{
-                    this.halt;
+                    this.halt(pcb);
                 }
             }
             this.PC = pcb.pc;
             Control.updatePcbDisplay(pcb);
         }
 
-        public halt(){
+        public halt(pcb){
             this.isExecuting = false;
         }
 

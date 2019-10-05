@@ -36,7 +36,10 @@ var TSOS;
         };
         MemoryAccessor.prototype.read = function (pcb) {
             // Handles triggering memory read function for desired pcb. 
-            return _Memory.read(pcb);
+            var res = _Memory.read(pcb);
+            pcb.pc++;
+            //console.log("program counter incremented. Now: " + pcb.pc);
+            return res;
         };
         MemoryAccessor.prototype.empty = function (pcb) {
             // Handles triggering memory.empty function for desired segment

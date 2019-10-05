@@ -118,14 +118,14 @@ var TSOS;
         Control.updatePcbDisplay = function (pcb) {
             var pcbTable = document.getElementById("pcbTable");
             for (var r = 0; r < pcbTable.rows.length; r++) {
-                if (pcbTable.rows[r].cells[0].innerHTML == pcb.pid) {
-                    pcbTable.rows[r].cells[1] = pcb.pc.toString();
-                    pcbTable.rows[r].cells[2] = pcb.instrReg.value;
-                    pcbTable.rows[r].cells[3] = pcb.Acc.value;
-                    pcbTable.rows[r].cells[4] = pcb.state;
-                    pcbTable.rows[r].cells[5] = pcb.xReg.value;
-                    pcbTable.rows[r].cells[6] = pcb.yReg.value;
-                    pcbTable.rows[r].cells[7] = pcb.zFlag;
+                if ((pcb.pid == parseInt(pcbTable.rows[r].cells[0].innerHTML))) {
+                    pcbTable.rows[r].cells[1].innerHTML = pcb.pc.toString();
+                    pcbTable.rows[r].cells[2].innerHTML = pcb.instrReg.value;
+                    pcbTable.rows[r].cells[3].innerHTML = pcb.Acc.value;
+                    pcbTable.rows[r].cells[4].innerHTML = pcb.state;
+                    pcbTable.rows[r].cells[5].innerHTML = pcb.xReg.value;
+                    pcbTable.rows[r].cells[6].innerHTML = pcb.yReg.value;
+                    pcbTable.rows[r].cells[7].innerHTML = pcb.zFlag;
                 }
             }
         };

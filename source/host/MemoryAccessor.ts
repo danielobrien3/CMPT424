@@ -40,7 +40,10 @@ module TSOS {
 
         public read(pcb){
             // Handles triggering memory read function for desired pcb. 
-            return _Memory.read(pcb);
+            var res = _Memory.read(pcb);
+            pcb.pc++;
+            //console.log("program counter incremented. Now: " + pcb.pc);
+            return res;
         }
 
         public empty(pcb){
