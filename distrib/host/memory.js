@@ -25,7 +25,8 @@ var TSOS;
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
             for (var i = segment.base; i < program.length; i++) {
-                this.mem[i] = new TSOS.Byte(program[loadCounter]);
+                console.log(program[loadCounter]);
+                this.mem.push(new TSOS.Byte(program[loadCounter]));
                 loadCounter++;
             }
         };
@@ -43,7 +44,7 @@ var TSOS;
         Memory.prototype.empty = function (pcb) {
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
-            for (var i = pcb.segment.base; i < pcb.segment.base + pcb.segment.size; i++) {
+            for (var i = pcb.segment.base; i < pcb.segment.limit; i++) {
                 this.mem[i] = new TSOS.Byte("00");
             }
             pcb.setEmpty();

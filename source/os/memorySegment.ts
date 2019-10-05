@@ -18,7 +18,7 @@ module TSOS {
         public init(base){
             this.empty = true;
             this.base = base;
-            this.limit = 255;
+            this.limit = base + 255;
         }
 
         public setEmpty(emptyFlag){

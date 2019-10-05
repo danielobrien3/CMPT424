@@ -19,16 +19,17 @@ var TSOS;
             this.segments[0] = new TSOS.MemorySegment;
             this.segments[1] = new TSOS.MemorySegment;
             this.segments[2] = new TSOS.MemorySegment;
-            this.segments[0].init(0, 255);
-            this.segments[1].init(256, 511);
-            this.segments[2].init(512, 767);
+            this.segments[0].init(0);
+            this.segments[1].init(256);
+            this.segments[2].init(512);
             this.processControlBlocks = new Array();
         };
         MemoryManager.prototype.getFreeSegment = function () {
             // getFreeSegment function handles finding free segment.
             // Returns first free segment found.
             // Since this will not necessarily be used for filling a segment, we will keep empty flag set true.
-            for (var i = 0; i < this.segments.size; i++) {
+            console.log(this.segments.length);
+            for (var i = 0; i < this.segments.length; i++) {
                 if (this.segments[i].empty == true) {
                     return this.segments[i];
                 }
@@ -44,9 +45,11 @@ var TSOS;
                 }
             }
         };
-        MemoryManager.prototype.newPcb = function (startLoc, endLoc) {
+        MemoryManager.prototype.newPcb = function (initialSegment, programLength) {
             // Handles creating new new PCB and stores it in PCB array. 
-            this.processControlBlocks.push(new TSOS.ProcessControlBlock(startLoc, endLoc, _PidCount));
+            var tempPcb = new TSOS.ProcessControlBlock();
+            tempPcb.init(_PidCount, initialSegment.base, initialSegment.base + programLength, initialSegment);
+            this.processControlBlocks.push(tempPcb);
             // Increments PidCount here to ensure that it is incremented every time a new process is created.
             _PidCount++;
             return this.processControlBlocks[this.processControlBlocks.size];

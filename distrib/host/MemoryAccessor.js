@@ -27,11 +27,10 @@ var TSOS;
                 }
                 else {
                     // Program is loaded into memory and a corresponding PCB is created. 
-                    _Memory.load(currentSegment.base, program);
-                    var pcb = _MemoryManager.newPcb(currentSegment.base, currentSegment.base + program.size);
+                    _Memory.load(currentSegment, program);
+                    var pcb = _MemoryManager.newPcb(currentSegment, program.length);
                     _PidCount++;
                     currentSegment.setEmpty(false);
-                    currentSegment.setSize(program.length);
                     return pcb;
                 }
             }

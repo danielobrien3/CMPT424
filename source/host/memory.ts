@@ -25,11 +25,13 @@ module TSOS {
             
             // Need a load counter because segment base might be 0, so we can't use it as a program index.
             // Load counter makes sure we read from the 0 index of the program. 
+
             var loadCounter = 0;
             for(var i = segment.base; i<program.length; i++){
-                this.mem[i] = new Byte(program[loadCounter]);
+                this.mem.push(new Byte(program[loadCounter]));
                 loadCounter++;
             }
+
         }
         
         public writeToLocation(physicalLocation, newByte){
@@ -48,7 +50,7 @@ module TSOS {
         public empty(pcb){
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
-            for(var i = pcb.segment.base; i < pcb.segment.base + pcb.segment.size; i++){
+            for(var i = pcb.segment.base; i < pcb.segment.limit; i++){
                 this.mem[i] = new Byte("00");
             }
             pcb.setEmpty();

@@ -42,8 +42,8 @@ var TSOS;
             _DrawingContext.fillStyle = '#add8e6';
             //_DrawingContext.fillRect(0,0, _Canvas.width, _Canvas.height);
             this.resetXY();
-            // Stops the handling of any more input...
-            this.bsod = true;
+            // Stops the handling of any more input (when it gets set to true... temporarily disabled).
+            this.bsod = false;
         };
         Console.prototype.handleInput = function () {
             while (_KernelInputQueue.getSize() > 0 && this.bsod == false) {

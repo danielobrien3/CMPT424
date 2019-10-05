@@ -20,7 +20,7 @@ var TSOS;
         MemorySegment.prototype.init = function (base) {
             this.empty = true;
             this.base = base;
-            this.limit = 255;
+            this.limit = base + 255;
         };
         MemorySegment.prototype.setEmpty = function (emptyFlag) {
             // setEmpty handles segment empty flag and segment size being updated.
