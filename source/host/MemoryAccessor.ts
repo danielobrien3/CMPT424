@@ -33,16 +33,22 @@ module TSOS {
                     _Memory.load(currentSegment, program);
                     var pcb = _MemoryManager.newPcb(currentSegment, program.length);
                     currentSegment.setEmpty(false);
+                    Control.updateMemoryDisplay(pcb);
                     return pcb;
                 }
             }
         }
 
-        public read(pcb){
+        public readByte(pcb){
             // Handles triggering memory read function for desired pcb. 
             var res = _Memory.read(pcb);
             pcb.pc++;
             return res;
+        }
+
+        // I feel like this is a little hacky, but this is used for updating the memory display.
+        public readAtLocation(physicalLocation){
+            return _Memory.readAtLocation(physicalLocation); 
         }
 
         public empty(pcb){

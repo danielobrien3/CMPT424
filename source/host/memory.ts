@@ -51,6 +51,10 @@ module TSOS {
             return tempByte;
         }
 
+        public readAtLocation(physicalLocation){
+            return this.mem[physicalLocation];
+        }
+
         public empty(pcb){
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 

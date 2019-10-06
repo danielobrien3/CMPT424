@@ -30,15 +30,20 @@ var TSOS;
                     _Memory.load(currentSegment, program);
                     var pcb = _MemoryManager.newPcb(currentSegment, program.length);
                     currentSegment.setEmpty(false);
+                    TSOS.Control.updateMemoryDisplay(pcb);
                     return pcb;
                 }
             }
         };
-        MemoryAccessor.prototype.read = function (pcb) {
+        MemoryAccessor.prototype.readByte = function (pcb) {
             // Handles triggering memory read function for desired pcb. 
             var res = _Memory.read(pcb);
             pcb.pc++;
             return res;
+        };
+        // I feel like this is a little hacky, but this is used for updating the memory display.
+        MemoryAccessor.prototype.readAtLocation = function (physicalLocation) {
+            return _Memory.readAtLocation(physicalLocation);
         };
         MemoryAccessor.prototype.empty = function (pcb) {
             // Handles triggering memory.empty function for desired segment

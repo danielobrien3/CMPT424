@@ -177,6 +177,20 @@ module TSOS {
             }
         }
 
+        public static updateMemoryDisplay(pcb){
+            var segment = pcb.currentSegment;
+            var table = <HTMLTableElement> document.getElementById("memTable");
+            for(var r=segment.base; r<segment.limit/8; r++){
+                var row = table.rows[r]
+                for(var c=1; c<8; c++){
+                    var cell = row.cells[c];
+                    console.log(_MemoryAccessor.readAtLocation((r * 8) + (c-1)).value);
+                    cell.innerHTML = _MemoryAccessor.readAtLocation((r * 8) + (c-1)).value;
+                }
+            }
+            
+        }
+
 
 
         //

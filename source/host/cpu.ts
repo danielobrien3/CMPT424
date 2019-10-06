@@ -42,6 +42,7 @@ module TSOS {
             this.execute(pcb);
             Control.updateCpuDisplay(pcb);
             Control.updatePcbDisplay(pcb);
+            Control.updateMemoryDisplay(pcb);
             this.PC = pcb.pc;
         }
 
@@ -50,11 +51,11 @@ module TSOS {
             this.isExecuting = true;
             pcb.state = "running";
             this.currentProcess = pcb.pid;
-            var byte = new Byte(_MemoryAccessor.read(pcb).value);
+            var byte = new Byte(_MemoryAccessor.readByte(pcb).value);
             switch(byte.value){
                 // Load accumulator
                 case "A9":{
-                    this.LDA(_MemoryAccessor.read(pcb));
+                    this.LDA(_MemoryAccessor.readByte(pcb));
                     pcb.Acc = this.Acc;
                     break;
                 }
@@ -62,7 +63,7 @@ module TSOS {
                 case "8D":{
                     // Gets location value by using Byte function "calculateLocation". Byte declaration can be found in memory.ts file.
                     // This is the LOGICAL location, not physical. That is handled by the memoryAccessor.
-                    var logicalLocation = _MemoryAccessor.read(pcb).calculateLocation(_MemoryAccessor.read(pcb))
+                    var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb))
                     _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
                     break;
                 }

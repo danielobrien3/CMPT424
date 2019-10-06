@@ -342,12 +342,9 @@ var TSOS;
                 // Load the program. _MemoryAcessor.load handles all loading requirements...
                 //... including finding an available segment, creating new PCB, etc. 
                 var program = TSOS.Control.loadUserInput();
-                console.log("loaded 1");
                 var pcb = _MemoryAccessor.load(program);
-                console.log("loaded 2");
                 // If the program runs into an error being loaded my the memory accessor, it will return null...
                 // ... therefore we should only print if it is not null. 
-                console.log(pcb);
                 if (pcb != null) {
                     _StdOut.putText("PID: " + pcb.pid);
                     TSOS.Control.displayPcb(pcb);

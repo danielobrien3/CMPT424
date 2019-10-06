@@ -44,6 +44,9 @@ var TSOS;
             var tempByte = this.mem[pcb.pc];
             return tempByte;
         };
+        Memory.prototype.readAtLocation = function (physicalLocation) {
+            return this.mem[physicalLocation];
+        };
         Memory.prototype.empty = function (pcb) {
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
