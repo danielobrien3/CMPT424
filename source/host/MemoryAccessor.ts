@@ -47,6 +47,7 @@ module TSOS {
         }
 
         // I feel like this is a little hacky, but this is used for updating the memory display.
+        // Todo: have this operate off of a Byte? Not as simple as taking an int, but definitely more consistent. 
         public readAtLocation(physicalLocation){
             return _Memory.readAtLocation(physicalLocation); 
         }

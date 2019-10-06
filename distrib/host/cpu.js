@@ -70,17 +70,39 @@ var TSOS;
                     _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
                     break;
                 }
+                // Add with carry
+                case "6D": {
+                    this.ADC(_MemoryAccessor.readByte(pcb));
+                    break;
+                }
+                // Load Xreg with constant 
+                case "A2": {
+                    this.LDX(_MemoryAccessor.readByte(pcb));
+                    break;
+                }
+                // Load Xreg from Memory
+                case "AE": {
+                    var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
+                    this.LDX(_MemoryAccessor.readAtLocation(logicalLocation));
+                }
+                // Halt command
                 case "00": {
-                    this.halt(pcb);
+                    this.BRK(pcb);
                     break;
                 }
             }
         };
-        Cpu.prototype.halt = function (pcb) {
+        Cpu.prototype.BRK = function (pcb) {
             this.isExecuting = false;
         };
         Cpu.prototype.LDA = function (byte) {
             this.Acc = byte;
+        };
+        Cpu.prototype.ADC = function (byte) {
+            this.Acc = this.Acc.add(byte);
+        };
+        Cpu.prototype.LDX = function (byte) {
+            this.Xreg = byte;
         };
         return Cpu;
     }());

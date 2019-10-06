@@ -16,9 +16,9 @@ module TSOS {
     export class Cpu {
 
         constructor(public PC: number = 0,
-                    public Acc: object = new Byte("00"),
-                    public Xreg: object = new Byte("00"),
-                    public Yreg: object = new Byte("00"),
+                    public Acc: any = new Byte("00"),
+                    public Xreg: any = new Byte("00"),
+                    public Yreg: any = new Byte("00"),
                     public Zflag: number = 0,
                     public isExecuting: boolean = false,
                     public currentProcess: number = 0) {}
@@ -67,20 +67,49 @@ module TSOS {
                     _MemoryAccessor.write(pcb, logicalLocation, this.Acc);
                     break;
                 }
-                case "00":{
-                    this.halt(pcb);
+                // Add with carry
+                case "6D":{
+                    this.ADC(_MemoryAccessor.readByte(pcb));
                     break;
                 }
+
+                // Load Xreg with constant 
+                case "A2":{
+                    this.LDX(_MemoryAccessor.readByte(pcb));
+                    break;
+                }
+
+                // Load Xreg from Memory
+                case "AE":{
+                    var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
+                    this.LDX(_MemoryAccessor.readAtLocation(logicalLocation));
+                }
+
+                // Halt command
+                case "00":{
+                    this.BRK(pcb);
+                    break;
+                }
+
+
+
             }
         }
 
-        public halt(pcb){
+        public BRK(pcb){
             this.isExecuting = false;
         }
 
         public LDA(byte){
             this.Acc = byte;
+        }
 
+        public ADC(byte){
+            this.Acc = this.Acc.add(byte);
+        }
+
+        public LDX(byte){
+            this.Xreg = byte;
         }
 
 
