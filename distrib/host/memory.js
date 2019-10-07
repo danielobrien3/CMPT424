@@ -80,7 +80,7 @@ var TSOS;
             // There may be a 'better' way to do this in hex, but I like how simple this is. 
             var temp = parseInt(this.value, 16);
             temp++;
-            return temp.toString(16);
+            return new Byte(temp.toString(16).toUpperCase());
         };
         // Add 2 bytes and return them as byte value
         Byte.prototype.add = function (byte) {
@@ -89,7 +89,7 @@ var TSOS;
                 return new Byte("0" + temp.toString(16));
             }
             else {
-                return new Byte(temp.toString(16));
+                return new Byte(temp.toString(16).toUpperCase());
             }
         };
         Byte.prototype.calculateLocation = function (byte) {
