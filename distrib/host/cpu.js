@@ -147,6 +147,7 @@ var TSOS;
                 }
             }
             pcb.update(this);
+            this.PC = pcb.pc;
         };
         Cpu.prototype.startExecution = function (pcb) {
             this.setCPU(pcb);
@@ -162,6 +163,7 @@ var TSOS;
             this.Zflag = pcb.Zflag;
         };
         Cpu.prototype.BRK = function (pcb) {
+            pcb.state = "completed";
             this.isExecuting = false;
         };
         Cpu.prototype.LDA = function (byte) {
@@ -177,7 +179,7 @@ var TSOS;
             this.Yreg = byte;
         };
         Cpu.prototype.CPX = function (byte) {
-            if (byte.equal(this.Xreg))
+            if (byte.isEqual(this.Xreg))
                 this.Zflag = 1;
             else
                 this.Zflag = 0;

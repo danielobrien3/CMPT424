@@ -155,6 +155,7 @@ module TSOS {
                 }
             }
             pcb.update(this);
+            this.PC = pcb.pc;
         }
 
         public startExecution(pcb){
@@ -173,6 +174,7 @@ module TSOS {
         }
 
         public BRK(pcb){
+            pcb.state = "completed";
             this.isExecuting = false;
         }
 
@@ -193,7 +195,7 @@ module TSOS {
         }
 
         public CPX(byte){
-            if(byte.equal(this.Xreg))
+            if(byte.isEqual(this.Xreg))
                 this.Zflag = 1;
             else
                 this.Zflag = 0;
