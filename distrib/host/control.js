@@ -111,9 +111,9 @@ var TSOS;
             ir.innerHTML = pcb.instrReg.value;
             acc.innerHTML = pcb.Acc.value;
             state.innerHTML = pcb.state;
-            xReg.innerHTML = pcb.xReg.value;
-            yReg.innerHTML = pcb.yReg.value;
-            zFlag.innerHTML = pcb.zFlag;
+            xReg.innerHTML = pcb.Xreg.value;
+            yReg.innerHTML = pcb.Yreg.value;
+            zFlag.innerHTML = pcb.Zflag;
         };
         Control.updatePcbDisplay = function (pcb) {
             var table = document.getElementById("pcbTable");
@@ -123,18 +123,18 @@ var TSOS;
                     table.rows[r].cells[2].innerHTML = pcb.instrReg.value;
                     table.rows[r].cells[3].innerHTML = pcb.Acc.value;
                     table.rows[r].cells[4].innerHTML = pcb.state;
-                    table.rows[r].cells[5].innerHTML = pcb.xReg.value;
-                    table.rows[r].cells[6].innerHTML = pcb.yReg.value;
-                    table.rows[r].cells[7].innerHTML = pcb.zFlag;
+                    table.rows[r].cells[5].innerHTML = pcb.Xreg.value;
+                    table.rows[r].cells[6].innerHTML = pcb.Yreg.value;
+                    table.rows[r].cells[7].innerHTML = pcb.Zflag;
                 }
             }
         };
         Control.updateCpuDisplay = function (cpu) {
             var table = document.getElementById("cpuTable");
             table.rows[1].cells[0].innerHTML = cpu.PC;
-            table.rows[1].cells[1].innerHTML = cpu.Acc;
-            table.rows[1].cells[2].innerHTML = cpu.Xreg;
-            table.rows[1].cells[3].innerHTML = cpu.Yreg;
+            table.rows[1].cells[1].innerHTML = cpu.Acc.value;
+            table.rows[1].cells[2].innerHTML = cpu.Xreg.value;
+            table.rows[1].cells[3].innerHTML = cpu.Yreg.value;
             table.rows[1].cells[4].innerHTML = cpu.Zflag;
             table.rows[1].cells[5].innerHTML = cpu.isExecuting;
         };
@@ -158,7 +158,6 @@ var TSOS;
                 var row = table.rows[r];
                 for (var c = 1; c < 8; c++) {
                     var cell = row.cells[c];
-                    console.log(_MemoryAccessor.readAtLocation((r * 8) + (c - 1)).value);
                     cell.innerHTML = _MemoryAccessor.readAtLocation((r * 8) + (c - 1)).value;
                 }
             }

@@ -17,9 +17,9 @@ module TSOS {
             public memEnd: any = new Byte("00"),
             public pc: number = 0,
             public Acc: any = new Byte("00"),
-            public xReg: any = new Byte("00"),
-            public yReg: any = new Byte("00"),
-            public zFlag: number = 0,
+            public Xreg: any = new Byte("00"),
+            public Yreg: any = new Byte("00"),
+            public Zflag: number = 0,
             public isExecuting: boolean = false,
             public state: string = "new",
             public currentSegment: any = new MemorySegment){}
@@ -45,6 +45,14 @@ module TSOS {
 
         public changePC(byte){
             this.pc = byte.getBaseTen();
+        }
+
+        // Updates pcb values to match cpu values. 
+        public update(cpu){
+            this.Acc = cpu.Acc;
+            this.Xreg == cpu.Xreg;
+            this.Yreg == cpu.Yreg;
+            this.Zflag == cpu.Zflag;
         }
 
     }

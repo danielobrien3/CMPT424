@@ -85,11 +85,17 @@ var TSOS;
         // Add 2 bytes and return them as byte value
         Byte.prototype.add = function (byte) {
             var temp = this.getBaseTen() + byte.getBaseTen();
-            return temp.toString(16);
+            if (temp.toString(16).length = 1) {
+                return new Byte("0" + temp.toString(16));
+            }
+            else {
+                return new Byte(temp.toString(16));
+            }
         };
         Byte.prototype.calculateLocation = function (byte) {
             // Takes two bytes, adds them together, and converts to base 10. 
             // This is for getting a memory location value as they are provided in the opcode expressions. 
+            // Passed byte is added first since these are strings and we want the memory loaded second to be in front. 
             var location = byte.value + this.value;
             return parseInt(location, 16);
         };

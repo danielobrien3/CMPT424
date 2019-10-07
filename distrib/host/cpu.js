@@ -44,7 +44,8 @@ var TSOS;
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
             this.execute(pcb);
-            TSOS.Control.updateCpuDisplay(pcb);
+            pcb.update(this);
+            TSOS.Control.updateCpuDisplay(this);
             TSOS.Control.updatePcbDisplay(pcb);
             TSOS.Control.updateMemoryDisplay(pcb);
             this.PC = pcb.pc;
@@ -76,7 +77,7 @@ var TSOS;
                 // Add with carry
                 case "6D": {
                     this.ADC(_MemoryAccessor.readByte(pcb));
-                    break;
+                    pcb["break"];
                 }
                 // Load Xreg with constant 
                 case "A2": {
@@ -87,6 +88,7 @@ var TSOS;
                 case "AE": {
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
                     this.LDX(_MemoryAccessor.readAtLocation(logicalLocation));
+                    break;
                 }
                 // Load Yreg with constant
                 case "A0": {
@@ -97,11 +99,13 @@ var TSOS;
                 case "AC": {
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
                     this.LDY(_MemoryAccessor.readAtLocation(logicalLocation));
+                    break;
                 }
                 // CPX (Compare a byte in memory to Xreg. Set z flag to 0 if equal)
                 case "EC": {
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
                     this.CPX(_MemoryAccessor.readAtLocation(logicalLocation));
+                    break;
                 }
                 // BNE (Branch n bytes if zFlag == 0)
                 // ## At this point I stopped making seperate function calls...
@@ -112,12 +116,14 @@ var TSOS;
                         var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
                         pcb.changePC(logicalLocation);
                     }
+                    break;
                 }
                 // INC (Increment value of a byte in memory)
                 case "EE": {
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
                     var byte = _MemoryAccessor.readAtLocation(logicalLocation);
                     _MemoryAccessor.write(pcb, logicalLocation, byte.increment());
+                    break;
                 }
                 // System Call. This doesn't explicitly say to allow only one in the instruction set...
                 // ... and I feel like it would make sense to let someone print both,
@@ -134,9 +140,9 @@ var TSOS;
                             currentByte = currentByte.increment();
                             string += currentByte = _MemoryAccessor.readByte(currentByte);
                         }
-                        while ()
-                            _StdOut.putText(_MemoryAccessor.readAtLocation);
+                        _StdOut.putText(string);
                     }
+                    break;
                 }
                 // Halt command
                 case "00": {
@@ -152,7 +158,6 @@ var TSOS;
             this.Acc = byte;
         };
         Cpu.prototype.ADC = function (byte) {
-            console.log(byte);
             this.Acc = this.Acc.add(byte);
         };
         Cpu.prototype.LDX = function (byte) {
