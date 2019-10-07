@@ -39,18 +39,15 @@ module TSOS {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess)
-            this.execute(pcb);
+            this.execute();
             Control.updateCpuDisplay(this);
             Control.updatePcbDisplay(pcb);
             Control.updateMemoryDisplay(pcb);
             this.PC = pcb.pc;
         }
 
-        public execute(pcb){
-            // Check to make sure "is executing" is false
-            this.isExecuting = true;
-            pcb.state = "running";
-            this.currentProcess = pcb.pid;
+        public execute(){
+            var pcb = _MemoryManager.findProcessById(this.currentProcess);
             var byte = new Byte(_MemoryAccessor.readByte(pcb).value);
 
             //TODO: Refactor this switch statement. Each case should call its respective function passing just the pcb....
@@ -158,6 +155,21 @@ module TSOS {
                 }
             }
             pcb.update(this);
+        }
+
+        public startExecution(pcb){
+            this.setCPU(pcb);
+            this.currentProcess = pcb.pid;
+            this.isExecuting = true;
+            pcb.state = "running";
+        }
+
+        public setCPU(pcb){
+            this.PC = pcb.PC
+            this.Acc = pcb.Acc;
+            this.Xreg = pcb.Xreg;
+            this.Yreg = pcb.Yreg;
+            this.Zflag = pcb.Zflag;
         }
 
         public BRK(pcb){

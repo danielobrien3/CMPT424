@@ -356,7 +356,7 @@ var TSOS;
         };
         Shell.prototype.shellRunProcess = function (args) {
             if (args.length > 0) {
-                _CPU.execute(_MemoryManager.findProcessById(args[0]));
+                _CPU.startExecution(_MemoryManager.findProcessById(args[0]));
             }
         };
         return Shell;

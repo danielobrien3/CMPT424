@@ -43,17 +43,14 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
-            this.execute(pcb);
+            this.execute();
             TSOS.Control.updateCpuDisplay(this);
             TSOS.Control.updatePcbDisplay(pcb);
             TSOS.Control.updateMemoryDisplay(pcb);
             this.PC = pcb.pc;
         };
-        Cpu.prototype.execute = function (pcb) {
-            // Check to make sure "is executing" is false
-            this.isExecuting = true;
-            pcb.state = "running";
-            this.currentProcess = pcb.pid;
+        Cpu.prototype.execute = function () {
+            var pcb = _MemoryManager.findProcessById(this.currentProcess);
             var byte = new TSOS.Byte(_MemoryAccessor.readByte(pcb).value);
             //TODO: Refactor this switch statement. Each case should call its respective function passing just the pcb....
             // ... The heavy lifting should be done in the functions... cause otherwise there's no point in using them. 
@@ -150,6 +147,19 @@ var TSOS;
                 }
             }
             pcb.update(this);
+        };
+        Cpu.prototype.startExecution = function (pcb) {
+            this.setCPU(pcb);
+            this.currentProcess = pcb.pid;
+            this.isExecuting = true;
+            pcb.state = "running";
+        };
+        Cpu.prototype.setCPU = function (pcb) {
+            this.PC = pcb.PC;
+            this.Acc = pcb.Acc;
+            this.Xreg = pcb.Xreg;
+            this.Yreg = pcb.Yreg;
+            this.Zflag = pcb.Zflag;
         };
         Cpu.prototype.BRK = function (pcb) {
             this.isExecuting = false;
