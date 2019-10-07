@@ -51,8 +51,8 @@ var TSOS;
         ProcessControlBlock.prototype.setCompleted = function () {
             this.state = "completed";
         };
-        ProcessControlBlock.prototype.changePC = function (byte) {
-            this.pc = byte.getBaseTen();
+        ProcessControlBlock.prototype.branchPC = function (byte) {
+            this.pc += byte.getBaseTen() - 1;
         };
         // Updates pcb values to match cpu values. 
         ProcessControlBlock.prototype.update = function (cpu) {

@@ -43,8 +43,8 @@ module TSOS {
             this.state = "completed";
         }
 
-        public changePC(byte){
-            this.pc = byte.getBaseTen();
+        public branchPC(byte){
+            this.pc += byte.getBaseTen() - 1;
         }
 
         // Updates pcb values to match cpu values. 

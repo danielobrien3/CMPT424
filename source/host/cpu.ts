@@ -112,10 +112,10 @@ module TSOS {
                 // ## At this point I stopped making seperate function calls...
                 // ## The heavy lifting will be done in the switch for the sake of getting project 2 in on time.
                 // ## This will get refactored as mentioned at the beginning of this switch. 
-                case "DO":{
+                case "D0":{
                     if(this.Zflag == 0){
-                        var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
-                        pcb.changePC(logicalLocation);
+                        var branchAmount = _MemoryAccessor.readByte(pcb);
+                        pcb.branchPC(branchAmount);
                     }
                     break;
                 } 
