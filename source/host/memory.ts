@@ -107,5 +107,9 @@ module TSOS {
             return parseInt(location, 16);
         }
 
+        public isEqual(byte){
+            return(this.getBaseTen() == byte.getBaseTen());
+        }
+
     }
 }

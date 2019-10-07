@@ -43,5 +43,9 @@ module TSOS {
             this.state = "completed";
         }
 
+        public changePC(byte){
+            this.pc = byte.getBaseTen();
+        }
+
     }
 }
