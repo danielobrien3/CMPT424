@@ -85,6 +85,18 @@ module TSOS {
                     this.LDX(_MemoryAccessor.readAtLocation(logicalLocation));
                 }
 
+                // Load Yreg with constant
+                case "A0":{
+                    this.LDY(_MemoryAccessor.readByte(pcb));
+                    break;
+                }
+
+                // Load Yreg from memory
+                case "AC":{
+                    var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
+                    this.LDY(_MemoryAccessor.readAtLocation(logicalLocation));
+                }
+
                 // Halt command
                 case "00":{
                     this.BRK(pcb);
@@ -105,11 +117,16 @@ module TSOS {
         }
 
         public ADC(byte){
+            console.log(byte);
             this.Acc = this.Acc.add(byte);
         }
 
         public LDX(byte){
             this.Xreg = byte;
+        }
+
+        public LDY(byte){
+            this.Yreg = byte;
         }
 
 

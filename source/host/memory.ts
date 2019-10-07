@@ -47,8 +47,7 @@ module TSOS {
         public read(pcb){
             // Read function handles reading and returning stored mem. 
             // The byte is stored in a temp variable so program counter can increment here
-            var tempByte = this.mem[pcb.pc];
-            return tempByte;
+            return this.mem[pcb.pc];
         }
 
         public readAtLocation(physicalLocation){
@@ -98,7 +97,7 @@ module TSOS {
         // Add 2 bytes and return them as byte value
         public add(byte){
             var temp = this.getBaseTen() + byte.getBaseTen()
-            return temp.toString(this.value, 16);
+            return temp.toString(16);
         }
 
         public calculateLocation(byte){
