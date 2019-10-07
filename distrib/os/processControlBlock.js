@@ -51,6 +51,9 @@ var TSOS;
         ProcessControlBlock.prototype.setCompleted = function () {
             this.state = "completed";
         };
+        ProcessControlBlock.prototype.changePC = function (byte) {
+            this.pc = byte.getBaseTen();
+        };
         return ProcessControlBlock;
     }());
     TSOS.ProcessControlBlock = ProcessControlBlock;

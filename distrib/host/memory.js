@@ -41,8 +41,7 @@ var TSOS;
         Memory.prototype.read = function (pcb) {
             // Read function handles reading and returning stored mem. 
             // The byte is stored in a temp variable so program counter can increment here
-            var tempByte = this.mem[pcb.pc];
-            return tempByte;
+            return this.mem[pcb.pc];
         };
         Memory.prototype.readAtLocation = function (physicalLocation) {
             return this.mem[physicalLocation];
@@ -93,6 +92,9 @@ var TSOS;
             // This is for getting a memory location value as they are provided in the opcode expressions. 
             var location = byte.value + this.value;
             return parseInt(location, 16);
+        };
+        Byte.prototype.isEqual = function (byte) {
+            return (this.getBaseTen() == byte.getBaseTen());
         };
         return Byte;
     }());

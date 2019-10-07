@@ -121,7 +121,27 @@ module TSOS {
                 // INC (Increment value of a byte in memory)
                 case "EE":{
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
-                    _MemoryAccessor.write(pcb, logicalLocation, _MemoryAccessor.readAtLocation(logicalLocation).increment());
+                    var byte = _MemoryAccessor.readAtLocation(logicalLocation)
+                    _MemoryAccessor.write(pcb, logicalLocation, byte.increment());
+                }
+
+                // System Call. This doesn't explicitly say to allow only one in the instruction set...
+                // ... and I feel like it would make sense to let someone print both,
+                // so i'm just gonna lean into it. No else statements. 
+                case "FF":{
+                    if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(1))){
+                        _StdOut.putText(this.Yreg.getBaseTen);
+                    }
+                    if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(2))){
+                        var currentByte = this.Yreg.calculateLocation(new Byte("00"));
+                        currentByte = _MemoryAccessor.readByte(currentByte);
+                        var string = currentByte.value()
+                        while(!currentByte.value.isEqual(new Byte("00"))){
+                            currentByte = currentByte.increment();
+                            string += currentByte = _MemoryAccessor.readByte(currentByte);
+                        }
+                        _StdOut.putText(string);
+                    }
                 }
 
                 // Halt command
