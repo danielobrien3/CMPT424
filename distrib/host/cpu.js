@@ -44,7 +44,6 @@ var TSOS;
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
             this.execute(pcb);
-            pcb.update(this);
             TSOS.Control.updateCpuDisplay(this);
             TSOS.Control.updatePcbDisplay(pcb);
             TSOS.Control.updateMemoryDisplay(pcb);
@@ -150,6 +149,7 @@ var TSOS;
                     break;
                 }
             }
+            pcb.update(this);
         };
         Cpu.prototype.BRK = function (pcb) {
             this.isExecuting = false;

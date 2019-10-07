@@ -57,9 +57,9 @@ var TSOS;
         // Updates pcb values to match cpu values. 
         ProcessControlBlock.prototype.update = function (cpu) {
             this.Acc = cpu.Acc;
-            this.Xreg == cpu.Xreg;
-            this.Yreg == cpu.Yreg;
-            this.Zflag == cpu.Zflag;
+            this.Xreg = cpu.Xreg;
+            this.Yreg = cpu.Yreg;
+            this.Zflag = cpu.Zflag;
         };
         return ProcessControlBlock;
     }());

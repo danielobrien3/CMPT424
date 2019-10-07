@@ -50,9 +50,9 @@ module TSOS {
         // Updates pcb values to match cpu values. 
         public update(cpu){
             this.Acc = cpu.Acc;
-            this.Xreg == cpu.Xreg;
-            this.Yreg == cpu.Yreg;
-            this.Zflag == cpu.Zflag;
+            this.Xreg = cpu.Xreg;
+            this.Yreg = cpu.Yreg;
+            this.Zflag = cpu.Zflag;
         }
 
     }

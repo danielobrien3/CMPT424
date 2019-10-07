@@ -40,7 +40,6 @@ module TSOS {
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess)
             this.execute(pcb);
-            pcb.update(this);
             Control.updateCpuDisplay(this);
             Control.updatePcbDisplay(pcb);
             Control.updateMemoryDisplay(pcb);
@@ -157,8 +156,8 @@ module TSOS {
                     this.BRK(pcb);
                     break;
                 }
-
             }
+            pcb.update(this);
         }
 
         public BRK(pcb){
