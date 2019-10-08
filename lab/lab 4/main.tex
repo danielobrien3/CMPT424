@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Lab 4}
+\author{Daniel O'Brien}
+\date{October 7th, 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{What is the relationship between a guest operating system and a host operating system in a system like VMware? What factors need to be considered in choosing the host operating system?}
+
+The host operating system is the software that directly talks to and utilizes the computer’s hardware. This is in charge of handling all processes being run. A guest operating system running on VMware is another operating system that operates through the host OS. The guest OS does not talk directly to the computer’s hardware. Instead, it creates virtual “hardware” that runs using the host OS. This virtual hardware serves as the basis for the guest OS. The guest OS operates as normal within this virtual environment. So even though it may not seem like it to the user, the host OS is always running. This provides the guest OS with the tools needed to create and maintain its own virtual environment. 
+
+
+\end{document}

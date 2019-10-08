@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Lab 3}
+\author{Daniel O'Brien}
+\date{October 7th, 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Explain the difference between internal and external fragmentation.}
+
+Internal Fragmentation occurs when a process is loaded into memory, but does not totally fill the segment it resides in. This leaves unused memory in the segment that cannot be used by other processes. This occurs when the system requires the memory to be divided into blocks or segments. This is “internal fragmentation” because the unused memory space is “inside” the segment. 
+
+External fragmentation occurs when processes are randomly* loaded into memory, and the memory is not separated into segments or blocks. This leaves multiple blocks of memory that are not being used. There may be enough memory to load a process, but since the memory is not contiguous, the process can’t be loaded. It is technically available, but for the most part each section of memory is too small to be utilized. This is considered “external fragmentation” because the memory is outside of other processes. 
+
+
+\section{Given Five (5) memory partitions of 100KB, 500KB, 200KB, 300KB, and 600KB (in that order), how would optimal, First-fit, best-Fit, and worst-Fit algorithms place processes of 212KB, 417KB, 112KB, and 426KB (in that order)?}
+
+First Fit:
+
+		212 $->$ 300
+		
+		417 $->$ 500
+		
+		112 $->$ 200
+		
+		426 $->$ 600
+		
+\break
+		
+Best fit:
+
+		212 $->$ 300
+		
+		417 $->$ 500
+		
+		112 $->$ 200
+		
+		426 $->$ 600
+
+Worst fit:
+
+		212 $->$ 600
+		
+		417 $->$ 500
+		
+		112 $->$ 300
+		
+		426 $->$ n/a
+
+
+
+\end{document}
