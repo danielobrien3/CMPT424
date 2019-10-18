@@ -1,50 +1,28 @@
 2019 Browser-based Operating System in TypeScript
 =================================================
 
-This is Alan's Operating Systems class initial project.
+This is Alan's Operating Systems class project.
 See http://www.labouseur.com/courses/os/ for details.
 It was originally developed by Alan and then enhanced by Bob Nisco and Rebecca Murphy over the years.
-Fork this (or clone, but fork is probably better in case Alan changes anything about the initial project) into your own private repository. Or download it as a ZIP file. Then add Alan (userid Labouseur) as a collaborator.
+The additional work has been done by me, Daniel O'Brien. This includes all commits you see in this repository
 
-Setup TypeScript
+What is this the purpose of this project?
 ================
 
-1. Install the [npm](https://www.npmjs.org/) package manager if you don't already have it.
-1. Run `npm install -g typescript` to get the TypeScript Compiler. (You may need to do this as root.)
+This project is meant to provide students with hands-on experience building a virtual operating system. It is the practical half of the course, with the theory-side built in to the lectures. However, this project is important for more than just providing a practical understanding of how Operating Systems are built and used. It also provides experience building a large-scale system. This forces students (like myself) to use good coding practices, such as leveraging modularity, code comments, efficient algorithms, and more. 
 
 
-Workflow
-=============
+What is this the timeline of this project?
+================
 
-Some IDEs (e.g., Visual Studio Code, IntelliJ, others) natively support TypeScript-to-JavaScript compilation.
-If your development environment does not then you'll need to automate the process with something like Gulp.
+This project has 4 major milestones, the last of which will be completed by December 2019.
 
+How has this project made me a more valuable developer. 
+================
 
-- Setup Gulp
-1. `npm install -g gulp` to get the Gulp Task Runner.
-1. `npm install -g gulp-tsc` to get the Gulp TypeScript plugin.
-
-
-Run `gulp` at the command line in the root directory of this project.
-Edit your TypeScript files in the source/scripts directory in your favorite editor.
-Visual Studio and IntelliJ have some tools that make debugging, syntax highlighting, and lots more quite easy.
-WebStorm looks like a nice option as well.
-
-Gulp will automatically:
-
-* Watch for changes in your source/scripts/ directory for changes to .ts files and run the TypeScript Compiler on them.
-* Watch for changes to your source/styles/ directory for changes to .css files and copy them to the distrib/ folder if you have them there.
+This project is a software development task that just keeps on giving. One reason for this is the practical knowledge that comes as a result of building an Operating System. This provides a low-level knowledge of how computers operate, which can be invaluable in the debugging process. The low-level knowledge provided is also invaluable for creating resource-efficient programs. Finally, it has made me a more valuable developer by its sheer size. As stated above, this is a project so large in size that the only way the codebase (and my sanity) can be maintained is through proper coding practices. This includes self-documenting code, tons of comments, and proper modularization. 
 
 
-A Few Notes
-===========
-
-**What's TypeScript?**
-TypeScript is a language that allows you to write in a statically-typed language that outputs standard JavaScript.
-It's all kinds of awesome.
-
-**Why should I use it?**
-This will be especially helpful for an OS or a Compiler that may need to run in the browser as you will have all of the great benefits of strong type checking and scope rules built right into your language.
-
-**Where can I get more info on TypeScript**
-[Right this way!](http://www.typescriptlang.org/)
+Acknowledgments 
+================
+* My professor Alan Labosseur, who is not afraid to challenge students in order for them to reach their potential. 
