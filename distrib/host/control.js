@@ -158,7 +158,7 @@ var TSOS;
                 var row = table.rows[r];
                 for (var c = 1; c < 8; c++) {
                     var cell = row.cells[c];
-                    cell.innerHTML = _MemoryAccessor.readAtLocation((r * 8) + (c - 1)).value;
+                    cell.innerHTML = _MemoryAccessor.readAtLocation(pcb, (r * 8) + (c - 1)).value;
                 }
             }
         };

@@ -83,7 +83,7 @@ module TSOS {
                 // Load Xreg from Memory
                 case "AE":{
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
-                    this.LDX(_MemoryAccessor.readAtLocation(logicalLocation));
+                    this.LDX(_MemoryAccessor.readAtLocation(pcb, logicalLocation));
                     break;
                 }
 
@@ -96,14 +96,14 @@ module TSOS {
                 // Load Yreg from memory
                 case "AC":{
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
-                    this.LDY(_MemoryAccessor.readAtLocation(logicalLocation));
+                    this.LDY(_MemoryAccessor.readAtLocation(pcb, logicalLocation));
                     break;
                 }
 
                 // CPX (Compare a byte in memory to Xreg. Set z flag to 0 if equal)
                 case "EC": {
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
-                    this.CPX(_MemoryAccessor.readAtLocation(logicalLocation));
+                    this.CPX(_MemoryAccessor.readAtLocation(pcb, logicalLocation));
                     break;
                 }
 
@@ -122,7 +122,7 @@ module TSOS {
                 // INC (Increment value of a byte in memory)
                 case "EE":{
                     var logicalLocation = _MemoryAccessor.readByte(pcb).calculateLocation(_MemoryAccessor.readByte(pcb));
-                    var byte = _MemoryAccessor.readAtLocation(logicalLocation)
+                    var byte = _MemoryAccessor.readAtLocation(pcb, logicalLocation)
                     _MemoryAccessor.write(pcb, logicalLocation, byte.increment());
                     break;
                 }
@@ -131,18 +131,18 @@ module TSOS {
                 // ... and I feel like it would make sense to let someone print both,
                 // so i'm just gonna lean into it. No else statements. 
                 case "FF":{
-                    console.log(this.Xreg + " " + _MemoryAccessor.readAtLocation(1));
-                    if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(1))){
+                    if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(pcb, 1))){
                         _StdOut.putText(this.Yreg.getBaseTen() + " ");
                         _StdOut.advanceLine();
                     }
-                    if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(2))){
-                        var currentByte = this.Yreg.calculateLocation(new Byte("00"));
-                        currentByte = _MemoryAccessor.readByte(currentByte);
-                        var string = currentByte.value;
-                        while(!currentByte.value.isEqual(new Byte("00"))){
-                            currentByte = currentByte.increment();
-                            string += currentByte = _MemoryAccessor.readByte(currentByte);
+                    if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(pcb, 2))){
+                        var currentLocation = this.Yreg;
+                        var currentByte = _MemoryAccessor.readAtLocation(pcb, currentLocation.getBaseTen());
+                        var string = "";
+                        while(!currentByte.isEqual(new Byte("00"))){
+                            string += currentByte.value;
+                            currentLocation = currentLocation.increment();
+                            currentByte = _MemoryAccessor.readAtLocation(pcb, currentLocation.getBaseTen());
                         }
                         _StdOut.putText(string);
                     }
