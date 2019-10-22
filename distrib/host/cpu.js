@@ -47,7 +47,6 @@ var TSOS;
             TSOS.Control.updateCpuDisplay(this);
             TSOS.Control.updatePcbDisplay(pcb);
             TSOS.Control.updateMemoryDisplay(pcb);
-            this.PC = pcb.pc;
         };
         Cpu.prototype.execute = function () {
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
@@ -125,8 +124,9 @@ var TSOS;
                 // ... and I feel like it would make sense to let someone print both,
                 // so i'm just gonna lean into it. No else statements. 
                 case "FF": {
+                    console.log(this.Xreg + " " + _MemoryAccessor.readAtLocation(1));
                     if (this.Xreg.isEqual(_MemoryAccessor.readAtLocation(1))) {
-                        _StdOut.putText(this.Yreg.getBaseTen);
+                        _StdOut.putText(this.Yreg.getBaseTen() + " ");
                     }
                     if (this.Xreg.isEqual(_MemoryAccessor.readAtLocation(2))) {
                         var currentByte = this.Yreg.calculateLocation(new TSOS.Byte("00"));

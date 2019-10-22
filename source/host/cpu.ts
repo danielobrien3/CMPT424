@@ -43,7 +43,6 @@ module TSOS {
             Control.updateCpuDisplay(this);
             Control.updatePcbDisplay(pcb);
             Control.updateMemoryDisplay(pcb);
-            this.PC = pcb.pc;
         }
 
         public execute(){
@@ -132,13 +131,15 @@ module TSOS {
                 // ... and I feel like it would make sense to let someone print both,
                 // so i'm just gonna lean into it. No else statements. 
                 case "FF":{
+                    console.log(this.Xreg + " " + _MemoryAccessor.readAtLocation(1));
                     if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(1))){
-                        _StdOut.putText(this.Yreg.getBaseTen);
+                        _StdOut.putText(this.Yreg.getBaseTen() + " ");
+                        _StdOut.advanceLine();
                     }
                     if(this.Xreg.isEqual(_MemoryAccessor.readAtLocation(2))){
                         var currentByte = this.Yreg.calculateLocation(new Byte("00"));
                         currentByte = _MemoryAccessor.readByte(currentByte);
-                        var string = currentByte.value()
+                        var string = currentByte.value;
                         while(!currentByte.value.isEqual(new Byte("00"))){
                             currentByte = currentByte.increment();
                             string += currentByte = _MemoryAccessor.readByte(currentByte);
