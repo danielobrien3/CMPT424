@@ -90,8 +90,15 @@ module TSOS {
             // Stores decimal representation of byte value in temp then increments temp and converts it back. 
             // There may be a 'better' way to do this in hex, but I like how simple this is. 
             var temp = parseInt(this.value, 16);
+            var res; 
             temp++;
-            return new Byte(temp.toString(16).toUpperCase());
+            if(temp.toString(16).length == 1){
+                res = ("0" + temp.toString(16))
+            }
+            else{
+                res = temp.toString(16);
+            }
+            return new Byte(res.toUpperCase());
         }
 
         // Add 2 bytes and return them as byte value

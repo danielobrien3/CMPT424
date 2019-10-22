@@ -9,13 +9,15 @@
 var TSOS;
 (function (TSOS) {
     var MemorySegment = /** @class */ (function () {
-        function MemorySegment(empty, base, limit) {
+        function MemorySegment(empty, base, limit, size) {
             if (empty === void 0) { empty = false; }
             if (base === void 0) { base = 0; }
             if (limit === void 0) { limit = 0; }
+            if (size === void 0) { size = 255; }
             this.empty = empty;
             this.base = base;
             this.limit = limit;
+            this.size = size;
         }
         MemorySegment.prototype.init = function (base) {
             this.empty = true;

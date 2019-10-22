@@ -43,8 +43,16 @@ module TSOS {
             this.state = "completed";
         }
 
-        public branchPC(byte){
-            this.pc += byte.getBaseTen() - 1;
+        public branchPC(val){
+            if(this.pc + val > this.currentSegment.size){
+                console.log(((val + this.pc) - this.currentSegment.size)-1);
+                this.pc = ((val + this.pc) - this.currentSegment.size)-1;
+            }else{
+                console.log(this.pc + (val-1));
+                this.pc += (val - 1);
+            }
+
+
         }
 
         // Updates pcb values to match cpu values. 

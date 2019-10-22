@@ -108,7 +108,7 @@ var TSOS;
                 // ## This will get refactored as mentioned at the beginning of this switch. 
                 case "D0": {
                     if (this.Zflag == 0) {
-                        var branchAmount = _MemoryAccessor.readByte(pcb);
+                        var branchAmount = _MemoryAccessor.readByte(pcb).getBaseTen();
                         pcb.branchPC(branchAmount);
                     }
                     break;
@@ -124,16 +124,15 @@ var TSOS;
                 // ... and I feel like it would make sense to let someone print both,
                 // so i'm just gonna lean into it. No else statements. 
                 case "FF": {
-                    if (this.Xreg.isEqual(_MemoryAccessor.readAtLocation(pcb, 1))) {
+                    if (this.Xreg.isEqual(new TSOS.Byte("01"))) {
                         _StdOut.putText(this.Yreg.getBaseTen() + " ");
-                        _StdOut.advanceLine();
                     }
-                    if (this.Xreg.isEqual(_MemoryAccessor.readAtLocation(pcb, 2))) {
+                    if (this.Xreg.isEqual(new TSOS.Byte("02"))) {
                         var currentLocation = this.Yreg;
                         var currentByte = _MemoryAccessor.readAtLocation(pcb, currentLocation.getBaseTen());
                         var string = "";
                         while (!currentByte.isEqual(new TSOS.Byte("00"))) {
-                            string += currentByte.value;
+                            string += String.fromCharCode(currentByte.getBaseTen());
                             currentLocation = currentLocation.increment();
                             currentByte = _MemoryAccessor.readAtLocation(pcb, currentLocation.getBaseTen());
                         }
