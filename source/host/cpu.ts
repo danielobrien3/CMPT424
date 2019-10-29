@@ -47,6 +47,7 @@ module TSOS {
 
         public execute(){
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
+            pcb = _CpuScheduler.checkQuantum(pcb);
             var byte = new Byte(_MemoryAccessor.readByte(pcb).value);
 
             //TODO: Refactor this switch statement. Each case should call its respective function passing just the pcb....
@@ -154,6 +155,7 @@ module TSOS {
                 }
             }
             pcb.update(this);
+            pcb.quantumCount++;
             this.PC = pcb.pc;
         }
 

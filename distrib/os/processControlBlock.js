@@ -9,7 +9,7 @@
 var TSOS;
 (function (TSOS) {
     var ProcessControlBlock = /** @class */ (function () {
-        function ProcessControlBlock(pid, instrReg, memStart, memEnd, pc, Acc, Xreg, Yreg, Zflag, isExecuting, state, currentSegment) {
+        function ProcessControlBlock(pid, instrReg, memStart, memEnd, pc, Acc, Xreg, Yreg, Zflag, isExecuting, state, currentSegment, quantumCount) {
             if (pid === void 0) { pid = 0; }
             if (instrReg === void 0) { instrReg = new TSOS.Byte("00"); }
             if (memStart === void 0) { memStart = new TSOS.Byte("00"); }
@@ -22,6 +22,7 @@ var TSOS;
             if (isExecuting === void 0) { isExecuting = false; }
             if (state === void 0) { state = "new"; }
             if (currentSegment === void 0) { currentSegment = TSOS.MemorySegment; }
+            if (quantumCount === void 0) { quantumCount = 0; }
             this.pid = pid;
             this.instrReg = instrReg;
             this.memStart = memStart;
@@ -34,6 +35,7 @@ var TSOS;
             this.isExecuting = isExecuting;
             this.state = state;
             this.currentSegment = currentSegment;
+            this.quantumCount = quantumCount;
         }
         ProcessControlBlock.prototype.init = function (pid, memStart, memEnd, currentSegment) {
             this.pid = _PidCount;

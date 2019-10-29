@@ -22,7 +22,8 @@ module TSOS {
             public Zflag: number = 0,
             public isExecuting: boolean = false,
             public state: string = "new",
-            public currentSegment: any = MemorySegment){}
+            public currentSegment: any = MemorySegment,
+            public quantumCount: number = 0){}
 
         public init(pid, memStart, memEnd, currentSegment){
             this.pid = _PidCount;

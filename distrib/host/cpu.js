@@ -147,6 +147,7 @@ var TSOS;
                 }
             }
             pcb.update(this);
+            pcb.quantumCount++;
             this.PC = pcb.pc;
         };
         Cpu.prototype.startExecution = function (pcb) {
