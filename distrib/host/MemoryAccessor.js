@@ -30,7 +30,7 @@ var TSOS;
                     _Memory.load(currentSegment, program);
                     var pcb = _MemoryManager.newPcb(currentSegment, program.length);
                     currentSegment.setEmpty(false);
-                    TSOS.Control.updateMemoryDisplay(pcb);
+                    TSOS.Control.updateMemoryDisplay();
                     return pcb;
                 }
             }
@@ -47,11 +47,18 @@ var TSOS;
             var physicalLocation = pcb.memStart + logicalLocation;
             return _Memory.readAtLocation(physicalLocation);
         };
-        MemoryAccessor.prototype.empty = function (pcb) {
+        // This only gets used for updating memory display. 
+        MemoryAccessor.prototype.readAtPhysicalLocation = function (physicalLocation) {
+            return _Memory.readAtLocation(physicalLocation);
+        };
+        MemoryAccessor.prototype.empty = function () {
             // Handles triggering memory.empty function for desired segment
             // Empties the pcb from memory using information from the pcb, then resets the pcb
-            pcb.setEmpty(true);
-            _Memory.empty(pcb);
+            for (var i = 0; i < _MemoryManager.segments.length; i++) {
+                _MemoryManager.segments[i].setEmpty(true);
+            }
+            _Memory.empty();
+            TSOS.Control.updateMemoryDisplay();
         };
         MemoryAccessor.prototype.write = function (pcb, logicalLocation, newByte) {
             // Handles triggering memory.write function for desired segment, location, and byte

@@ -54,10 +54,10 @@ module TSOS {
             return this.mem[physicalLocation];
         }
 
-        public empty(pcb){
+        public empty(){
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
-            for(var i = pcb.segment.base; i < pcb.segment.limit; i++){
+            for(var i = 0; i < 767; i++){
                 this.mem[i] = new Byte("00");
             }
 

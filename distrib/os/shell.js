@@ -64,6 +64,9 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRunProcess, "run", "<pid> - Runs process by process id (pid).");
             this.commandList[this.commandList.length] = sc;
+            // clearMem
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clears memory");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -357,6 +360,11 @@ var TSOS;
         Shell.prototype.shellRunProcess = function (args) {
             if (args.length > 0) {
                 _CPU.startExecution(_MemoryManager.findProcessById(args[0]));
+            }
+        };
+        Shell.prototype.shellClearMem = function (args) {
+            for (var i = 0; i < TSOS.MemoryManager.length; i++) {
+                _MemoryAccessor.empty();
             }
         };
         return Shell;

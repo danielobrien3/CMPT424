@@ -46,7 +46,7 @@ var TSOS;
             this.execute();
             TSOS.Control.updateCpuDisplay(this);
             TSOS.Control.updatePcbDisplay(pcb);
-            TSOS.Control.updateMemoryDisplay(pcb);
+            TSOS.Control.updateMemoryDisplay();
         };
         Cpu.prototype.execute = function () {
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
@@ -72,7 +72,7 @@ var TSOS;
                 // Add with carry
                 case "6D": {
                     this.ADC(_MemoryAccessor.readByte(pcb));
-                    pcb["break"];
+                    break;
                 }
                 // Load Xreg with constant 
                 case "A2": {

@@ -46,10 +46,10 @@ var TSOS;
         Memory.prototype.readAtLocation = function (physicalLocation) {
             return this.mem[physicalLocation];
         };
-        Memory.prototype.empty = function (pcb) {
+        Memory.prototype.empty = function () {
             // Function that handles emptying a segment 
             // 'Empties' by filling segment with break commands. 
-            for (var i = pcb.segment.base; i < pcb.segment.limit; i++) {
+            for (var i = 0; i < 767; i++) {
                 this.mem[i] = new TSOS.Byte("00");
             }
         };

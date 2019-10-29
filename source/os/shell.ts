@@ -113,6 +113,12 @@ module TSOS {
                                 "<pid> - Runs process by process id (pid).");
           this.commandList[this.commandList.length] = sc;
 
+          // clearMem
+          sc = new ShellCommand(this.shellClearMem,
+                                "clearmem",
+                                "- Clears memory");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -427,6 +433,12 @@ module TSOS {
       public shellRunProcess(args: string[]){
         if(args.length>0){
           _CPU.startExecution(_MemoryManager.findProcessById(args[0]));
+        }
+      }
+
+      public shellClearMem(args: string[]){
+        for(var i = 0; i < MemoryManager.length; i++){
+          _MemoryAccessor.empty();
         }
       }
 

@@ -42,7 +42,7 @@ module TSOS {
             this.execute();
             Control.updateCpuDisplay(this);
             Control.updatePcbDisplay(pcb);
-            Control.updateMemoryDisplay(pcb);
+            Control.updateMemoryDisplay();
         }
 
         public execute(){
@@ -70,7 +70,6 @@ module TSOS {
                 // Add with carry
                 case "6D":{
                     this.ADC(_MemoryAccessor.readByte(pcb));
-                    pcb.
                     break;
                 }
 

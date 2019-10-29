@@ -33,7 +33,7 @@ module TSOS {
                     _Memory.load(currentSegment, program);
                     var pcb = _MemoryManager.newPcb(currentSegment, program.length);
                     currentSegment.setEmpty(false);
-                    Control.updateMemoryDisplay(pcb);
+                    Control.updateMemoryDisplay();
                     return pcb;
                 }
             }
@@ -53,11 +53,19 @@ module TSOS {
             return _Memory.readAtLocation(physicalLocation); 
         }
 
-        public empty(pcb){
+        // This only gets used for updating memory display. 
+        public readAtPhysicalLocation(physicalLocation){
+            return _Memory.readAtLocation(physicalLocation);
+        }
+
+        public empty(){
             // Handles triggering memory.empty function for desired segment
             // Empties the pcb from memory using information from the pcb, then resets the pcb
-            pcb.setEmpty(true);
-            _Memory.empty(pcb);
+            for(var i= 0; i < _MemoryManager.segments.length; i++){
+                _MemoryManager.segments[i].setEmpty(true);
+            }
+            _Memory.empty();
+            Control.updateMemoryDisplay();
         }
 
         public write(pcb, logicalLocation, newByte){
