@@ -56,6 +56,7 @@ module TSOS {
         public empty(pcb){
             // Handles triggering memory.empty function for desired segment
             // Empties the pcb from memory using information from the pcb, then resets the pcb
+            pcb.setEmpty(true);
             _Memory.empty(pcb);
         }
 

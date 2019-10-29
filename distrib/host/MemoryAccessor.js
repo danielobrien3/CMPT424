@@ -50,6 +50,7 @@ var TSOS;
         MemoryAccessor.prototype.empty = function (pcb) {
             // Handles triggering memory.empty function for desired segment
             // Empties the pcb from memory using information from the pcb, then resets the pcb
+            pcb.setEmpty(true);
             _Memory.empty(pcb);
         };
         MemoryAccessor.prototype.write = function (pcb, logicalLocation, newByte) {

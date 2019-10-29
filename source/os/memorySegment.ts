@@ -1,4 +1,4 @@
-/* ------------
+ /* ------------
      Memory.ts
 
      Routines for the host.
@@ -23,8 +23,8 @@ module TSOS {
         }
 
         public setEmpty(emptyFlag){
-            // setEmpty handles segment empty flag and segment size being updated.
-            this.empty = true;
+            // setEmpty handles segment empty flag 
+            this.empty = emptyFlag;
         }
         
     }

@@ -21,7 +21,7 @@ var TSOS;
             if (Zflag === void 0) { Zflag = 0; }
             if (isExecuting === void 0) { isExecuting = false; }
             if (state === void 0) { state = "new"; }
-            if (currentSegment === void 0) { currentSegment = new TSOS.MemorySegment; }
+            if (currentSegment === void 0) { currentSegment = TSOS.MemorySegment; }
             this.pid = pid;
             this.instrReg = instrReg;
             this.memStart = memStart;

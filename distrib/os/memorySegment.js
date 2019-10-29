@@ -1,11 +1,11 @@
 /* ------------
-     Memory.ts
+    Memory.ts
 
-     Routines for the host.
+    Routines for the host.
 
-     Memory Segment class. No writing, reading, or loading should be handled here.
-     This holds information about segments to be used by memory accessor.
-     ------------ */
+    Memory Segment class. No writing, reading, or loading should be handled here.
+    This holds information about segments to be used by memory accessor.
+    ------------ */
 var TSOS;
 (function (TSOS) {
     var MemorySegment = /** @class */ (function () {
@@ -25,8 +25,8 @@ var TSOS;
             this.limit = base + 255;
         };
         MemorySegment.prototype.setEmpty = function (emptyFlag) {
-            // setEmpty handles segment empty flag and segment size being updated.
-            this.empty = true;
+            // setEmpty handles segment empty flag 
+            this.empty = emptyFlag;
         };
         return MemorySegment;
     }());
