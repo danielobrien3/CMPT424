@@ -113,10 +113,16 @@ module TSOS {
                                 "<pid> - Runs process by process id (pid).");
           this.commandList[this.commandList.length] = sc;
 
-          // clearMem
+          // clearmem
           sc = new ShellCommand(this.shellClearMem,
                                 "clearmem",
                                 "- Clears memory");
+          this.commandList[this.commandList.length] = sc;
+
+          // ps
+          sc = new ShellCommand(this.shellPs,
+                                "ps",
+                                "- display PID and state of all processes");
           this.commandList[this.commandList.length] = sc;
 
           // ps  - list the running processes and their IDs
@@ -125,6 +131,9 @@ module TSOS {
           // Display the initial prompt.
           this.putPrompt();
       }
+
+// =====================================================================
+
 
       public putPrompt() {
           _StdOut.putText(this.promptStr);
@@ -439,6 +448,13 @@ module TSOS {
       public shellClearMem(args: string[]){
         for(var i = 0; i < MemoryManager.length; i++){
           _MemoryAccessor.empty();
+        }
+      }
+
+      public shellPs(args: string[]){
+        for(var i =0; i<_MemoryManager.processControlBlocks.length; i++){
+          _StdOut.putText("<pid>: " + _MemoryManager.processControlBlocks[i].pid + " <state>: " + _MemoryManager.processControlBlocks[i].state)
+          _StdOut.advanceLine();
         }
       }
 

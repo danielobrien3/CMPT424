@@ -64,14 +64,18 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRunProcess, "run", "<pid> - Runs process by process id (pid).");
             this.commandList[this.commandList.length] = sc;
-            // clearMem
+            // clearmem
             sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clears memory");
+            this.commandList[this.commandList.length] = sc;
+            // ps
+            sc = new TSOS.ShellCommand(this.shellPs, "ps", "- display PID and state of all processes");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
             this.putPrompt();
         };
+        // =====================================================================
         Shell.prototype.putPrompt = function () {
             _StdOut.putText(this.promptStr);
         };
@@ -365,6 +369,12 @@ var TSOS;
         Shell.prototype.shellClearMem = function (args) {
             for (var i = 0; i < TSOS.MemoryManager.length; i++) {
                 _MemoryAccessor.empty();
+            }
+        };
+        Shell.prototype.shellPs = function (args) {
+            for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
+                _StdOut.putText("<pid>: " + _MemoryManager.processControlBlocks[i].pid + " <state>: " + _MemoryManager.processControlBlocks[i].state);
+                _StdOut.advanceLine();
             }
         };
         return Shell;
