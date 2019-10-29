@@ -145,10 +145,18 @@ module TSOS {
             */
 
             if (text !== "") {
+
+                // Gets the text to be printed. Splits into an array to handle multiple words passed at once. (Need to check length because a lone space will get lost in text.split(" "))
+                var textSplit:string[];
+                if(text.length == 1){
+                    textSplit = [text];
+                }
+                else{
+                    textSplit = text.split(" ");
+                }
+
                 // Check if line-wrap is necessary by...
                 // ... splitting the text by space, looping through the array...
-
-                var textSplit = text.split(" ");
                 for(var i = 0; i < textSplit.length; i++){
                     var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, textSplit[i]);
                     // ... and checking if the text will push past the canvas width.

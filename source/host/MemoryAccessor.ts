@@ -22,13 +22,12 @@ module TSOS {
             
             if(currentSegment == null){
                     _StdOut.putText("There are no free segments in memory. Please use clearMem before loading any more processes.");
-                    _OsShell.putPrompt();
             } 
             else {
                 // getFreeSegment returns null if there are no free segments... 
                 // ...therefore if currentSegment is null, we cannot continue loading the program. 
                 if(program.length > currentSegment.limit){
-                    _Kernel.krnTrapError("Program is too large to be loaded into memory.");
+                    _StdOut.putText("Program is too large to be loaded into memory.");
                 } else {
                     // Program is loaded into memory and a corresponding PCB is created. 
                     _Memory.load(currentSegment, program);
