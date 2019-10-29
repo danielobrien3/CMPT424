@@ -31,9 +31,7 @@ module TSOS {
             // Load counter makes sure we read from the 0 index of the program. 
 
             var loadCounter = 0;
-            console.log("loading at base value of " + segment.base);
             for(var i = segment.base; i<segment.base + program.length; i++){
-                console.log("<" + program[loadCounter] + "> is being written to location <" + i + ">");
                 this.mem[i] = new Byte(program[loadCounter].toUpperCase());
                 loadCounter++;
             }

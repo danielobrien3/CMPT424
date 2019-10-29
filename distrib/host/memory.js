@@ -28,9 +28,7 @@ var TSOS;
             // Need a load counter because segment base might be 0, so we can't use it as a program index.
             // Load counter makes sure we read from the 0 index of the program. 
             var loadCounter = 0;
-            console.log("loading at base value of " + segment.base);
             for (var i = segment.base; i < segment.base + program.length; i++) {
-                console.log("<" + program[loadCounter] + "> is being written to location <" + i + ">");
                 this.mem[i] = new TSOS.Byte(program[loadCounter].toUpperCase());
                 loadCounter++;
             }

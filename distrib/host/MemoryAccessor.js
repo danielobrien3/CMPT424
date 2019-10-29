@@ -17,7 +17,8 @@ var TSOS;
             var currentSegment = _MemoryManager.getFreeSegment();
             // Make sure program is not larger than segment size now, before any real work is done.
             if (currentSegment == null) {
-                _Kernel.krnTrapError("There is no empty memory segment for this program to be loaded into.");
+                _StdOut.putText("There are no free segments in memory. Please use clearMem before loading any more processes.");
+                _OsShell.putPrompt();
             }
             else {
                 // getFreeSegment returns null if there are no free segments... 

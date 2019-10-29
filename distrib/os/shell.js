@@ -105,8 +105,8 @@ var TSOS;
             }
             else { //Full command was (at least attempted to be) provided
                 while (!found && index < this.commandList.length) {
-                    console.log("" + this.commandList[index].command + "" + " buffer: " + "" + cmd + "");
-                    console.log(this.commandList[index].command === cmd);
+                    //console.log("" + this.commandList[index].command +"" + " buffer: " + "" +cmd+"");
+                    //console.log(this.commandList[index].command === cmd);
                     if (this.commandList[index].command === cmd) {
                         found = true;
                         fn = this.commandList[index].func;
@@ -120,7 +120,7 @@ var TSOS;
             // ... multiple elements means the provided cmd wasn't unique enough, return all possible commands.
             // ... one hit means the provided cmd was unique enough, print the function
             // ... no hits means autocomplete is false, execute the function
-            console.log(found);
+            //console.log(found);
             if (found) {
                 if (cmdHits.length > 1) {
                     var cmdListString = "";

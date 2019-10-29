@@ -180,11 +180,27 @@ module TSOS {
         public static updateMemoryDisplay(pcb){
             var segment = pcb.currentSegment;
             var table = <HTMLTableElement> document.getElementById("memTable");
-            for(var r=segment.base; r<segment.limit/8; r++){
+
+            /* Okay this one is tough and has a lot of magic numbers
+               The segment.base gets divided by 8 since there are 8 cells in a row...
+               ... so each segment display base row should be at 1/8th its value. 
+               Each segment is 32 rows long (size of 256 divided by 8), so we add 32 to
+               base row of the segment display.
+
+               Now as things get more confusing... the value passed to readAtLocation 
+               has to be the logicalAddress... not the physical address (which is r*8). 
+               To get the logical address, we need to subtract segment.base from the physical address (r*8) then add the cell count. 
+
+               ## So this works, but not prettily. Right now my fix for the complexity is this comment block. 
+               ## HOWEVER, if this sort of issue with the logical/physical location arises again eleswhere, 
+               ## I will rewrite the readAtLocation method. 
+            */
+
+            for(var r=segment.base/8; r<segment.base/8 + 32; r++){
                 var row = table.rows[r]
                 for(var c=1; c<8; c++){
                     var cell = row.cells[c];
-                    cell.innerHTML = _MemoryAccessor.readAtLocation(pcb, (r * 8) + (c-1)).value;
+                    cell.innerHTML = _MemoryAccessor.readAtLocation(pcb, ((r * 8)-segment.base) + (c-1)).value;
                 }
             }
             
