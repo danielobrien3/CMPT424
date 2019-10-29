@@ -55,6 +55,11 @@ module TSOS {
 
         }
 
+        public kill(){
+            this.isExecuting = false;
+            this.state = "terminated";
+        }
+
         // Updates pcb values to match cpu values. 
         public update(cpu){
             this.Acc = cpu.Acc;

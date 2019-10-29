@@ -61,6 +61,10 @@ var TSOS;
                 this.pc += (val - 1);
             }
         };
+        ProcessControlBlock.prototype.kill = function () {
+            this.isExecuting = false;
+            this.state = "terminated";
+        };
         // Updates pcb values to match cpu values. 
         ProcessControlBlock.prototype.update = function (cpu) {
             this.Acc = cpu.Acc;

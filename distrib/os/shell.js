@@ -70,6 +70,12 @@ var TSOS;
             // ps
             sc = new TSOS.ShellCommand(this.shellPs, "ps", "- display PID and state of all processes");
             this.commandList[this.commandList.length] = sc;
+            // kill pid
+            sc = new TSOS.ShellCommand(this.shellKillPid, "kill", "<pid> - Terminates process by process id (pid)");
+            this.commandList[this.commandList.length] = sc;
+            // kill all
+            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "Terminates all processes");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -375,6 +381,20 @@ var TSOS;
             for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
                 _StdOut.putText("<pid>: " + _MemoryManager.processControlBlocks[i].pid + " <state>: " + _MemoryManager.processControlBlocks[i].state);
                 _StdOut.advanceLine();
+            }
+        };
+        Shell.prototype.shellKillPid = function (args) {
+            if (args.length > 0) {
+                var process = _MemoryManager.findProcessById(args[0]);
+                process.kill();
+            }
+            else {
+                _StdOut.putText("Please provide the process <pid> to be killed");
+            }
+        };
+        Shell.prototype.shellKillAll = function (args) {
+            for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
+                _MemoryManager.processControlBlocks[i].kill();
             }
         };
         return Shell;
