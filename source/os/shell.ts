@@ -143,6 +143,12 @@ module TSOS {
                                 "Runs all loaded processes");
           this.commandList[this.commandList.length] = sc;
 
+          // change quantum
+          sc = new ShellCommand(this.shellQuantum,
+                                "quantum",
+                                "Changes the CPU Scheduler's quantum count");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -495,6 +501,15 @@ module TSOS {
       public shellRunAll(args: string[]){
         for(var i=0; i<_MemoryManager.processControlBlocks.length; i++){
           _CPU.startExecution(_MemoryManager.processControlBlocks[i]);
+        }
+      }
+
+      public shellQuantum(args: string[]){
+        if(args.length > 0 && args.length < 2){
+          _CpuScheduler.setQuantum(args[0]);
+        }
+        else{
+          _StdOut.putText("Please provide a single integer for the new quantum value.");
         }
       }
 
