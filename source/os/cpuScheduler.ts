@@ -42,7 +42,6 @@ module TSOS {
                 }
 
                 while(nextProcessNdx != this.currentProcessNdx){
-                    console.log("loop started at value" + nextProcessNdx);
                     if(_MemoryManager.processControlBlocks[nextProcessNdx].state === "ready" || _MemoryManager.processControlBlocks[nextProcessNdx].state === "waiting"){
                         // If we got here, we're going to make a context switch. 
                         if(pcb.state === "executing"){
@@ -67,7 +66,6 @@ module TSOS {
                     return _MemoryManager.processControlBlocks[this.currentProcessNdx];
                 } else { // Otherwise the cpu has nothing to execute. Reflect this here.
                     this.currentProcessNdx = null;
-                    console.log('loop was made');
                     _CPU.isExecuting = false;
                     return null;
                 }
