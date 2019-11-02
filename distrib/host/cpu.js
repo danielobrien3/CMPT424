@@ -43,13 +43,17 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
-            this.execute();
-            TSOS.Control.updateCpuDisplay(this);
-            TSOS.Control.updatePcbDisplay(pcb);
-            TSOS.Control.updateMemoryDisplay();
+            pcb = _CpuScheduler.checkQuantum(pcb);
+            this.currentProcess = pcb.pid;
+            if (pcb != null) {
+                this.setCPU(pcb);
+                this.execute(pcb);
+                TSOS.Control.updateCpuDisplay(this);
+                TSOS.Control.updatePcbDisplay(pcb);
+                TSOS.Control.updateMemoryDisplay();
+            }
         };
-        Cpu.prototype.execute = function () {
-            var pcb = _MemoryManager.findProcessById(this.currentProcess);
+        Cpu.prototype.execute = function (pcb) {
             var byte = new TSOS.Byte(_MemoryAccessor.readByte(pcb).value);
             //TODO: Refactor this switch statement. Each case should call its respective function passing just the pcb....
             // ... The heavy lifting should be done in the functions... cause otherwise there's no point in using them. 
@@ -151,10 +155,15 @@ var TSOS;
             this.PC = pcb.pc;
         };
         Cpu.prototype.startExecution = function (pcb) {
-            this.setCPU(pcb);
-            this.currentProcess = pcb.pid;
-            this.isExecuting = true;
-            pcb.state = "running";
+            if (this.isExecuting) {
+                pcb.state = "ready";
+            }
+            else {
+                this.setCPU(pcb);
+                this.currentProcess = pcb.pid;
+                this.isExecuting = true;
+                pcb.state = "executing";
+            }
         };
         Cpu.prototype.setCPU = function (pcb) {
             this.PC = pcb.PC;
@@ -165,7 +174,11 @@ var TSOS;
         };
         Cpu.prototype.BRK = function (pcb) {
             pcb.state = "completed";
-            this.isExecuting = false;
+            var nextProcess = _CpuScheduler.getNextProcess(pcb);
+            if (nextProcess != null)
+                this.currentProcess = nextProcess.pid;
+            else
+                this.isExecuting = false;
         };
         Cpu.prototype.LDA = function (byte) {
             this.Acc = byte;

@@ -26,6 +26,7 @@ var TSOS;
             // Initialize memory manager
             _MemoryManager = new TSOS.MemoryManager();
             _MemoryManager.init();
+            _CpuScheduler = new TSOS.CpuScheduler();
             // Initialize standard input and output to the _Console.
             _StdIn = _Console;
             _StdOut = _Console;

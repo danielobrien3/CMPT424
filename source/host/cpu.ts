@@ -39,15 +39,18 @@ module TSOS {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess)
-            this.execute();
-            Control.updateCpuDisplay(this);
-            Control.updatePcbDisplay(pcb);
-            Control.updateMemoryDisplay();
+            pcb = _CpuScheduler.checkQuantum(pcb);
+            this.currentProcess = pcb.pid;
+            if(pcb != null){
+                this.setCPU(pcb);
+                this.execute(pcb);
+                Control.updateCpuDisplay(this);
+                Control.updatePcbDisplay(pcb);
+                Control.updateMemoryDisplay(); 
+            }
         }
 
-        public execute(){
-            var pcb = _MemoryManager.findProcessById(this.currentProcess);
-            pcb = _CpuScheduler.checkQuantum(pcb);
+        public execute(pcb){
             var byte = new Byte(_MemoryAccessor.readByte(pcb).value);
 
             //TODO: Refactor this switch statement. Each case should call its respective function passing just the pcb....
@@ -160,10 +163,14 @@ module TSOS {
         }
 
         public startExecution(pcb){
-            this.setCPU(pcb);
-            this.currentProcess = pcb.pid;
-            this.isExecuting = true;
-            pcb.state = "running";
+            if(this.isExecuting){
+                pcb.state = "ready";
+            } else {
+                this.setCPU(pcb);
+                this.currentProcess = pcb.pid;
+                this.isExecuting = true;
+                pcb.state = "executing";
+            }
         }
 
         public setCPU(pcb){
@@ -176,7 +183,11 @@ module TSOS {
 
         public BRK(pcb){
             pcb.state = "completed";
-            this.isExecuting = false;
+            var nextProcess = _CpuScheduler.getNextProcess(pcb);
+            if(nextProcess != null)
+                this.currentProcess = nextProcess.pid;
+            else
+                this.isExecuting = false;
         }
 
         public LDA(byte){

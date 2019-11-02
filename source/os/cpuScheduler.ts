@@ -17,9 +17,11 @@ module TSOS {
 
         // Checks pcb run count to quantum. Switches processes if necessary.
         public checkQuantum(pcb){
-            if(pcb.quantum >= this.quantum){
+            if(pcb.quantumCount >= this.quantum){
+                pcb.quantumCount = 0;
                 return this.getNextProcess(pcb);
             }
+            else return pcb;
         }
         
         public getNextProcess(pcb){
@@ -31,64 +33,47 @@ module TSOS {
 
 
             if(this.currentProcessNdx != null){
+                // Starting ndx used for finding next process. 
                 var nextProcessNdx = this.currentProcessNdx + 1;
-                if(nextProcessNdx > _MemoryManager.processControlBlocks.length){
+
+                // Loop ndx back around if necessary (circular Array)
+                if(nextProcessNdx >= _MemoryManager.processControlBlocks.length){
                     nextProcessNdx = 0;
                 }
+
                 while(nextProcessNdx != this.currentProcessNdx){
-                    if(_MemoryManager.processControlBlocks[nextProcessNdx].state === "ready"){
+                    console.log("loop started at value" + nextProcessNdx);
+                    if(_MemoryManager.processControlBlocks[nextProcessNdx].state === "ready" || _MemoryManager.processControlBlocks[nextProcessNdx].state === "waiting"){
                         // If we got here, we're going to make a context switch. 
-                        if(_MemoryManager.processControlBlocks[this.currentProcessNdx].state === "executing"){
+                        if(pcb.state === "executing"){
                             // If the current process isn't finished, we set its state to 'ready' to be run later. 
-                            _MemoryManager.processControlBlocks[this.currentProcessNdx].state = "ready"
+                            pcb.state = "waiting"
+                            Control.updatePcbDisplay(pcb);
                         }
+                        _MemoryManager.processControlBlocks[nextProcessNdx].state = "executing";
                         this.currentProcessNdx = nextProcessNdx;
-                        _MemoryManager.processControlBlocks[this.currentProcessNdx].state = "executing";
                         return _MemoryManager.processControlBlocks[this.currentProcessNdx];
+                    }
+                    nextProcessNdx++
+
+                    // Loop ndx back around if necessary (circular Array)
+                    if(nextProcessNdx >= _MemoryManager.processControlBlocks.length) {
+                        nextProcessNdx = 0;
                     }
                 }
                 // If we got here, we made a full loop. 
                 // Therefore we return the initial process if it is still being executed. 
-                if(_MemoryManager.processControlBlocks[this.currentProcessNdx].state === "executing"){
+                if(_MemoryManager.processControlBlocks[this.currentProcessNdx].state === "executing" || _MemoryManager.processControlBlocks[this.currentProcessNdx].state === "waiting" ){
                     return _MemoryManager.processControlBlocks[this.currentProcessNdx];
-                }
-
-                
-            }
-
-            }
-
-            /*var nextProcess = this.processes.dequeue();
-            if(nextProcess != "terminated" || nextProcess != "completed"){
-                this.processes.enqueue(nextProcess)
-            }
-
-            // Create pointer to find next process
-            var nextProcessNdx = this.currentProcessNdx+1
-            while(nextProcessNdx != this.currentProcessNdx){
-                if(this.processes[nextProcessNdx].state === "executing"){
-                    // This is the process that will now be run. Set pointer and return process.
-                    this.currentProcessNdx = nextProcessNdx;
-                    return this.processes[this.currentProcessNdx];
-                }
-                else{
-                    nextProcessNdx++;
-                    //circular array
-                    if(nextProcessNdx = this.processes.length){
-                        nextProcessNdx = 0;
-                    }
+                } else { // Otherwise the cpu has nothing to execute. Reflect this here.
+                    this.currentProcessNdx = null;
+                    console.log('loop was made');
+                    _CPU.isExecuting = false;
+                    return null;
                 }
             }
-            // If we got here that means the function made a full loop to the process already running. 
-            if(nextProcessNdx == this.currentProcessNdx){
-
-            }*/
-        }
-
-        public clearQueue(emptyFlag){
-            // setEmpty handles segment empty flag 
-            this.processes = new Array();
         }
 
     }
 }
+
