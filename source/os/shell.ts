@@ -137,6 +137,12 @@ module TSOS {
                                 "Terminates all processes");
           this.commandList[this.commandList.length] = sc;
 
+          // run all
+          sc = new ShellCommand(this.shellRunAll,
+                                "runall",
+                                "Runs all loaded processes");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -483,6 +489,12 @@ module TSOS {
       public shellKillAll(args: string[]){
         for(var i =0; i< _MemoryManager.processControlBlocks.length; i++){
           _MemoryManager.processControlBlocks[i].kill();
+        }
+      }
+
+      public shellRunAll(args: string[]){
+        for(var i=0; i<_MemoryManager.processControlBlocks.length; i++){
+          _CPU.startExecution(_MemoryManager.processControlBlocks[i]);
         }
       }
 

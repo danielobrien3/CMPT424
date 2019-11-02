@@ -76,6 +76,9 @@ var TSOS;
             // kill all
             sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "Terminates all processes");
             this.commandList[this.commandList.length] = sc;
+            // run all
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "Runs all loaded processes");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -395,6 +398,11 @@ var TSOS;
         Shell.prototype.shellKillAll = function (args) {
             for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
                 _MemoryManager.processControlBlocks[i].kill();
+            }
+        };
+        Shell.prototype.shellRunAll = function (args) {
+            for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
+                _CPU.startExecution(_MemoryManager.processControlBlocks[i]);
             }
         };
         return Shell;
