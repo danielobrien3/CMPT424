@@ -1,0 +1,101 @@
+/* ----------------------------------
+   DeviceDriverKeyboard.ts
+
+   The Kernel Keyboard Device Driver.
+   ---------------------------------- */
+
+module TSOS {
+
+    // Extends DeviceDriver
+    export class DeviceDriverDisk extends DeviceDriver {
+
+        constructor(public tsbList: Array<Tsb> = [new Tsb(false, "0:0:1", "0:0:1")]) {
+            // Override the base method pointers.
+
+            // The code below cannot run because "this" can only be
+            // accessed after calling super.
+            // super(this.krnKbdDriverEntry, this.krnKbdDispatchKeyPress);
+            // So instead...
+            super();
+            this.tsbList = [];
+            this.driverEntry = this.krnDskDriverEntry;
+        }
+
+        public format(){
+            _disk.format();
+            var counter = 0;
+            for(var t=0; t<_disk.tracks; t++){
+                for(var s=0; s<_disk.sectors; s++){
+                    for(var b=0; b<_disk.blocks; b++){
+                        var str = t + ":" s + ":" + b;
+                        this.tsbList[counter] = new Tsb(false, str, null);
+                    }
+                }
+            }
+        }
+
+        public createFile(fileName){
+            // First get the file name in hex. 
+            var fileNameHex = this.textToHex(fileName);
+
+            // Then check if the file already exists
+            for(var i=0; i<this.tsbList.length; i++){
+                // The file must be in use and in the directory (sector 0) to already exist
+                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === "0"){
+                    if(_disk.read(this.tsbList[i].location).trim() === fileNameHex){
+                        _StdOut.putText("Bad news: file " + fileName + " can't be created. Good news: it already exists.")
+                        return false;
+                    }
+                }
+            }
+
+            var directoryBlock = null;
+            // Then find the next available directory entry we can store the file in. 
+            for(var i = 0; i<this.tsbList.length; i++){
+                if(!this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === "0"){
+                    directoryBlock = this.tsbList[i];
+                }
+            }
+
+            // Then create the file
+            if(directoryBlock){
+                _disk.write(directoryBlock.location, fileNameHex);
+                directoryBlock.inUse = true;
+                return true;
+            }
+            else{
+                _StdOut.putText("Bad news: File " + fileName + " could not be created because there is no free space in the file directory. Please format the drive before trying again.");
+                return false;
+            }
+        }
+
+        // Figured this was going to be needed often enough that making it its own function would be for the best. 
+        public textToHex(text){
+            var tempText = text.split("");
+            var hex = ""
+            for(var i=text.length; i>0; i--){
+                hex += tempText[i].charAt(0).toString(16);
+            }
+        }
+
+        public getNewDirector(){
+
+        }
+    }
+}
+
+
+module TSOS {
+
+    // Class represents a specific TSB. Track and Sector are used as values to help specify the TSB. 
+    export class Tsb {
+
+        // Size is 61 because theoretically the first byte is used to store "inUse" and the second and third byte stores "next".
+        constructor(public inUse: false,
+                    public location: string,
+                    public next: string){}
+
+        
+    }
+}
+
