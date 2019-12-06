@@ -83,7 +83,7 @@ module TSOS {
             var openBlocks = new Array();
             for(var i=0; i<this.tsbList.length; i++){
                 if(!this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) != '0'){
-                    openBlocks.push(i);
+                    openBlocks.push(this.tsbList[i]);
                     if(openBlocks.length >= blocksNeeded){ // Leave the for loop once all necessary open blocks are found. 
                         i = this.tsbList.length;
                     }
@@ -97,12 +97,39 @@ module TSOS {
             }
             
             // Find directory entry for file specified
-            for(var i =0; i<this.tsbList.length; i++){
-                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === '0'){
-
-                }
+            var directoryEntry = this.findFile(fileName);
+            if(directoryEntry === false){
+                _StdOut.putText("The file you tried writing to does not exist");
+                return false;
             }
 
+            // Break up data into block-sized pieces.
+            var splitData = new Array();
+            for(var i=0; i<blocksNeeded; i++){
+                var sliceBegin = i * charactersInBlock;
+                // If i + 1 is === blocksNeeded, then we need to slice at the end of the data.
+                var sliceEnd;
+                if(i+1 === blocksNeeded){
+                    sliceEnd = data.length;
+                }
+                else{
+                    sliceEnd = (i+1) * charactersInBlock;
+                }
+                splitData.push(data.slice(sliceBegin, sliceEnd));
+                console.log(splitData[i]);
+            }
+
+            // Set linking for blocks
+            directoryEntry.setNext(openBlocks[0].location);
+            if(blocksNeeded>1){
+                for(var i=0; i < blocksNeeded; i++){
+                    openBlocks[i].setNext(openBlocks[i+1].location);
+                }
+            }
+            // Write data to blocks
+            for(var i = 0; i<splitData.length; i++){
+                _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
+            }
         }
 
         // Figured this was going to be needed often enough that making it its own function would be for the best. 
@@ -149,6 +176,10 @@ module TSOS {
 
         public setUse(bool){
             this.inUse = bool;
+        }
+
+        public setNext(location){
+            this.next = location;
         }
         
     }

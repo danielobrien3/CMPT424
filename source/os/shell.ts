@@ -161,6 +161,12 @@ module TSOS {
                                 "- Formats disk (deletes everything currently on disk!).");
           this.commandList[this.commandList.length] = sc;
 
+          // write data to file
+          sc = new ShellCommand(this.shellWriteToFile,
+                                "write",
+                                "- <fileName> \"data\"- Writes data in quotes to file");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -536,6 +542,20 @@ module TSOS {
         }
         else{
           _StdOut.putText("Please provide a file name");
+        }
+      }
+
+      public shellWriteToFile(args: string[]){
+        if(args.length >= 2){
+          var fileName = args[0];
+          var data = ""
+          for(var i=1; i<args.length; i++){
+            data += args[i];
+          }
+          data.slice(1, -1);
+          _krnDiskDriver.writeToFile(fileName, data);
+        } else {
+          _StdOut.putText("You have not provided enough arguments.")
         }
       }
 
