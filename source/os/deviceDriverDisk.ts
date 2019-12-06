@@ -35,6 +35,8 @@ module TSOS {
                     }
                 }
             }
+            // set the mbr to inUse
+            this.tsbList[0].setUse(true);
         }
 
         public createFile(fileName){
@@ -44,7 +46,6 @@ module TSOS {
                 return false;
             }
             var fileNameHex = this.textToHex(fileName);
-            console.log(fileNameHex);
             // Then check if the file already exists
             for(var i=0; i<this.tsbList.length; i++){
                 // The file must be in use and in the directory (sector 0) to already exist
@@ -85,7 +86,6 @@ module TSOS {
             var hex = ""
             for(var i=0; i<tempText.length; i++){
                 hex += tempText[i].charCodeAt(0).toString(16);
-                console.log(tempText[i].charCodeAt(0).toString(16));
             }
             return hex;
         }
@@ -100,10 +100,13 @@ module TSOS {
     export class Tsb {
 
         // Size is 61 because theoretically the first byte is used to store "inUse" and the second and third byte stores "next".
-        constructor(public inUse: false,
+        constructor(public inUse: boolean = false,
                     public location: string,
                     public next: string){}
 
+        public setUse(bool){
+            this.inUse = bool;
+        }
         
     }
 }

@@ -48,6 +48,8 @@ var TSOS;
                     }
                 }
             }
+            // set the mbr to inUse
+            this.tsbList[0].setUse(true);
         };
         DeviceDriverDisk.prototype.createFile = function (fileName) {
             // First get the file name in hex. 
@@ -56,7 +58,6 @@ var TSOS;
                 return false;
             }
             var fileNameHex = this.textToHex(fileName);
-            console.log(fileNameHex);
             // Then check if the file already exists
             for (var i = 0; i < this.tsbList.length; i++) {
                 // The file must be in use and in the directory (sector 0) to already exist
@@ -94,7 +95,6 @@ var TSOS;
             var hex = "";
             for (var i = 0; i < tempText.length; i++) {
                 hex += tempText[i].charCodeAt(0).toString(16);
-                console.log(tempText[i].charCodeAt(0).toString(16));
             }
             return hex;
         };
@@ -107,10 +107,14 @@ var TSOS;
     var Tsb = /** @class */ (function () {
         // Size is 61 because theoretically the first byte is used to store "inUse" and the second and third byte stores "next".
         function Tsb(inUse, location, next) {
+            if (inUse === void 0) { inUse = false; }
             this.inUse = inUse;
             this.location = location;
             this.next = next;
         }
+        Tsb.prototype.setUse = function (bool) {
+            this.inUse = bool;
+        };
         return Tsb;
     }());
     TSOS.Tsb = Tsb;
