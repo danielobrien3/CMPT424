@@ -93,8 +93,8 @@ var TSOS;
             var tempText = text.split("");
             var hex = "";
             for (var i = 0; i < tempText.length; i++) {
-                hex += tempText[i].charAt(0).toString(16);
-                console.log(tempText[i].charAt(0).toString(16));
+                hex += tempText[i].charCodeAt(0).toString(16);
+                console.log(tempText[i].charCodeAt(0).toString(16));
             }
             return hex;
         };
