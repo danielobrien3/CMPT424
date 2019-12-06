@@ -127,12 +127,15 @@ var TSOS;
             directoryEntry.setNext(openBlocks[0].location);
             if (blocksNeeded > 1) {
                 for (var i = 0; i < blocksNeeded; i++) {
-                    openBlocks[i].setNext(openBlocks[i + 1].location);
+                    if (i + 1 < blocksNeeded) {
+                        openBlocks[i].setNext(openBlocks[i + 1].location);
+                    }
                 }
             }
             // Write data to blocks
             for (var i = 0; i < splitData.length; i++) {
                 _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
+                console.log(openBlocks[i].location);
             }
         };
         // Figured this was going to be needed often enough that making it its own function would be for the best. 

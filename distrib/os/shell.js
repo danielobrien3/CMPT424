@@ -439,16 +439,24 @@ var TSOS;
         };
         Shell.prototype.shellWriteToFile = function (args) {
             if (args.length >= 2) {
-                var fileName = args[0];
-                var data = "";
-                for (var i = 1; i < args.length; i++) {
-                    data += args[i];
+                if (args[1].charAt(0) === "'" && args[args.length - 1].charAt(args[args.length - 1].length - 1) === "'") {
+                    var fileName = args[0];
+                    var data = "";
+                    for (var i = 1; i < args.length; i++) {
+                        data += args[i];
+                        if (i + 1 != args.length) {
+                            data += " ";
+                        }
+                    }
+                    data = data.slice(1, -1);
+                    _krnDiskDriver.writeToFile(fileName, data);
                 }
-                data.slice(1, -1);
-                _krnDiskDriver.writeToFile(fileName, data);
+                else {
+                    _StdOut.putText("Data cannot be written, You did not wrap your data in quotes");
+                }
             }
             else {
-                _StdOut.putText("You have not provided enough arguments.");
+                _StdOut.putText("Data cannot be written, You have not provided enough arguments.");
             }
         };
         return Shell;
