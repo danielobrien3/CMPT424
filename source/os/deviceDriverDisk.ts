@@ -80,6 +80,34 @@ module TSOS {
             }
         }
 
+        public writeToFile(fileName, data){
+            // Determine how many blocks we need to write this data
+            var blocksNeeded = Math.ceil(data.length / 64); 
+
+            // Find open blocks to store data (if they exist)
+            var openBlocks = new Array();
+            for(var i=0; i<this.tsbList.length; i++){
+                if(!this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) != '0'){
+                    openBlocks.push(i);
+                    if(openBlocks.length >= blocksNeeded){ // Leave the for loop once all necessary open blocks are found. 
+                        i = this.tsbList.length;
+                    }
+                }
+            }
+
+            // Make sure necessary blocks were found
+            if(openBlocks.length < blocksNeeded){
+                _StdOut.putText("There is not enough available memory to write to this data.");
+                return false;
+            }
+            
+            // Find directory entry for file specified
+            for(var i =0; i<this.tsbList.length; i++){
+                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === '0')
+            }
+
+        }
+
         // Figured this was going to be needed often enough that making it its own function would be for the best. 
         public textToHex(text){
             var tempText = text.split("");
@@ -99,7 +127,7 @@ module TSOS {
     // Class represents a specific TSB. Track and Sector are used as values to help specify the TSB. 
     export class Tsb {
 
-        // Size is 61 because theoretically the first byte is used to store "inUse" and the second and third byte stores "next".
+        // Every tracks' sector 0 is reserved for directory purposes.
         constructor(public inUse: boolean = false,
                     public location: string,
                     public next: string){}
