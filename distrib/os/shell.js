@@ -74,13 +74,19 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellKillPid, "kill", "<pid> - Terminates process by process id (pid)");
             this.commandList[this.commandList.length] = sc;
             // kill all
-            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "Terminates all processes");
+            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "- Terminates all processes");
             this.commandList[this.commandList.length] = sc;
             // run all
-            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "Runs all loaded processes");
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "- Runs all loaded processes");
             this.commandList[this.commandList.length] = sc;
             // change quantum
-            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "Changes the CPU Scheduler's quantum count");
+            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "- Changes the CPU Scheduler's quantum count");
+            this.commandList[this.commandList.length] = sc;
+            // create file
+            sc = new TSOS.ShellCommand(this.shellCreateFile, "create", "- <string> - creates file name with provided string parameter.");
+            this.commandList[this.commandList.length] = sc;
+            // format disk
+            sc = new TSOS.ShellCommand(this.shellFormatDisk, "format", "- Formats disk (deletes everything currently on disk!).");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -414,6 +420,18 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Please provide a single integer for the new quantum value.");
+            }
+        };
+        Shell.prototype.shellFormatDisk = function (args) {
+            _krnDiskDriver.format();
+            _StdOut.putText("The disk drive has been formatted!");
+        };
+        Shell.prototype.shellCreateFile = function (args) {
+            if (args.length > 0) {
+                _krnDiskDriver.createFile(args[0]);
+            }
+            else {
+                _StdOut.putText("Please provide a file name");
             }
         };
         return Shell;

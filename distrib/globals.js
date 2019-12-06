@@ -22,6 +22,7 @@ var KEYBOARD_IRQ = 1;
 //
 var _Memory;
 var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
+var _Disk;
 var _MemoryAccessor;
 var _MemoryManager;
 var _CpuScheduler;
@@ -49,6 +50,7 @@ var _OsShell;
 var _SarcasticMode = false;
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver = null;
+var _krnDiskDriver = null;
 var _hardwareClockID = null;
 // For testing (and enrichment)...
 var Glados = null; // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .

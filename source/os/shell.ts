@@ -134,19 +134,31 @@ module TSOS {
           // kill all
           sc = new ShellCommand(this.shellKillAll,
                                 "killall",
-                                "Terminates all processes");
+                                "- Terminates all processes");
           this.commandList[this.commandList.length] = sc;
 
           // run all
           sc = new ShellCommand(this.shellRunAll,
                                 "runall",
-                                "Runs all loaded processes");
+                                "- Runs all loaded processes");
           this.commandList[this.commandList.length] = sc;
 
           // change quantum
           sc = new ShellCommand(this.shellQuantum,
                                 "quantum",
-                                "Changes the CPU Scheduler's quantum count");
+                                "- Changes the CPU Scheduler's quantum count");
+          this.commandList[this.commandList.length] = sc;
+
+          // create file
+          sc = new ShellCommand(this.shellCreateFile,
+                                "create",
+                                "- <string> - creates file name with provided string parameter.");
+          this.commandList[this.commandList.length] = sc;
+
+          // format disk
+          sc = new ShellCommand(this.shellFormatDisk,
+                                "format",
+                                "- Formats disk (deletes everything currently on disk!).");
           this.commandList[this.commandList.length] = sc;
 
           // ps  - list the running processes and their IDs
@@ -510,6 +522,20 @@ module TSOS {
         }
         else{
           _StdOut.putText("Please provide a single integer for the new quantum value.");
+        }
+      }
+
+      public shellFormatDisk(args: string[]){
+        _krnDiskDriver.format();
+        _StdOut.putText("The disk drive has been formatted!");
+      }
+
+      public shellCreateFile(args: string[]){
+        if(args.length>0){
+          _krnDiskDriver.createFile(args[0])
+        }
+        else{
+          _StdOut.putText("Please provide a file name");
         }
       }
 

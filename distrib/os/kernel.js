@@ -27,6 +27,7 @@ var TSOS;
             _MemoryManager = new TSOS.MemoryManager();
             _MemoryManager.init();
             _CpuScheduler = new TSOS.CpuScheduler();
+            _Disk = new TSOS.Disk();
             // Initialize standard input and output to the _Console.
             _StdIn = _Console;
             _StdOut = _Console;
@@ -35,6 +36,9 @@ var TSOS;
             _krnKeyboardDriver = new TSOS.DeviceDriverKeyboard(); // Construct it.
             _krnKeyboardDriver.driverEntry(); // Call the driverEntry() initialization routine.
             this.krnTrace(_krnKeyboardDriver.status);
+            this.krnTrace("Loading the disk device driver");
+            _krnDiskDriver = new TSOS.DeviceDriverDisk();
+            _krnDiskDriver.driverEntry();
             //
             // ... more?
             //
