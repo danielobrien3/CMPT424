@@ -58,3 +58,4 @@ var _GLaDOS = null; // If the above is linked in, this is the instantiated insta
 var onDocumentLoad = function () {
     TSOS.Control.hostInit();
 };
+var charactersInBlock = 128;

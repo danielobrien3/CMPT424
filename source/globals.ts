@@ -77,3 +77,5 @@ var _GLaDOS: any = null; // If the above is linked in, this is the instantiated 
 var onDocumentLoad = function() {
 	TSOS.Control.hostInit();
 };
+
+var charactersInBlock: number = 128;

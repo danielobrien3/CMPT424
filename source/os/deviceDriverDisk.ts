@@ -47,14 +47,9 @@ module TSOS {
             }
             var fileNameHex = this.textToHex(fileName);
             // Then check if the file already exists
-            for(var i=0; i<this.tsbList.length; i++){
-                // The file must be in use and in the directory (sector 0) to already exist
-                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === '0'){
-                    if(_Disk.read(this.tsbList[i].location) === fileNameHex){
-                        _StdOut.putText("Bad news: file " + fileName + " can't be created. Good news: it already exists.")
-                        return false;
-                    }
-                }
+            if(this.findFile(fileName)){
+                _StdOut.putText("Bad news: file " + fileName + " can't be created. Good news: it already exists.");
+                return false;
             }
 
             var directoryBlock = null;
@@ -103,7 +98,9 @@ module TSOS {
             
             // Find directory entry for file specified
             for(var i =0; i<this.tsbList.length; i++){
-                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === '0')
+                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2) === '0'){
+
+                }
             }
 
         }
@@ -116,6 +113,24 @@ module TSOS {
                 hex += tempText[i].charCodeAt(0).toString(16);
             }
             return hex;
+        }
+
+        // Another thing that will be needed often enough to be abstracted out to its own function. 
+        public findFile(fileName){
+            // Make provided file name match what is stored in data...
+            // ... this means converting it to hex and extending it to 64 bytes.
+            var tempFileName = this.textToHex(fileName);
+            while(tempFileName.length < charactersInBlock){
+                tempFileName += "00";
+            }
+            for(var i=0; i<this.tsbList.length; i++){
+                if(this.tsbList[i].inUse && this.tsbList[i].location.charAt(2)==="0"){
+                    if(tempFileName === _Disk.read(this.tsbList[i].location)){
+                        return this.tsbList[i];
+                    }
+                }
+            }
+            return false;
         }
 
     }

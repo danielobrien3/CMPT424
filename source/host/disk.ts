@@ -33,8 +33,7 @@ module TSOS {
         }
 
         public write(tsb, data){
-            // Please excuse the magic number here. I want to make sure all 64 bytes of the block are in use.
-            while(data.length < 128){
+            while(data.length < charactersInBlock){
                 data += "00";
             }
             sessionStorage.setItem(tsb, data);
