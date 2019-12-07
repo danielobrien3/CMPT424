@@ -94,6 +94,9 @@ var TSOS;
             // read data from file
             sc = new TSOS.ShellCommand(this.shellReadDataFromFile, "read", "- <fileName> - Reads data in file");
             this.commandList[this.commandList.length] = sc;
+            // delete file
+            sc = new TSOS.ShellCommand(this.shellDeleteFile, "delete", "- <fileName> - deletes file");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -464,11 +467,21 @@ var TSOS;
         };
         Shell.prototype.shellReadDataFromFile = function (args) {
             if (args.length != 1) {
-                _StdOut.putText("Please provide one fileName argument");
+                _StdOut.putText("Please provide one file to read from");
             }
             else {
                 var data = _krnDiskDriver.readFile(args[0]);
-                _StdOut.putText(args[0] + ": '" + data + "'");
+                if (data != false) {
+                    _StdOut.putText(args[0] + ": '" + data + "'");
+                }
+            }
+        };
+        Shell.prototype.shellDeleteFile = function (args) {
+            if (args.length != 1) {
+                _StdOut.putText("Please provide one file to delete");
+            }
+            else {
+                _krnDiskDriver.deleteFile(args[0]);
             }
         };
         return Shell;

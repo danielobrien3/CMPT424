@@ -20,7 +20,7 @@ var TSOS;
         __extends(DeviceDriverDisk, _super);
         function DeviceDriverDisk(tsbList) {
             // Override the base method pointers.
-            if (tsbList === void 0) { tsbList = [new TSOS.Tsb(false, "0:0:1", "0:0:1")]; }
+            if (tsbList === void 0) { tsbList = [new TSOS.Tsb(false, null, null)]; }
             var _this = 
             // The code below cannot run because "this" can only be
             // accessed after calling super.
@@ -162,6 +162,7 @@ var TSOS;
                     }
                 }
             }
+            return null;
         };
         DeviceDriverDisk.prototype.readFile = function (fileName) {
             var file = this.findFile(fileName);
@@ -200,6 +201,28 @@ var TSOS;
             }
             return convertedData;
         };
+        DeviceDriverDisk.prototype.deleteFile = function (fileName) {
+            var file = this.findFile(fileName);
+            // Make sure file exists
+            if (file === null) {
+                _StdOut.putText("File <" + fileName + "> does not exist.");
+                return false;
+            }
+            // Get all linked blocks
+            var blocks = [];
+            blocks.push(file);
+            while (file.next != null) {
+                file = file.next;
+                blocks.push(file);
+            }
+            // Set all linked blocks to not inUse and no next
+            for (var i = 0; i < blocks.length; i++) {
+                blocks[i].setUse(false);
+                blocks[i].unlinkNext();
+                ;
+            }
+            _StdOut.putText("File <" + fileName + "> has been deleted");
+        };
         return DeviceDriverDisk;
     }(TSOS.DeviceDriver));
     TSOS.DeviceDriverDisk = DeviceDriverDisk;
@@ -210,7 +233,7 @@ var TSOS;
         // Every tracks' sector 0 is reserved for directory purposes.
         function Tsb(inUse, location, next) {
             if (inUse === void 0) { inUse = false; }
-            if (next === void 0) { next = new Tsb(false, null, null); }
+            if (next === void 0) { next = null; }
             this.inUse = inUse;
             this.location = location;
             this.next = next;
@@ -221,6 +244,9 @@ var TSOS;
         Tsb.prototype.setNext = function (tsb) {
             this.next = tsb;
             this.next.setUse(true);
+        };
+        Tsb.prototype.unlinkNext = function () {
+            this.next = null;
         };
         return Tsb;
     }());

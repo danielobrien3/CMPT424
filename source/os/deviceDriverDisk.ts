@@ -6,7 +6,7 @@ module TSOS {
     // Extends DeviceDriver
     export class DeviceDriverDisk extends DeviceDriver {
 
-        constructor(public tsbList: Array<Tsb> = [new Tsb(false, "0:0:1", "0:0:1")]) {
+        constructor(public tsbList: Array<Tsb> = [new Tsb(false, null, null)]) {
             // Override the base method pointers.
 
             // The code below cannot run because "this" can only be
@@ -160,6 +160,7 @@ module TSOS {
                     }
                 }
             }
+            return null;
         }
 
         public readFile(fileName){
@@ -203,6 +204,29 @@ module TSOS {
             return convertedData;
         }
 
+        public deleteFile(fileName){
+            var file = this.findFile(fileName);
+            // Make sure file exists
+            if(file === null){
+                _StdOut.putText("File <" + fileName  + "> does not exist.");
+                return false;
+            }
+            // Get all linked blocks
+            var blocks = []
+            blocks.push(file);
+            while(file.next!= null){
+                file = file.next;
+                blocks.push(file);
+            }
+
+            // Set all linked blocks to not inUse and no next
+            for(var i=0; i<blocks.length; i++){
+                blocks[i].setUse(false);
+                blocks[i].unlinkNext();;
+            }
+            _StdOut.putText("File <" + fileName + "> has been deleted");
+        }
+
     }
 }
 
@@ -215,7 +239,7 @@ module TSOS {
         // Every tracks' sector 0 is reserved for directory purposes.
         constructor(public inUse: boolean = false,
                     public location: string,
-                    public next: any = new Tsb(false, null, null) ){}
+                    public next: Tsb = null){}
 
         public setUse(bool){
             this.inUse = bool;
@@ -224,6 +248,10 @@ module TSOS {
         public setNext(tsb){
             this.next = tsb;
             this.next.setUse(true);
+        }
+
+        public unlinkNext(){
+            this.next = null;
         }
         
     }

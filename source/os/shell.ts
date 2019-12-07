@@ -173,6 +173,12 @@ module TSOS {
                                 "- <fileName> - Reads data in file");
           this.commandList[this.commandList.length] = sc;
 
+          // delete file
+          sc = new ShellCommand(this.shellDeleteFile,
+                                "delete",
+                                "- <fileName> - deletes file");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -576,10 +582,20 @@ module TSOS {
 
       public shellReadDataFromFile(args: string[]){
         if(args.length != 1){
-          _StdOut.putText("Please provide one fileName argument");
+          _StdOut.putText("Please provide one file to read from");
         } else {
           var data = _krnDiskDriver.readFile(args[0]);
-          _StdOut.putText(args[0] + ": '" + data + "'");
+          if(data != false){
+            _StdOut.putText(args[0] + ": '" + data + "'");
+          }
+        }
+      }
+
+      public shellDeleteFile(args: string[]){
+        if(args.length != 1){
+          _StdOut.putText("Please provide one file to delete");
+        } else {
+          _krnDiskDriver.deleteFile(args[0]);
         }
       }
 
