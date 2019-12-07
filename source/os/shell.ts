@@ -179,6 +179,12 @@ module TSOS {
                                 "- <fileName> - deletes file");
           this.commandList[this.commandList.length] = sc;
 
+          // list files
+          sc = new ShellCommand(this.shellListFiles,
+                                "ls",
+                                "- lists all non-hidden files on disk");
+          this.commandList[this.commandList.length] = sc;
+
           // ps  - list the running processes and their IDs
           // kill <id> - kills the specified process id.
 
@@ -597,6 +603,10 @@ module TSOS {
         } else {
           _krnDiskDriver.deleteFile(args[0]);
         }
+      }
+
+      public shellListFiles(args: string[]){
+        _krnDiskDriver.listFiles();
       }
 
   }

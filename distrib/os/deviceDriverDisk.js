@@ -182,24 +182,9 @@ var TSOS;
                 file = file.next;
                 data += _Disk.read(file.location);
             }
-            // Trim data...
-            data = data.replace("00", "");
-            /*var sliceEnd = data.length;
-            for(var i = 0; i<data.length; i++){ // Trim at first '00' byte found.
-                if(data.charAt(i) == "0" && data.charAt(i+1)=="0"){
-                    sliceEnd = i;
-                    i = data.length; // exits the loop.
-                }
-            }
-            data = data.slice(0, sliceEnd);*/
-            // ... and convert it back from hex
-            var convertedData = "";
-            for (var i = 0; i < data.length; i += 2) {
-                var byte = data.charAt(i) + data.charAt(i + 1);
-                var decimalValue = parseInt(byte, 16);
-                convertedData += String.fromCharCode(decimalValue);
-            }
-            return convertedData;
+            // ... and convert data from hex
+            data = this.convertFromHex(data);
+            return data;
         };
         DeviceDriverDisk.prototype.deleteFile = function (fileName) {
             var file = this.findFile(fileName);
@@ -222,6 +207,28 @@ var TSOS;
                 ;
             }
             _StdOut.putText("File <" + fileName + "> has been deleted");
+        };
+        DeviceDriverDisk.prototype.listFiles = function () {
+            for (var i = 0; i < this.tsbList.length; i++) {
+                var file = this.tsbList[i];
+                if (file.inUse && file.location.charAt(2) === '0') { //Only get in use directory entries
+                    var fileName = this.convertFromHex(_Disk.read(file.location));
+                    if (fileName.charAt(0) != "." && file.location != "0:0:0") { // Ignore hidden files and MBR
+                        _StdOut.putText(fileName + " ");
+                    }
+                }
+            }
+        };
+        DeviceDriverDisk.prototype.convertFromHex = function (data) {
+            // Trim data...
+            data = data.replace("00", "");
+            var convertedData = "";
+            for (var i = 0; i < data.length; i += 2) {
+                var byte = data.charAt(i) + data.charAt(i + 1);
+                var decimalValue = parseInt(byte, 16);
+                convertedData += String.fromCharCode(decimalValue);
+            }
+            return convertedData;
         };
         return DeviceDriverDisk;
     }(TSOS.DeviceDriver));

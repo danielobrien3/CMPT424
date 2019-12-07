@@ -97,6 +97,9 @@ var TSOS;
             // delete file
             sc = new TSOS.ShellCommand(this.shellDeleteFile, "delete", "- <fileName> - deletes file");
             this.commandList[this.commandList.length] = sc;
+            // list files
+            sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "- lists all non-hidden files on disk");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -483,6 +486,9 @@ var TSOS;
             else {
                 _krnDiskDriver.deleteFile(args[0]);
             }
+        };
+        Shell.prototype.shellListFiles = function (args) {
+            _krnDiskDriver.listFiles();
         };
         return Shell;
     }());
