@@ -182,8 +182,6 @@ var TSOS;
                 file = file.next;
                 data += _Disk.read(file.location);
             }
-            // ... and convert data from hex
-            data = this.convertFromHex(data);
             return data;
         };
         DeviceDriverDisk.prototype.deleteFile = function (fileName) {

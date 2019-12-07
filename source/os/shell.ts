@@ -592,7 +592,7 @@ module TSOS {
         } else {
           var data = _krnDiskDriver.readFile(args[0]);
           if(data != false){
-            _StdOut.putText(args[0] + ": '" + data + "'");
+            _StdOut.putText(args[0] + ": '" + _krnDiskDriver.convertFromHex(data) + "'");
           }
         }
       }
