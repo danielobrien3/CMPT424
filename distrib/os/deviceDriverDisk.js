@@ -104,7 +104,7 @@ var TSOS;
             }
             // Find directory entry for file specified
             var directoryEntry = this.findFile(fileName);
-            if (directoryEntry === false) {
+            if (directoryEntry === null) {
                 _StdOut.putText("The file you tried writing to does not exist");
                 return false;
             }
@@ -124,11 +124,11 @@ var TSOS;
                 console.log(splitData[i]);
             }
             // Set linking for blocks
-            directoryEntry.setNext(openBlocks[0].location);
+            directoryEntry.setNext(openBlocks[0]);
             if (blocksNeeded > 1) {
                 for (var i = 0; i < blocksNeeded; i++) {
                     if (i + 1 < blocksNeeded) {
-                        openBlocks[i].setNext(openBlocks[i + 1].location);
+                        openBlocks[i].setNext(openBlocks[i + 1]);
                     }
                 }
             }
@@ -162,7 +162,43 @@ var TSOS;
                     }
                 }
             }
-            return false;
+        };
+        DeviceDriverDisk.prototype.readFile = function (fileName) {
+            var file = this.findFile(fileName);
+            // Make sure file exists...
+            if (file === null) {
+                _StdOut.putText("File <" + fileName + "> does not exist.");
+                return false;
+            }
+            // Make sure file has data written to it
+            if (file.next === null) {
+                _StdOut.putText("File <" + fileName + "> has no data written to it");
+                return false;
+            }
+            // Loop through file-links getting data
+            var data = "";
+            while (file.next != null) {
+                file = file.next;
+                data += _Disk.read(file.location);
+            }
+            // Trim data...
+            data = data.replace("00", "");
+            /*var sliceEnd = data.length;
+            for(var i = 0; i<data.length; i++){ // Trim at first '00' byte found.
+                if(data.charAt(i) == "0" && data.charAt(i+1)=="0"){
+                    sliceEnd = i;
+                    i = data.length; // exits the loop.
+                }
+            }
+            data = data.slice(0, sliceEnd);*/
+            // ... and convert it back from hex
+            var convertedData = "";
+            for (var i = 0; i < data.length; i += 2) {
+                var byte = data.charAt(i) + data.charAt(i + 1);
+                var decimalValue = parseInt(byte, 16);
+                convertedData += String.fromCharCode(decimalValue);
+            }
+            return convertedData;
         };
         return DeviceDriverDisk;
     }(TSOS.DeviceDriver));
@@ -174,6 +210,7 @@ var TSOS;
         // Every tracks' sector 0 is reserved for directory purposes.
         function Tsb(inUse, location, next) {
             if (inUse === void 0) { inUse = false; }
+            if (next === void 0) { next = new Tsb(false, null, null); }
             this.inUse = inUse;
             this.location = location;
             this.next = next;
@@ -181,8 +218,9 @@ var TSOS;
         Tsb.prototype.setUse = function (bool) {
             this.inUse = bool;
         };
-        Tsb.prototype.setNext = function (location) {
-            this.next = location;
+        Tsb.prototype.setNext = function (tsb) {
+            this.next = tsb;
+            this.next.setUse(true);
         };
         return Tsb;
     }());

@@ -98,7 +98,7 @@ module TSOS {
             
             // Find directory entry for file specified
             var directoryEntry = this.findFile(fileName);
-            if(directoryEntry === false){
+            if(directoryEntry === null){
                 _StdOut.putText("The file you tried writing to does not exist");
                 return false;
             }
@@ -120,11 +120,11 @@ module TSOS {
             }
 
             // Set linking for blocks
-            directoryEntry.setNext(openBlocks[0].location);
+            directoryEntry.setNext(openBlocks[0]);
             if(blocksNeeded>1){
                 for(var i=0; i < blocksNeeded; i++){
                     if(i + 1 < blocksNeeded){
-                        openBlocks[i].setNext(openBlocks[i+1].location);
+                        openBlocks[i].setNext(openBlocks[i+1]);
                     }
                 }
             }
@@ -160,7 +160,47 @@ module TSOS {
                     }
                 }
             }
-            return false;
+        }
+
+        public readFile(fileName){
+            var file = this.findFile(fileName);
+            // Make sure file exists...
+            if(file === null){
+                _StdOut.putText("File <" + fileName  + "> does not exist.");
+                return false;
+            }
+            // Make sure file has data written to it
+            if(file.next === null){
+                _StdOut.putText("File <" + fileName +"> has no data written to it");
+                return false;
+            }
+            // Loop through file-links getting data
+            var data = ""
+            while(file.next!=null){
+                file = file.next
+                data += _Disk.read(file.location);
+            } 
+            // Trim data...
+            data = data.replace("00", "");
+            /*var sliceEnd = data.length;
+            for(var i = 0; i<data.length; i++){ // Trim at first '00' byte found.
+                if(data.charAt(i) == "0" && data.charAt(i+1)=="0"){
+                    sliceEnd = i;
+                    i = data.length; // exits the loop.
+                }
+            }
+            data = data.slice(0, sliceEnd);*/
+            
+            // ... and convert it back from hex
+            var convertedData = "";
+            for(var i=0; i<data.length; i += 2){
+                var byte = data.charAt(i) + data.charAt(i+1);
+                var decimalValue = parseInt(byte, 16);
+                convertedData += String.fromCharCode(decimalValue)
+
+            }
+
+            return convertedData;
         }
 
     }
@@ -175,14 +215,15 @@ module TSOS {
         // Every tracks' sector 0 is reserved for directory purposes.
         constructor(public inUse: boolean = false,
                     public location: string,
-                    public next: string){}
+                    public next: any = new Tsb(false, null, null) ){}
 
         public setUse(bool){
             this.inUse = bool;
         }
 
-        public setNext(location){
-            this.next = location;
+        public setNext(tsb){
+            this.next = tsb;
+            this.next.setUse(true);
         }
         
     }

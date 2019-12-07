@@ -91,6 +91,9 @@ var TSOS;
             // write data to file
             sc = new TSOS.ShellCommand(this.shellWriteToFile, "write", "- <fileName> \"data\"- Writes data in quotes to file");
             this.commandList[this.commandList.length] = sc;
+            // read data from file
+            sc = new TSOS.ShellCommand(this.shellReadDataFromFile, "read", "- <fileName> - Reads data in file");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -457,6 +460,15 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Data cannot be written, You have not provided enough arguments.");
+            }
+        };
+        Shell.prototype.shellReadDataFromFile = function (args) {
+            if (args.length != 1) {
+                _StdOut.putText("Please provide one fileName argument");
+            }
+            else {
+                var data = _krnDiskDriver.readFile(args[0]);
+                _StdOut.putText(args[0] + ": '" + data + "'");
             }
         };
         return Shell;
