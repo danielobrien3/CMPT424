@@ -6,12 +6,79 @@
 var TSOS;
 (function (TSOS) {
     var CpuScheduler = /** @class */ (function () {
-        function CpuScheduler(quantum, currentProcessNdx) {
+        function CpuScheduler(quantum, currentProcessNdx, currentAlgorithm) {
             if (quantum === void 0) { quantum = 6; }
             if (currentProcessNdx === void 0) { currentProcessNdx = null; }
+            if (currentAlgorithm === void 0) { currentAlgorithm = "RR"; }
             this.quantum = quantum;
             this.currentProcessNdx = currentProcessNdx;
+            this.currentAlgorithm = currentAlgorithm;
         }
+        CpuScheduler.prototype.handleScheduling = function (pcb) {
+            var process;
+            switch (this.currentAlgorithm) {
+                case "RR":
+                    process = this.checkQuantum(pcb);
+                    return process;
+                    break;
+                case "FCFS":
+                    process = this.fcfs(pcb);
+                    return process;
+                    break;
+                case "Priority":
+                    process = this.priority(pcb);
+                    return process;
+                    break;
+            }
+        };
+        CpuScheduler.prototype.changeAlgorithm = function (algorithm) {
+            if (algorithm === "RR") {
+                this.currentAlgorithm = "RR";
+                _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
+            }
+            else if (algorithm === "FCFS") {
+                this.currentAlgorithm = "FCFS";
+                _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
+            }
+            else if (algorithm === "Priority") {
+                this.currentAlgorithm = "Priority";
+                _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
+            }
+            else {
+                _StdOut.putText("Please select a scheduling algorithm from the options <RR>, <FCFS>, <Priority>");
+            }
+        };
+        CpuScheduler.prototype.fcfs = function (pcb) {
+            // PCB id's are given in order, so just do processes in order of PID
+            if (pcb.state === "completed") {
+                var nextProcess = _MemoryManager.findProcessById(pcb.pid + 1);
+                if (nextProcess != null) {
+                    return nextProcess;
+                }
+            }
+            else {
+                return pcb;
+            }
+        };
+        CpuScheduler.prototype.priority = function (pcb) {
+            var currentProcess = pcb;
+            if (pcb.state === "completed") {
+                var currentPriority = 100000; // Random number too large to be realistically used as process priority
+                for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
+                    if (_MemoryManager.processControlBlocks[i].priority < currentPriority) {
+                        var state = _MemoryManager.processControlBlocks[i].state;
+                        if (state != "completed" || state != "new") {
+                            currentProcess = _MemoryManager.processControlBlocks[i];
+                            currentPriority = currentProcess.priority;
+                        }
+                    }
+                }
+                return currentProcess;
+            }
+            else {
+                return pcb;
+            }
+        };
         CpuScheduler.prototype.setQuantum = function (newQuantum) {
             this.quantum = newQuantum;
         };

@@ -9,7 +9,7 @@
 var TSOS;
 (function (TSOS) {
     var ProcessControlBlock = /** @class */ (function () {
-        function ProcessControlBlock(pid, instrReg, memStart, memEnd, pc, Acc, Xreg, Yreg, Zflag, isExecuting, state, currentSegment, quantumCount, onDisk) {
+        function ProcessControlBlock(pid, instrReg, memStart, memEnd, pc, Acc, Xreg, Yreg, Zflag, isExecuting, state, currentSegment, quantumCount, onDisk, priority) {
             if (pid === void 0) { pid = 0; }
             if (instrReg === void 0) { instrReg = new TSOS.Byte("00"); }
             if (memStart === void 0) { memStart = new TSOS.Byte("00"); }
@@ -24,6 +24,7 @@ var TSOS;
             if (currentSegment === void 0) { currentSegment = TSOS.MemorySegment; }
             if (quantumCount === void 0) { quantumCount = 0; }
             if (onDisk === void 0) { onDisk = false; }
+            if (priority === void 0) { priority = 0; }
             this.pid = pid;
             this.instrReg = instrReg;
             this.memStart = memStart;
@@ -38,13 +39,18 @@ var TSOS;
             this.currentSegment = currentSegment;
             this.quantumCount = quantumCount;
             this.onDisk = onDisk;
+            this.priority = priority;
         }
         ProcessControlBlock.prototype.init = function (pid, memStart, memEnd, currentSegment, onDisk) {
             this.pid = _PidCount;
+            this.priority = _PidCount; // Default priority is set to Pid
             this.memStart = memStart;
             this.memEnd = memEnd;
             this.currentSegment = currentSegment;
             this.onDisk = onDisk;
+        };
+        ProcessControlBlock.prototype.setPriority = function (priority) {
+            this.priority = priority;
         };
         ProcessControlBlock.prototype.assureProcessSize = function (logicalLocation) {
             // Handles the possibility of a newly written byte increasing program size.

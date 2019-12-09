@@ -24,14 +24,20 @@ module TSOS {
             public state: string = "new",
             public currentSegment: any = MemorySegment,
             public quantumCount: number = 0,
-            public onDisk: boolean = false){}
+            public onDisk: boolean = false,
+            public priority: number = 0){}
 
         public init(pid, memStart, memEnd, currentSegment, onDisk){
             this.pid = _PidCount;
+            this.priority = _PidCount; // Default priority is set to Pid
             this.memStart = memStart;
             this.memEnd = memEnd;
             this.currentSegment = currentSegment;
             this.onDisk = onDisk;
+        }
+
+        public setPriority(priority){
+            this.priority = priority;
         }
 
         public assureProcessSize(logicalLocation){

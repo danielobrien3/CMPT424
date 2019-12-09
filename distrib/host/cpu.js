@@ -43,7 +43,7 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             var pcb = _MemoryManager.findProcessById(this.currentProcess);
-            pcb = _CpuScheduler.checkQuantum(pcb);
+            pcb = _CpuScheduler.handleScheduling(pcb);
             this.currentProcess = pcb.pid;
             if (pcb != null && pcb.onDisk === false) {
                 this.setCPU(pcb);
@@ -151,7 +151,9 @@ var TSOS;
                 }
             }
             pcb.update(this);
-            pcb.quantumCount++;
+            if (_CpuScheduler.currentAlgorithm === "RR") {
+                pcb.quantumCount++;
+            }
             this.PC = pcb.pc;
         };
         Cpu.prototype.startExecution = function (pcb) {
@@ -159,6 +161,7 @@ var TSOS;
                 pcb.state = "ready";
             }
             else {
+                console.log("starting execution for process <" + pcb.pid + ">");
                 this.setCPU(pcb);
                 this.currentProcess = pcb.pid;
                 this.isExecuting = true;

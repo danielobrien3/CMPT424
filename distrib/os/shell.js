@@ -60,7 +60,7 @@ var TSOS;
             //Blue Screen of Death
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "- Displays a blue screen, informs user to restart system.");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellLoadUserInput, "load", "- Validates and loads code found in User Program Input window");
+            sc = new TSOS.ShellCommand(this.shellLoadUserInput, "load", "Optional <priority> - Validates and loads code found in User Program Input window. Optional priority is used for CPU scheduling");
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRunProcess, "run", "<pid> - Runs process by process id (pid).");
             this.commandList[this.commandList.length] = sc;
@@ -99,6 +99,12 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             // list files
             sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "- lists all non-hidden files on disk");
+            this.commandList[this.commandList.length] = sc;
+            // set cpu scheduler
+            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<scheduling algorithm>- Changes current CPU scheduler algorithm. Options are <RR> <FCFS> <Priority>");
+            this.commandList[this.commandList.length] = sc;
+            // get current cpu scheduler algorithm
+            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "Get current CPU scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -386,6 +392,9 @@ var TSOS;
                     _StdOut.putText("PID: " + pcb.pid);
                     TSOS.Control.displayPcb(pcb);
                 }
+                if (args.length = 2) {
+                    pcb.setPriority(args[1]);
+                }
             }
             else {
                 _StdOut.putText("Your code is invalid. Please use only hex digits and spaces.");
@@ -489,6 +498,17 @@ var TSOS;
         };
         Shell.prototype.shellListFiles = function (args) {
             _krnDiskDriver.listFiles();
+        };
+        Shell.prototype.shellSetSchedule = function (args) {
+            if (args.length != 2) {
+                _StdOut.putText("Please provide on scheduling algorithm (FCFS, RR, Priority)");
+            }
+            else {
+                _CpuScheduler.changeAlgorithm(args[1]);
+            }
+        };
+        Shell.prototype.shellGetSchedule = function (args) {
+            _StdOut.putText("The scheduling algorithm currently in use is: " + _CpuScheduler.currentAlgorithm);
         };
         return Shell;
     }());

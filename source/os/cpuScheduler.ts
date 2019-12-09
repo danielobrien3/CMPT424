@@ -9,7 +9,80 @@ module TSOS {
     export class CpuScheduler {
 
         constructor(public quantum: number = 6,
-            public currentProcessNdx: number = null){}
+            public currentProcessNdx: number = null,
+            public currentAlgorithm:string = "RR"){}
+
+        public handleScheduling(pcb){
+            var process;
+            switch (this.currentAlgorithm) {
+                case "RR":
+                    process = this.checkQuantum(pcb);
+                    return process;
+                    break;
+                
+                case "FCFS":
+                    process = this.fcfs(pcb);
+                    return process;
+                    break;
+
+                case "Priority":
+                    process = this.priority(pcb);
+                    return process;
+                    break;
+            }
+        }
+
+        public changeAlgorithm(algorithm){
+            if(algorithm === "RR"){
+                this.currentAlgorithm = "RR";
+                _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
+            }
+            else if (algorithm === "FCFS"){
+                this.currentAlgorithm = "FCFS";
+                _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
+            }
+            else if (algorithm === "Priority"){
+                this.currentAlgorithm = "Priority";
+                _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
+            }
+            else {
+                _StdOut.putText("Please select a scheduling algorithm from the options <RR>, <FCFS>, <Priority>");
+            }
+        }
+
+        public fcfs(pcb){
+            // PCB id's are given in order, so just do processes in order of PID
+            if(pcb.state === "completed"){
+                var nextProcess = _MemoryManager.findProcessById(pcb.pid + 1);
+                if(nextProcess != null){
+                    return nextProcess;
+                }
+            }
+            else {
+                return pcb;
+            }
+        }
+
+        public priority(pcb){
+            var currentProcess = pcb;
+            if(pcb.state === "completed"){
+                var currentPriority = 100000; // Random number too large to be realistically used as process priority
+                for(var i=0; i<_MemoryManager.processControlBlocks.length; i++){
+                    if(_MemoryManager.processControlBlocks[i].priority < currentPriority){
+                        var state = _MemoryManager.processControlBlocks[i].state
+                        if(state != "completed" || state!="new"){
+                            currentProcess = _MemoryManager.processControlBlocks[i];
+                            currentPriority = currentProcess.priority;
+                        }
+                    }
+                }
+                return currentProcess;
+            }
+            else {
+                return pcb;
+            }
+        }
+
 
         public setQuantum(newQuantum){
             this.quantum = newQuantum;
