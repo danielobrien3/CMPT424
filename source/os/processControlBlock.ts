@@ -51,15 +51,14 @@ module TSOS {
             this.memEnd = null;
             this.currentSegment.setEmpty(true);
             this.currentSegment = null;
-            this.onDisk = true;
+            this.setOnDisk(true);
         }
 
         public branchPC(val){
+            console.log("Branching <" + this.pid +">");
             if(this.pc + val > this.currentSegment.size){
-                console.log(((val + this.pc) - this.currentSegment.size)-1);
                 this.pc = ((val + this.pc) - this.currentSegment.size)-1;
             }else{
-                console.log(this.pc + (val-1));
                 this.pc += (val - 1);
             }
 
@@ -69,7 +68,7 @@ module TSOS {
             this.currentSegment = segment;
             this.memStart = segment.base;
             this.memEnd = segment.limit;
-            this.onDisk = false;
+            this.setOnDisk(false);
         }
 
         public kill(){
@@ -83,6 +82,10 @@ module TSOS {
             this.Xreg = cpu.Xreg;
             this.Yreg = cpu.Yreg;
             this.Zflag = cpu.Zflag;
+        }
+
+        public setOnDisk(flag){
+            this.onDisk = flag;
         }
 
     }

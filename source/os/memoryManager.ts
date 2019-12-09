@@ -39,10 +39,19 @@ module TSOS {
                 if(process.pid === 0){
                     this.rollOut(this.processControlBlocks[this.processControlBlocks.length-1].pid);
                     this.rollIn(process);
+                    Control.updatePcbDisplay(this.processControlBlocks[this.processControlBlocks.length-1]);
+                    Control.updatePcbDisplay(process);
                 } 
                 else{ 
                     this.rollOut(process.pid - 1);
                     this.rollIn(process);
+                    for(var i = 0; i < this.processControlBlocks.length; i++){
+                        if(this.processControlBlocks[i].pid === process.pid-1){
+                            var rolledOutProcess = this.processControlBlocks[i];
+                        }
+                    }
+                    Control.updatePcbDisplay(rolledOutProcess);
+                    Control.updatePcbDisplay(process);
                 }
                 
             }
@@ -113,9 +122,7 @@ module TSOS {
             var fileName = ".pid"+ process.pid;
             var data = _krnDiskDriver.readFile(fileName);
             if(data !== false){
-                // Trim data
-                data = data.replace("00", "");
-
+                
                 // Get free segment and set process to use it
                 var currentSegment = this.getFreeSegment();
                 process.rollIn(currentSegment);
@@ -123,15 +130,16 @@ module TSOS {
                 // Write data to segment
                 var byte: Byte;
                 var dataCounter = 0;
+                console.log("rolling in process <" + process.pid + ">");
                 for(var i=0; i<currentSegment.size; i++){
                     if(i >= data.length){ // Fill bytes with 0 if there is no data to add from stored process
                         byte = new Byte("00");
                         _MemoryAccessor.write(process, i, byte);
                     }
-                    else{
+                    else {
                         byte = new Byte(data.charAt(dataCounter) + "" + data.charAt(dataCounter+1));
                         _MemoryAccessor.write(process, i, byte);
-                        dataCounter++;
+                        dataCounter+=2;
                     }
                 }
             }
