@@ -37,7 +37,7 @@ module TSOS {
             if(process.onDisk){ 
                 // Roll out the process one before the process being rolled in
                 if(process.pid === 0){
-                    this.rollOut(process.pid + 1);
+                    this.rollOut(this.processControlBlocks[this.processControlBlocks.length-1].pid);
                     this.rollIn(process);
                 } 
                 else{ 
