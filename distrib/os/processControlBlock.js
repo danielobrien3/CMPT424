@@ -76,6 +76,7 @@ var TSOS;
             this.currentSegment = segment;
             this.memStart = segment.base;
             this.memEnd = segment.limit;
+            this.currentSegment.setEmpty(false);
             this.setOnDisk(false);
         };
         ProcessControlBlock.prototype.kill = function () {

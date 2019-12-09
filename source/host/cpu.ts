@@ -41,7 +41,7 @@ module TSOS {
             var pcb = _MemoryManager.findProcessById(this.currentProcess)
             pcb = _CpuScheduler.checkQuantum(pcb);
             this.currentProcess = pcb.pid;
-            if(pcb != null){
+            if(pcb != null && pcb.onDisk === false){
                 this.setCPU(pcb);
                 this.execute(pcb);
                 Control.updateCpuDisplay(this);

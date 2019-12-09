@@ -96,8 +96,8 @@ var TSOS;
             var load = _krnDiskDriver.createFile(fileName);
             if (load !== false) {
                 var data = "";
-                for (var i = 0; i < (process.memEnd - process.memStart); i++) {
-                    data += _MemoryAccessor.readAtLocation(process, i).value;
+                for (var i = process.currentSegment.base; i < process.currentSegment.limit; i++) {
+                    data += _MemoryAccessor.readAtPhysicalLocation(i).value;
                 }
                 _krnDiskDriver.writeToFile(fileName, data, true);
                 console.log("rolling out process <" + pid + ">");
@@ -120,7 +120,7 @@ var TSOS;
                 var dataCounter = 0;
                 console.log("rolling in process <" + process.pid + ">");
                 for (var i = 0; i < currentSegment.size; i++) {
-                    if (i >= data.length) { // Fill bytes with 0 if there is no data to add from stored process
+                    if (dataCounter >= data.length) { // Fill bytes with 0 if there is no data to add from stored process
                         byte = new TSOS.Byte("00");
                         _MemoryAccessor.write(process, i, byte);
                     }

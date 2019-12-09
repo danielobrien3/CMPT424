@@ -59,3 +59,4 @@ var onDocumentLoad = function () {
     TSOS.Control.hostInit();
 };
 var charactersInBlock = 128;
+var segmentSize = 256;

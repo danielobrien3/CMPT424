@@ -79,3 +79,4 @@ var onDocumentLoad = function() {
 };
 
 var charactersInBlock: number = 128;
+var segmentSize: number = 256;
