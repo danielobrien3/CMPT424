@@ -134,7 +134,6 @@ var TSOS;
             // Write data to blocks
             for (var i = 0; i < splitData.length; i++) {
                 _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
-                console.log(openBlocks[i].location);
             }
         };
         // Figured this was going to be needed often enough that making it its own function would be for the best. 

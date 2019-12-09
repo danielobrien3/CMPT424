@@ -35,8 +35,14 @@ var TSOS;
             //If process is on disk, we must roll out/roll in
             if (process.onDisk) {
                 // Roll out the process one before the process being rolled in
-                this.rollOut(process.pid - 1);
-                this.rollIn(process);
+                if (process.pid === 0) {
+                    this.rollOut(process.pid + 1);
+                    this.rollIn(process);
+                }
+                else {
+                    this.rollOut(process.pid - 1);
+                    this.rollIn(process);
+                }
             }
             return process;
         };
@@ -85,6 +91,7 @@ var TSOS;
                     data += _MemoryAccessor.readAtLocation(process, i);
                 }
                 _krnDiskDriver.writeToFile(fileName, data);
+                console.log("rolling out process <" + pid + ">");
                 process.rollOut(); // Handles resetting segment properties and setting onDisk to true
             }
             else {
@@ -100,7 +107,7 @@ var TSOS;
                 data = data.replace("00", "");
                 // Get free segment and set process to use it
                 var currentSegment = this.getFreeSegment();
-                process.rollIn();
+                process.rollIn(currentSegment);
                 // Write data to segment
                 var byte;
                 for (var i = 0; i < currentSegment.size; i += 2) {
@@ -114,6 +121,7 @@ var TSOS;
                     }
                 }
             }
+            _krnDiskDriver.deleteFile(fileName);
         };
         return MemoryManager;
     }());
