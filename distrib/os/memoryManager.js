@@ -88,7 +88,7 @@ var TSOS;
             if (load !== false) {
                 var data = "";
                 for (var i = 0; i < (process.memEnd - process.memStart); i++) {
-                    data += _MemoryAccessor.readAtLocation(process, i);
+                    data += _MemoryAccessor.readAtLocation(process, i).value;
                 }
                 _krnDiskDriver.writeToFile(fileName, data);
                 console.log("rolling out process <" + pid + ">");

@@ -76,7 +76,9 @@ var TSOS;
             if (directoryBlock != null) {
                 _Disk.write(directoryBlock.location, fileNameHex);
                 directoryBlock.inUse = true;
-                _StdOut.putText("File " + fileName + " has been created.");
+                if (fileName.charAt(0) !== ".") {
+                    _StdOut.putText("File " + fileName + " has been created.");
+                }
                 return true;
             }
             else {
@@ -202,7 +204,9 @@ var TSOS;
                 blocks[i].unlinkNext();
                 ;
             }
-            _StdOut.putText("File <" + fileName + "> has been deleted");
+            if (fileName.charAt(0) !== ".") {
+                _StdOut.putText("File <" + fileName + "> has been deleted");
+            }
         };
         DeviceDriverDisk.prototype.listFiles = function () {
             for (var i = 0; i < this.tsbList.length; i++) {

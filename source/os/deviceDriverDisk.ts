@@ -66,7 +66,9 @@ module TSOS {
             if(directoryBlock != null){
                 _Disk.write(directoryBlock.location, fileNameHex);
                 directoryBlock.inUse = true;
-                _StdOut.putText("File " + fileName + " has been created.")
+                if(fileName.charAt(0)!=="."){
+                    _StdOut.putText("File " + fileName + " has been created.")
+                }
                 return true;
             }
             else{
@@ -202,7 +204,10 @@ module TSOS {
                 blocks[i].setUse(false);
                 blocks[i].unlinkNext();;
             }
-            _StdOut.putText("File <" + fileName + "> has been deleted");
+            if(fileName.charAt(0)!=="."){
+                _StdOut.putText("File <" + fileName + "> has been deleted");
+            }
+            
         }
 
         public listFiles(){
