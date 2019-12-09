@@ -79,7 +79,7 @@ module TSOS {
             }
         }
 
-        public writeToFile(fileName, data){
+        public writeToFile(fileName, data, isProcess){
             // Determine how many blocks we need to write this data
             var blocksNeeded = Math.ceil(data.length / 64); 
 
@@ -133,7 +133,13 @@ module TSOS {
             }
             // Write data to blocks
             for(var i = 0; i<splitData.length; i++){
-                _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
+                if(isProcess){
+                    _Disk.write(openBlocks[i].location, splitData[i]);
+                }
+                else{
+                    _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
+                }
+                
             }
             Control.generateDiskDisplay();
         }

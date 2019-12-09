@@ -88,7 +88,7 @@ var TSOS;
                 return false;
             }
         };
-        DeviceDriverDisk.prototype.writeToFile = function (fileName, data) {
+        DeviceDriverDisk.prototype.writeToFile = function (fileName, data, isProcess) {
             // Determine how many blocks we need to write this data
             var blocksNeeded = Math.ceil(data.length / 64);
             // Find open blocks to store data (if they exist)
@@ -137,7 +137,12 @@ var TSOS;
             }
             // Write data to blocks
             for (var i = 0; i < splitData.length; i++) {
-                _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
+                if (isProcess) {
+                    _Disk.write(openBlocks[i].location, splitData[i]);
+                }
+                else {
+                    _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
+                }
             }
             TSOS.Control.generateDiskDisplay();
         };

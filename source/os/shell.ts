@@ -575,7 +575,7 @@ module TSOS {
               }
             }
             data = data.slice(1, -1);
-            _krnDiskDriver.writeToFile(fileName, data);
+            _krnDiskDriver.writeToFile(fileName, data, false);
           } 
           else {
             _StdOut.putText("Data cannot be written, You did not wrap your data in quotes");

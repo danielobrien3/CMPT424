@@ -24,9 +24,10 @@ module TSOS {
                     _StdOut.putText("There are no free segments in memory. Process will be stored on the disk drive");
                     var fileName = ".pid" + _PidCount;
                     var load = _krnDiskDriver.createFile(fileName);
+                    program = program.replace(/ /g, "");
                     if(load !== false){ //If a file 
                         pcb = _MemoryManager.newPcb(null, program.length);
-                        _krnDiskDriver.writeToFile(fileName, program);
+                        _krnDiskDriver.writeToFile(fileName, program, true);
                         Control.updateMemoryDisplay();
                         return pcb;
                     }

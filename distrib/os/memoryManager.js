@@ -90,7 +90,7 @@ var TSOS;
                 for (var i = 0; i < (process.memEnd - process.memStart); i++) {
                     data += _MemoryAccessor.readAtLocation(process, i).value;
                 }
-                _krnDiskDriver.writeToFile(fileName, data);
+                _krnDiskDriver.writeToFile(fileName, data, true);
                 console.log("rolling out process <" + pid + ">");
                 process.rollOut(); // Handles resetting segment properties and setting onDisk to true
             }
@@ -110,14 +110,16 @@ var TSOS;
                 process.rollIn(currentSegment);
                 // Write data to segment
                 var byte;
-                for (var i = 0; i < currentSegment.size; i += 2) {
-                    if (i > data.length) { // Fill bytes with 0 if there is no data to add from stored process
+                var dataCounter = 0;
+                for (var i = 0; i < currentSegment.size; i++) {
+                    if (i >= data.length) { // Fill bytes with 0 if there is no data to add from stored process
                         byte = new TSOS.Byte("00");
                         _MemoryAccessor.write(process, i, byte);
                     }
                     else {
-                        byte = new TSOS.Byte(data.charAt(i) + "" + data.charAt(i + 1));
+                        byte = new TSOS.Byte(data.charAt(dataCounter) + "" + data.charAt(dataCounter + 1));
                         _MemoryAccessor.write(process, i, byte);
+                        dataCounter++;
                     }
                 }
             }
