@@ -50,6 +50,7 @@ var TSOS;
             }
             // set the mbr to inUse
             this.tsbList[0].setUse(true);
+            TSOS.Control.generateDiskDisplay();
         };
         DeviceDriverDisk.prototype.createFile = function (fileName) {
             // First get the file name in hex. 
@@ -78,6 +79,7 @@ var TSOS;
                 directoryBlock.inUse = true;
                 if (fileName.charAt(0) !== ".") {
                     _StdOut.putText("File " + fileName + " has been created.");
+                    TSOS.Control.generateDiskDisplay();
                 }
                 return true;
             }
@@ -137,6 +139,7 @@ var TSOS;
             for (var i = 0; i < splitData.length; i++) {
                 _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
             }
+            TSOS.Control.generateDiskDisplay();
         };
         // Figured this was going to be needed often enough that making it its own function would be for the best. 
         DeviceDriverDisk.prototype.textToHex = function (text) {
@@ -206,6 +209,7 @@ var TSOS;
             }
             if (fileName.charAt(0) !== ".") {
                 _StdOut.putText("File <" + fileName + "> has been deleted");
+                TSOS.Control.generateDiskDisplay();
             }
         };
         DeviceDriverDisk.prototype.listFiles = function () {

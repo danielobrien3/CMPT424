@@ -37,6 +37,7 @@ module TSOS {
             }
             // set the mbr to inUse
             this.tsbList[0].setUse(true);
+            Control.generateDiskDisplay();
         }
 
         public createFile(fileName){
@@ -68,6 +69,7 @@ module TSOS {
                 directoryBlock.inUse = true;
                 if(fileName.charAt(0)!=="."){
                     _StdOut.putText("File " + fileName + " has been created.")
+                    Control.generateDiskDisplay();
                 }
                 return true;
             }
@@ -133,6 +135,7 @@ module TSOS {
             for(var i = 0; i<splitData.length; i++){
                 _Disk.write(openBlocks[i].location, this.textToHex(splitData[i]));
             }
+            Control.generateDiskDisplay();
         }
 
         // Figured this was going to be needed often enough that making it its own function would be for the best. 
@@ -206,6 +209,7 @@ module TSOS {
             }
             if(fileName.charAt(0)!=="."){
                 _StdOut.putText("File <" + fileName + "> has been deleted");
+                Control.generateDiskDisplay();
             }
             
         }

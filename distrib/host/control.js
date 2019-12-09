@@ -154,6 +154,22 @@ var TSOS;
                 }
             }
         };
+        Control.generateDiskDisplay = function () {
+            var table = document.getElementById("diskTable");
+            table.innerHTML = "";
+            for (var t = 0; t < _Disk.tracks; t++) {
+                for (var s = 0; s < _Disk.sectors; s++) {
+                    for (var b = 0; b < _Disk.blocks; b++) {
+                        var row = table.insertRow(-1);
+                        var cell0 = row.insertCell(0);
+                        var tsb = (t + ":" + s + ":" + b);
+                        cell0.innerHTML = tsb;
+                        var cell1 = row.insertCell(1);
+                        cell1.innerHTML = _Disk.read(tsb);
+                    }
+                }
+            }
+        };
         Control.updateMemoryDisplay = function () {
             var table = document.getElementById("memTable");
             /* Okay this one is tough and has a lot of magic numbers
