@@ -108,7 +108,7 @@ module TSOS {
         public static loadUserInput(){
             // Handles loading user input. Returns input as an array of bytes. 
             var userInputElement = <HTMLInputElement> document.getElementById("taProgramInput");
-            return userInputElement.value.split(" ");
+            return userInputElement.value;
         }
 
         public static displayPcb(pcb){
@@ -123,6 +123,7 @@ module TSOS {
             var xReg = newRow.insertCell(5);
             var yReg = newRow.insertCell(6);
             var zFlag = newRow.insertCell(7);
+            var onDisk = newRow.insertCell(8)
 
             // Everything except for pc and state are stored as bytes.
             // Their values are "hex" strings so that's what we'll use. 
@@ -134,6 +135,7 @@ module TSOS {
             xReg.innerHTML = pcb.Xreg.value;
             yReg.innerHTML = pcb.Yreg.value;
             zFlag.innerHTML = pcb.Zflag;
+            onDisk.innerHTML = pcb.onDisk;
         }
 
         public static updatePcbDisplay(pcb){
@@ -148,6 +150,7 @@ module TSOS {
                     table.rows[r].cells[5].innerHTML = pcb.Xreg.value;
                     table.rows[r].cells[6].innerHTML = pcb.Yreg.value;
                     table.rows[r].cells[7].innerHTML = pcb.Zflag;
+                    table.rows[r].cells[8].innerHTML = pcb.onDisk;
                 }
             }            
         }

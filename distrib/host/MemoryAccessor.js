@@ -15,20 +15,29 @@ var TSOS;
             // Load handles loading program into memory.
             // Program should be loaded into a free segment
             var currentSegment = _MemoryManager.getFreeSegment();
-            // Make sure program is not larger than segment size now, before any real work is done.
+            var pcb;
+            // If currentSegment is null, we continue loading the program onto the disk. 
             if (currentSegment == null) {
-                _StdOut.putText("There are no free segments in memory. Please use clearMem before loading any more processes.");
+                _StdOut.putText("There are no free segments in memory. Process will be stored on the disk drive");
+                var fileName = ".pid" + _PidCount;
+                var load = _krnDiskDriver.createFile(fileName);
+                if (load !== false) { //If a file 
+                    pcb = _MemoryManager.newPcb(null, program.length);
+                    _krnDiskDriver.writeToFile(fileName, program);
+                    TSOS.Control.updateMemoryDisplay();
+                    return pcb;
+                }
             }
             else {
-                // getFreeSegment returns null if there are no free segments... 
-                // ...therefore if currentSegment is null, we cannot continue loading the program. 
+                // Make sure program is not larger than segment size now, before any real work is done.
                 if (program.length > currentSegment.limit) {
                     _StdOut.putText("Program is too large to be loaded into memory.");
                 }
                 else {
                     // Program is loaded into memory and a corresponding PCB is created. 
+                    program = program.split(" ");
                     _Memory.load(currentSegment, program);
-                    var pcb = _MemoryManager.newPcb(currentSegment, program.length);
+                    pcb = _MemoryManager.newPcb(currentSegment, program.length);
                     currentSegment.setEmpty(false);
                     TSOS.Control.updateMemoryDisplay();
                     return pcb;

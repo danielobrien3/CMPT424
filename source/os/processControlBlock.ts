@@ -23,13 +23,15 @@ module TSOS {
             public isExecuting: boolean = false,
             public state: string = "new",
             public currentSegment: any = MemorySegment,
-            public quantumCount: number = 0){}
+            public quantumCount: number = 0,
+            public onDisk: boolean = false){}
 
-        public init(pid, memStart, memEnd, currentSegment){
+        public init(pid, memStart, memEnd, currentSegment, onDisk){
             this.pid = _PidCount;
             this.memStart = memStart;
             this.memEnd = memEnd;
             this.currentSegment = currentSegment;
+            this.onDisk = onDisk;
         }
 
         public assureProcessSize(logicalLocation){
@@ -44,6 +46,14 @@ module TSOS {
             this.state = "completed";
         }
 
+        public rollOut(){  //Handles resetting all segment data on roll out
+            this.memStart = null;
+            this.memEnd = null;
+            this.currentSegment.setEmpty(true);
+            this.currentSegment = null;
+            this.onDisk = true;
+        }
+
         public branchPC(val){
             if(this.pc + val > this.currentSegment.size){
                 console.log(((val + this.pc) - this.currentSegment.size)-1);
@@ -53,7 +63,13 @@ module TSOS {
                 this.pc += (val - 1);
             }
 
+        }
 
+        public rollIn(segment){
+            this.currentSegment = segment;
+            this.memStart = segment.base;
+            this.memEnd = segment.limit;
+            this.onDisk = false;
         }
 
         public kill(){

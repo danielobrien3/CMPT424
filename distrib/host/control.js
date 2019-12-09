@@ -90,7 +90,7 @@ var TSOS;
         Control.loadUserInput = function () {
             // Handles loading user input. Returns input as an array of bytes. 
             var userInputElement = document.getElementById("taProgramInput");
-            return userInputElement.value.split(" ");
+            return userInputElement.value;
         };
         Control.displayPcb = function (pcb) {
             // Handles creating a new table row to display newly loaded process. 
@@ -104,6 +104,7 @@ var TSOS;
             var xReg = newRow.insertCell(5);
             var yReg = newRow.insertCell(6);
             var zFlag = newRow.insertCell(7);
+            var onDisk = newRow.insertCell(8);
             // Everything except for pc and state are stored as bytes.
             // Their values are "hex" strings so that's what we'll use. 
             pid.innerHTML = pcb.pid;
@@ -114,6 +115,7 @@ var TSOS;
             xReg.innerHTML = pcb.Xreg.value;
             yReg.innerHTML = pcb.Yreg.value;
             zFlag.innerHTML = pcb.Zflag;
+            onDisk.innerHTML = pcb.onDisk;
         };
         Control.updatePcbDisplay = function (pcb) {
             var table = document.getElementById("pcbTable");
@@ -126,6 +128,7 @@ var TSOS;
                     table.rows[r].cells[5].innerHTML = pcb.Xreg.value;
                     table.rows[r].cells[6].innerHTML = pcb.Yreg.value;
                     table.rows[r].cells[7].innerHTML = pcb.Zflag;
+                    table.rows[r].cells[8].innerHTML = pcb.onDisk;
                 }
             }
         };

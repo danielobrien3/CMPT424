@@ -121,7 +121,6 @@ var TSOS;
                     sliceEnd = (i + 1) * charactersInBlock;
                 }
                 splitData.push(data.slice(sliceBegin, sliceEnd));
-                console.log(splitData[i]);
             }
             // Set linking for blocks
             directoryEntry.setNext(openBlocks[0]);
