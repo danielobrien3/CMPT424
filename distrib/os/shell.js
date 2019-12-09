@@ -104,7 +104,7 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<scheduling algorithm>- Changes current CPU scheduler algorithm. Options are <RR> <FCFS> <Priority>");
             this.commandList[this.commandList.length] = sc;
             // get current cpu scheduler algorithm
-            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "Get current CPU scheduler algorithm");
+            sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "Get current CPU scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.

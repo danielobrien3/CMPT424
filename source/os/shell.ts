@@ -192,7 +192,7 @@ module TSOS {
           this.commandList[this.commandList.length] = sc;
 
           // get current cpu scheduler algorithm
-          sc = new ShellCommand(this.shellSetSchedule,
+          sc = new ShellCommand(this.shellGetSchedule,
                                 "getschedule",
                                 "Get current CPU scheduler algorithm");
           this.commandList[this.commandList.length] = sc;
