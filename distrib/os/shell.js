@@ -101,7 +101,7 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "- lists all non-hidden files on disk");
             this.commandList[this.commandList.length] = sc;
             // set cpu scheduler
-            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<scheduling algorithm>- Changes current CPU scheduler algorithm. Options are <RR> <FCFS> <Priority>");
+            sc = new TSOS.ShellCommand(this.shellSetSchedule, "setschedule", "<scheduling algorithm>- Changes current CPU scheduler algorithm. Options are <rr> <fcfs> <priority>");
             this.commandList[this.commandList.length] = sc;
             // get current cpu scheduler algorithm
             sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "Get current CPU scheduler algorithm");
@@ -392,8 +392,8 @@ var TSOS;
                     _StdOut.putText("PID: " + pcb.pid);
                     TSOS.Control.displayPcb(pcb);
                 }
-                if (args.length = 2) {
-                    pcb.setPriority(args[1]);
+                if (args.length > 0) {
+                    pcb.setPriority(args[0]);
                 }
             }
             else {
@@ -500,11 +500,11 @@ var TSOS;
             _krnDiskDriver.listFiles();
         };
         Shell.prototype.shellSetSchedule = function (args) {
-            if (args.length != 2) {
-                _StdOut.putText("Please provide on scheduling algorithm (FCFS, RR, Priority)");
+            if (args.length > 1) {
+                _StdOut.putText("Please provide on scheduling algorithm (fcfs, rr, priority)");
             }
             else {
-                _CpuScheduler.changeAlgorithm(args[1]);
+                _CpuScheduler.changeAlgorithm(args[0]);
             }
         };
         Shell.prototype.shellGetSchedule = function (args) {

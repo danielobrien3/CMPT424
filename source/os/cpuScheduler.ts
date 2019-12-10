@@ -10,22 +10,22 @@ module TSOS {
 
         constructor(public quantum: number = 6,
             public currentProcessNdx: number = null,
-            public currentAlgorithm:string = "RR"){}
+            public currentAlgorithm:string = "rr"){}
 
         public handleScheduling(pcb){
             var process;
             switch (this.currentAlgorithm) {
-                case "RR":
+                case "rr":
                     process = this.checkQuantum(pcb);
                     return process;
                     break;
                 
-                case "FCFS":
+                case "fcfs":
                     process = this.fcfs(pcb);
                     return process;
                     break;
 
-                case "Priority":
+                case "priority":
                     process = this.priority(pcb);
                     return process;
                     break;
@@ -33,20 +33,20 @@ module TSOS {
         }
 
         public changeAlgorithm(algorithm){
-            if(algorithm === "RR"){
-                this.currentAlgorithm = "RR";
+            if(algorithm === "rr"){
+                this.currentAlgorithm = "rr";
                 _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
             }
-            else if (algorithm === "FCFS"){
-                this.currentAlgorithm = "FCFS";
+            else if (algorithm === "fcfs"){
+                this.currentAlgorithm = "fcfs";
                 _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
             }
-            else if (algorithm === "Priority"){
-                this.currentAlgorithm = "Priority";
+            else if (algorithm === "priority"){
+                this.currentAlgorithm = "priority";
                 _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
             }
             else {
-                _StdOut.putText("Please select a scheduling algorithm from the options <RR>, <FCFS>, <Priority>");
+                _StdOut.putText("Please select a scheduling algorithm from the options <rr>, <fcfs>, <priority>");
             }
         }
 
@@ -70,7 +70,7 @@ module TSOS {
                 for(var i=0; i<_MemoryManager.processControlBlocks.length; i++){
                     if(_MemoryManager.processControlBlocks[i].priority < currentPriority){
                         var state = _MemoryManager.processControlBlocks[i].state
-                        if(state != "completed" || state!="new"){
+                        if(state != "completed" ){
                             currentProcess = _MemoryManager.processControlBlocks[i];
                             currentPriority = currentProcess.priority;
                         }

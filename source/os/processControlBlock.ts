@@ -37,7 +37,7 @@ module TSOS {
         }
 
         public setPriority(priority){
-            this.priority = priority;
+            this.priority = +priority;
         }
 
         public assureProcessSize(logicalLocation){

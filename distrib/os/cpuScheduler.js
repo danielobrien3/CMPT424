@@ -9,7 +9,7 @@ var TSOS;
         function CpuScheduler(quantum, currentProcessNdx, currentAlgorithm) {
             if (quantum === void 0) { quantum = 6; }
             if (currentProcessNdx === void 0) { currentProcessNdx = null; }
-            if (currentAlgorithm === void 0) { currentAlgorithm = "RR"; }
+            if (currentAlgorithm === void 0) { currentAlgorithm = "rr"; }
             this.quantum = quantum;
             this.currentProcessNdx = currentProcessNdx;
             this.currentAlgorithm = currentAlgorithm;
@@ -17,35 +17,35 @@ var TSOS;
         CpuScheduler.prototype.handleScheduling = function (pcb) {
             var process;
             switch (this.currentAlgorithm) {
-                case "RR":
+                case "rr":
                     process = this.checkQuantum(pcb);
                     return process;
                     break;
-                case "FCFS":
+                case "fcfs":
                     process = this.fcfs(pcb);
                     return process;
                     break;
-                case "Priority":
+                case "priority":
                     process = this.priority(pcb);
                     return process;
                     break;
             }
         };
         CpuScheduler.prototype.changeAlgorithm = function (algorithm) {
-            if (algorithm === "RR") {
-                this.currentAlgorithm = "RR";
+            if (algorithm === "rr") {
+                this.currentAlgorithm = "rr";
                 _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
             }
-            else if (algorithm === "FCFS") {
-                this.currentAlgorithm = "FCFS";
+            else if (algorithm === "fcfs") {
+                this.currentAlgorithm = "fcfs";
                 _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
             }
-            else if (algorithm === "Priority") {
-                this.currentAlgorithm = "Priority";
+            else if (algorithm === "priority") {
+                this.currentAlgorithm = "priority";
                 _StdOut.putText("Scheduling Algorithm has been set to " + this.currentAlgorithm);
             }
             else {
-                _StdOut.putText("Please select a scheduling algorithm from the options <RR>, <FCFS>, <Priority>");
+                _StdOut.putText("Please select a scheduling algorithm from the options <rr>, <fcfs>, <priority>");
             }
         };
         CpuScheduler.prototype.fcfs = function (pcb) {

@@ -50,7 +50,7 @@ var TSOS;
             this.onDisk = onDisk;
         };
         ProcessControlBlock.prototype.setPriority = function (priority) {
-            this.priority = priority;
+            this.priority = +priority;
         };
         ProcessControlBlock.prototype.assureProcessSize = function (logicalLocation) {
             // Handles the possibility of a newly written byte increasing program size.

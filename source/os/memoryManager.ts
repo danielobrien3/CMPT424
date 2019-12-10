@@ -28,6 +28,7 @@ module TSOS {
         public findProcessById(id){
             // Finds process by id (duh). Pretty simple stuff. 
             var process;
+            console.log("finding pid <" + id + ">");
             for(var i = 0; i < this.processControlBlocks.length; i++){
                if(this.processControlBlocks[i].pid == id){
                    process = this.processControlBlocks[i];

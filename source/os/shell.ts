@@ -188,7 +188,7 @@ module TSOS {
           // set cpu scheduler
           sc = new ShellCommand(this.shellSetSchedule,
                                 "setschedule",
-                                "<scheduling algorithm>- Changes current CPU scheduler algorithm. Options are <RR> <FCFS> <Priority>");
+                                "<scheduling algorithm>- Changes current CPU scheduler algorithm. Options are <rr> <fcfs> <priority>");
           this.commandList[this.commandList.length] = sc;
 
           // get current cpu scheduler algorithm
@@ -504,8 +504,8 @@ module TSOS {
               _StdOut.putText("PID: " + pcb.pid);
               Control.displayPcb(pcb);
             }
-            if(args.length = 2){
-              pcb.setPriority(args[1])
+            if(args.length > 0){
+              pcb.setPriority(args[0])
             }
           } 
           else {
@@ -624,11 +624,12 @@ module TSOS {
       }
 
       public shellSetSchedule(args: string[]){
-        if(args.length != 2){
-          _StdOut.putText("Please provide on scheduling algorithm (FCFS, RR, Priority)");
+        if(args.length >1){
+          _StdOut.putText("Please provide on scheduling algorithm (fcfs, rr, priority)");
         }
         else{
-          _CpuScheduler.changeAlgorithm(args[1]);
+          _CpuScheduler.changeAlgorithm(args[0]);
+
         }
       }
 
