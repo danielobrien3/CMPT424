@@ -158,7 +158,7 @@ module TSOS {
                 }
             }
             pcb.update(this);
-            if(_CpuScheduler.currentAlgorithm === "RR"){
+            if(_CpuScheduler.currentAlgorithm === "rr" || _CpuScheduler.currentAlgorithm === null){
                 pcb.quantumCount++;
             }
             this.PC = pcb.pc;
