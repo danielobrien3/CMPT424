@@ -177,7 +177,13 @@ var TSOS;
         };
         Cpu.prototype.BRK = function (pcb) {
             pcb.state = "completed";
-            var nextProcess = _CpuScheduler.getNextProcess(pcb);
+            var nextProcess;
+            if (_CpuScheduler.currentAlgorithm === "priority") {
+                nextProcess = _CpuScheduler.handleScheduling(pcb);
+            }
+            else {
+                nextProcess = _CpuScheduler.getNextProcess(pcb);
+            }
             if (nextProcess != null)
                 this.currentProcess = nextProcess.pid;
             else

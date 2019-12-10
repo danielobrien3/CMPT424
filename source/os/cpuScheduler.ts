@@ -64,7 +64,7 @@ module TSOS {
         }
 
         public priority(pcb){
-            var currentProcess = pcb;
+            var currentProcess;
             if(pcb.state === "completed"){
                 var currentPriority = 100000; // Random number too large to be realistically used as process priority
                 for(var i=0; i<_MemoryManager.processControlBlocks.length; i++){
@@ -75,6 +75,9 @@ module TSOS {
                             currentPriority = currentProcess.priority;
                         }
                     }
+                }
+                if(currentProcess!=null){
+                    currentProcess.state = "executing";
                 }
                 return currentProcess;
             }

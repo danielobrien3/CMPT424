@@ -61,17 +61,20 @@ var TSOS;
             }
         };
         CpuScheduler.prototype.priority = function (pcb) {
-            var currentProcess = pcb;
+            var currentProcess;
             if (pcb.state === "completed") {
                 var currentPriority = 100000; // Random number too large to be realistically used as process priority
                 for (var i = 0; i < _MemoryManager.processControlBlocks.length; i++) {
                     if (_MemoryManager.processControlBlocks[i].priority < currentPriority) {
                         var state = _MemoryManager.processControlBlocks[i].state;
-                        if (state != "completed" || state != "new") {
+                        if (state != "completed") {
                             currentProcess = _MemoryManager.processControlBlocks[i];
                             currentPriority = currentProcess.priority;
                         }
                     }
+                }
+                if (currentProcess != null) {
+                    currentProcess.state = "executing";
                 }
                 return currentProcess;
             }
